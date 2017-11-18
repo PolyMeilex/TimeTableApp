@@ -47,7 +47,7 @@
           </q-item>
 
           <q-item @click="testFc($refs.layout,4)">
-            <q-item-side icon="chat" />
+            <q-item-side icon="warning" />
             <q-item-main label="Experimental" sublabel="Chat" />
           </q-item>
 
@@ -66,6 +66,9 @@
 </template>
 
 <script>
+
+
+
 import {
   openURL,
   QLayout,
@@ -77,7 +80,8 @@ import {
   QListHeader,
   QItem,
   QItemSide,
-  QItemMain
+  QItemMain,
+  Alert
 } from 'quasar'
 
 import Hello from "./components/Hello.vue"
@@ -106,7 +110,8 @@ export default {
     Hello,
     mainA1,
     infoC,
-    chat
+    chat,
+    Alert
   },
   data () {
     return {
@@ -121,6 +126,9 @@ export default {
 
   },
   methods: {
+    // onDoubleTap(){
+    //   console.log("left");
+    // },
     SetColour(grp){
       this.grp=grp
       if (grp==1) {
@@ -164,12 +172,28 @@ export default {
           // ...
         }
         // The signed-in user info.
+
         var user = result.user;
         if (user!=null) {
           this.FName = user;
+
+          Alert.create({
+            enter: 'zoomInDown',
+            leave: 'zoomOut',
+            color: 'positive',
+            icon: 'wifi',
+            html: `Zalogowano: `,
+            position: 'bottom',
+            actions: [
+              {
+                label: 'Zamknij',
+                handler() {}
+              }
+            ]
+          })
+
         }
 
-        console.log(user);
       }.bind(this)).catch(function(error) {});
   },
   beforeDestroy () {

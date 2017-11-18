@@ -103,6 +103,7 @@
       };
 
       const app = firebase.initializeApp(config);
+      const db = app.database();
 
       var provider = new firebase.auth.FacebookAuthProvider();
 
