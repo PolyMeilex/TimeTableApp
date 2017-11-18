@@ -46,6 +46,11 @@
             <q-item-main label="Informacje" sublabel="Krótki Opis Projektu" />
           </q-item>
 
+          <q-item @click="testFc($refs.layout,4)">
+            <q-item-side icon="chat" />
+            <q-item-main label="Experimental" sublabel="Chat" />
+          </q-item>
+
         </q-list>
       </div>
 
@@ -53,7 +58,7 @@
 
         <!-- <router-view :GrpDis="grp"/> -->
 
-        <component :GrpDis="grp" :is="page"></component>
+        <component :GrpDis="grp" :FName="FName" :is="page"></component>
 
     </q-layout>
   </div>
@@ -78,6 +83,12 @@ import {
 import Hello from "./components/Hello.vue"
 import mainA1 from "./components/mainA1.vue"
 import infoC from "./components/info.vue"
+import chat from "./components/chat.vue"
+
+import firebase from 'firebase'
+
+// var Firebase = require('firebase')
+// console.log(Firebase);
 
 export default {
   name: 'index',
@@ -94,11 +105,13 @@ export default {
     QItemMain,
     Hello,
     mainA1,
-    infoC
+    infoC,
+    chat
   },
   data () {
     return {
       grp: 1,
+      FName:"-",
       page: Hello,
       BtnColour1: "primary",
       BtnColour2: ""
@@ -131,6 +144,9 @@ export default {
         case 3:
           this.page = infoC
           break;
+        case 4:
+            this.page = chat
+          break;
       }
 
 
@@ -140,8 +156,21 @@ export default {
       openURL(url)
     }
   },
-  mounted () {
+  beforeCreate() {
+    firebase.auth().getRedirectResult().then(function(result) {
+        if (result.credential) {
+          // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+          var token = result.credential.accessToken;
+          // ...
+        }
+        // The signed-in user info.
+        var user = result.user;
+        if (user!=null) {
+          this.FName = user;
+        }
 
+        console.log(user);
+      }.bind(this)).catch(function(error) {});
   },
   beforeDestroy () {
 
