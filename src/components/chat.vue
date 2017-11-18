@@ -1,5 +1,8 @@
 <template>
   <div>
+
+    <q-layout>
+
     <q-transition
  appear
  enter="zoomInDown"
@@ -26,18 +29,14 @@
 
       </q-card>
 
-      <q-card  color="dark" v-if="DispName!=null">
-        <!-- Notice the slot="overlay" -->
+      <!-- <q-card  color="dark" v-if="DispName!=null">
         <q-card-title slot="overlay" class="center">
           {{DispName}}
         </q-card-title>
+      </q-card> -->
 
 
-      </q-card>
-
-
-      <q-card  color="dark" v-if="DispName!=null">
-
+      <q-card  color="dark" v-if="DispName!=null" id="ScroleFromDown">
         <QCardMain>
 
           <q-chat-message
@@ -51,12 +50,12 @@
             sent
           />
           <q-chat-message
-            name="Ryszard"
+            :name="message.Name"
             avatar="../statics/icons/android-icon-36x36.png"
-            :text="['No kurwa witam']"
+            :text="[message.Mes]"
             stamp="4 minutes ago"
+            v-for="message in RefF"
           />
-
         </QCardMain>
 
       </q-card>
@@ -69,6 +68,20 @@
     </div>
 
 </q-transition>
+
+<q-toolbar slot="footer" color="dark" v-if="DispName!=null">
+ <q-toolbar-title>
+   <q-input v-model="SendMes" inverted float-label="Message" :after="[{icon: 'arrow_forward', content: true,
+     handler () {
+
+       sendMSG('a','b','c')
+
+     }
+     }]" />
+ </q-toolbar-title>
+</q-toolbar>
+
+</q-layout>
 
   </div>
 
@@ -88,7 +101,12 @@
         QItem,
         QItemMain,
         QBtn,
-        QChatMessage
+        QChatMessage,
+        QLayout,
+        QToolbar,
+        QToolbarTitle,
+        QIcon,
+        QInput
     } from 'quasar'
 
     import firebase from 'firebase'
@@ -104,6 +122,11 @@
 
       const app = firebase.initializeApp(config);
       const db = app.database();
+
+      const Ref = db.ref('Messages');
+
+
+
 
       var provider = new firebase.auth.FacebookAuthProvider();
 
@@ -128,43 +151,54 @@
             QItem,
             QItemMain,
             QBtn,
-            QChatMessage
+            QChatMessage,
+            QToolbar,
+            QToolbarTitle,
+            QIcon,
+            QInput,
+            QLayout
         },
         data() {
             return {
                 show: true,
                 DispName: this.FName.displayName,
-                photoURL: this.FName.photoURL
+                photoURL: this.FName.photoURL,
+                RefD: "",
+                SendMes:""
             }
         },
         watch: {
           FName: function () {
             this.photoURL = this.FName.photoURL;
             this.DispName = this.FName.displayName;
+          },
+          RefD: function () {
+            document.body.scrollTop = document.body.scrollHeight
           }
         },
         methods: {
           login(){
               firebase.auth().signInWithRedirect(provider);
+          },
+          sendMSG(name,mes,img){
+            var startNew = {"Name":name,"Mes":mes,"img":img};
+            Ref.push(startNew);
           }
         },
+        firebase:{
+          RefF: Ref,
+          RefD: Ref
+        },
         created() {
-
+          document.body.scrollTop = document.body.scrollHeight
+        },
+        mounted(){
+          document.body.scrollTop = document.body.scrollHeight
         }
 
     }
 </script>
 
-<style lang="stylus">
-.logo-container
-  width 255px
-  height 242px
-  perspective 800px
-  position absolute
-  top 50%
-  left 50%
-  transform translateX(-50%) translateY(-50%)
-.logo
-  position absolute
-  transform-style preserve-3d
+<style>
+
 </style>

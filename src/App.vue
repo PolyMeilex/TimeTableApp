@@ -60,6 +60,9 @@
 
         <component :GrpDis="grp" :FName="FName" :is="page"></component>
 
+
+        
+
     </q-layout>
   </div>
 
@@ -81,7 +84,8 @@ import {
   QItem,
   QItemSide,
   QItemMain,
-  Alert
+  Alert,
+  QInput
 } from 'quasar'
 
 import Hello from "./components/Hello.vue"
@@ -111,7 +115,8 @@ export default {
     mainA1,
     infoC,
     chat,
-    Alert
+    Alert,
+    QInput
   },
   data () {
     return {
@@ -119,7 +124,8 @@ export default {
       FName:"-",
       page: Hello,
       BtnColour1: "primary",
-      BtnColour2: ""
+      BtnColour2: "",
+      SendMes:""
     }
   },
   computed: {

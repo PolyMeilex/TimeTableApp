@@ -16,9 +16,9 @@ import Quasar from 'quasar'
 
 
 
-// import VueFire from 'vuefire'
-//
-// Vue.use(VueFire)
+import VueFire from 'vuefire'
+
+Vue.use(VueFire)
 
 
 import 'quasar-extras/animate/zoomInDown.css'
