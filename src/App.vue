@@ -16,7 +16,7 @@
 
         <q-toolbar-title>
           Plan Lekcji
-          <div slot="subtitle">v3.0.2</div>
+          <div slot="subtitle">v3.0.3</div>
         </q-toolbar-title>
 
         <q-btn flat @click="SetColour(1)" :color="BtnColour1">
@@ -61,7 +61,7 @@
         <component :GrpDis="grp" :FName="FName" :is="page"></component>
 
 
-        
+
 
     </q-layout>
   </div>

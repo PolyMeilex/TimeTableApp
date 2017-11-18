@@ -42,16 +42,16 @@
           <q-chat-message
             label='Sobota, 18th'
           />
-          <q-chat-message
+          <!-- <q-chat-message
             name="me"
             :avatar="photoURL"
             :text="['Elo Elo']"
             stamp="7 minutes ago"
             sent
-          />
+          /> -->
           <q-chat-message
             :name="message.Name"
-            avatar="../statics/icons/android-icon-36x36.png"
+            :avatar="message.img"
             :text="[message.Mes]"
             stamp="4 minutes ago"
             v-for="message in RefF"
@@ -74,8 +74,9 @@
    <q-input v-model="SendMes" inverted float-label="Message" :after="[{icon: 'arrow_forward', content: true,
      handler () {
 
-       sendMSG('a','b','c')
-
+       sendMSG(DispName,SendMes,photoURL)
+       scrol()
+       SendMes = ''
      }
      }]" />
  </q-toolbar-title>
@@ -173,7 +174,7 @@
             this.DispName = this.FName.displayName;
           },
           RefD: function () {
-            document.body.scrollTop = document.body.scrollHeight
+            this.scrol()
           }
         },
         methods: {
@@ -183,6 +184,9 @@
           sendMSG(name,mes,img){
             var startNew = {"Name":name,"Mes":mes,"img":img};
             Ref.push(startNew);
+          },
+          scrol(){
+            document.body.scrollTop = document.body.scrollHeight
           }
         },
         firebase:{
@@ -190,10 +194,9 @@
           RefD: Ref
         },
         created() {
-          document.body.scrollTop = document.body.scrollHeight
+          this.scrol()
         },
         mounted(){
-          document.body.scrollTop = document.body.scrollHeight
         }
 
     }
