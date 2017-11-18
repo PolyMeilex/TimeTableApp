@@ -1,0 +1,20 @@
+{
+  "name": "Plan Lekcji",
+  "short_name": "Plan Lekcji",
+  "icons": [
+    {
+      "src": "/statics/icons/android-icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/statics/icons/ms-icon-310x310.png",
+      "sizes": "310x310",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#333",
+  "theme_color": "#333"
+}
