@@ -218,7 +218,10 @@ export default {
 
       this.UserD = firebaseUser
 
-      this.AlertLogin()
+      if (this.UserD.displayName!=null) {
+        this.AlertLogin()
+      }
+
     });
 
 
