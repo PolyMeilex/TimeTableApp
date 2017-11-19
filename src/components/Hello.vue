@@ -148,14 +148,17 @@
                     }
                 }
 
-                this.NazwaLek = plan[TimeTest(m, me, x1, x2)].Name;
-                this.SalaLek = plan[TimeTest(m, me, x1, x2)].Sal;
-                this.DzwonekLek = dzwonkiLek[TimeTest(m, me, x1, x2)].dzwon;
+                if (day!= 6 & day!=0) {
+                  this.NazwaLek = plan[TimeTest(m, me, x1, x2)].Name;
+                  this.SalaLek = plan[TimeTest(m, me, x1, x2)].Sal;
+                  this.DzwonekLek = dzwonkiLek[TimeTest(m, me, x1, x2)].dzwon;
 
-                if (h != 15) {
-                    this.NazwaLekNext = plan[TimeTest(m, me, x1, x2) + 1].Name;
-                    this.SalaLekNext = plan[TimeTest(m, me, x1, x2) + 1].Sal;
+                  if (h != 15) {
+                      this.NazwaLekNext = plan[TimeTest(m, me, x1, x2) + 1].Name;
+                      this.SalaLekNext = plan[TimeTest(m, me, x1, x2) + 1].Sal;
+                  }
                 }
+
 
             },
             Initial(){

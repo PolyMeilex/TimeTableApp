@@ -62,9 +62,6 @@
 
 
 
-
-
-
     </div>
 
 </q-transition>
@@ -172,6 +169,7 @@
           UserD: function () {
             this.photoURL = this.UserD.photoURL;
             this.DispName = this.UserD.displayName;
+            this.scrol();
           },
           RefD: function () {
             this.scrol()
