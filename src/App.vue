@@ -19,12 +19,23 @@
           <div slot="subtitle">v3.0.5</div>
         </q-toolbar-title>
 
-        <q-btn flat @click="SetColour(1)" :color="BtnColour1">
-          <q-icon name="bookmark" />1
-        </q-btn>
-        <q-btn flat @click="SetColour(2)" :color="BtnColour2">
-          <q-icon name="bookmark" />2
-        </q-btn>
+        <q-transition appear enter="fadeIn" leave="fadeOut">
+
+          <q-btn flat @click="SetColour(1)" :color="BtnColour1" v-if="isGrpNe==1">
+            <q-icon name="bookmark" />1
+          </q-btn>
+
+        </q-transition>
+
+        <q-transition appear enter="fadeIn" leave="fadeOut">
+
+          <q-btn flat @click="SetColour(2)" :color="BtnColour2" v-if="isGrpNe==1">
+            <q-icon name="bookmark" />2
+          </q-btn>
+
+        </q-transition>
+
+
       </q-toolbar>
 
       <div slot="left">
@@ -58,7 +69,7 @@
 
         <!-- <router-view :GrpDis="grp"/> -->
 
-        <component :GrpDis="grp" :is="page" :UserD="UserD" @LogInMain="LogInMain"></component>
+        <component :GrpDis="grp" :is="page" :UserD="UserD" @isGrpNe="isGrpNe=$event" @LogInMain="LogInMain"></component>
 
 
 
@@ -73,19 +84,20 @@
 
 
 import {
-  openURL,
-  QLayout,
-  QToolbar,
-  QToolbarTitle,
-  QBtn,
-  QIcon,
-  QList,
-  QListHeader,
-  QItem,
-  QItemSide,
-  QItemMain,
-  Alert,
-  QInput
+//  openURL,
+  QLayout, //+
+  QToolbar, //+
+  QToolbarTitle, //+
+  QBtn, //+
+  QIcon, //+
+  QList, //+
+  QListHeader, //+
+  QItem, //+
+  QItemSide, //+
+  QItemMain, //+
+  Alert, //+
+  //QInput, //-
+  QTransition
 } from 'quasar'
 
 import Hello from "./components/Hello.vue"
@@ -116,11 +128,13 @@ export default {
     infoC,
     chat,
     Alert,
-    QInput
+  //QInput,
+    QTransition
   },
   data () {
     return {
       grp: 1,
+      isGrpNe:1,
       UserD:null,
       page: Hello,
       BtnColour1: "primary",
@@ -166,15 +180,12 @@ export default {
 
      l.toggleLeft()
     },
-    launch (url) {
-      openURL(url)
-    },
 
     AlertLogin(){
 
       Alert.create({
-        enter: 'zoomInDown',
-        leave: 'zoomOut',
+        enter: 'bounceInUp',
+        leave: 'fadeOut',
         color: 'positive',
         icon: 'wifi',
         html: `Zalogowano:`+ this.UserD.displayName,

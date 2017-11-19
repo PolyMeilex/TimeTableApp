@@ -87,24 +87,24 @@
 
 <script>
     import {
-        QCard,
-        QCardTitle,
-        QCardMain,
-        QCardMedia,
-        QCardActions,
-        QCardSeparator,
+        QCard, //+
+        QCardTitle, //+
+        QCardMain, //+
+        //QCardMedia, //-
+        //QCardActions, //-
+        //QCardSeparator, //-
         QTransition,
-        QList,
-        QListHeader,
-        QItem,
-        QItemMain,
-        QBtn,
-        QChatMessage,
-        QLayout,
-        QToolbar,
-        QToolbarTitle,
-        QIcon,
-        QInput
+        //QList, //-
+        //QListHeader, //-
+        //QItem, //-
+        //QItemMain, //-
+        QBtn, //+
+        QChatMessage, //+
+        QLayout, //+
+        QToolbar, //+
+        QToolbarTitle, //+
+        QIcon, //+
+        QInput //+
     } from 'quasar'
 
     import firebase from 'firebase'
@@ -126,11 +126,6 @@
 
 
 
-
-
-
-
-
     export default {
         name: 'index',
         props: ["UserD"],
@@ -138,14 +133,14 @@
             QCard,
             QCardTitle,
             QCardMain,
-            QCardMedia,
-            QCardActions,
-            QCardSeparator,
+            //QCardMedia,
+            //QCardActions,
+            //QCardSeparator,
             QTransition,
-            QList,
-            QListHeader,
-            QItem,
-            QItemMain,
+            //QList,
+            //QListHeader,
+            //QItem,
+            //QItemMain,
             QBtn,
             QChatMessage,
             QToolbar,
@@ -209,6 +204,9 @@
           }
 
           this.scrol()
+        },
+        beforeCreate(){
+          this.$emit('isGrpNe',0)
         },
         mounted(){
         }

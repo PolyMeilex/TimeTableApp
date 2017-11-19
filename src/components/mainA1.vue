@@ -30,10 +30,10 @@
 
 <script>
     import {
-        QCard,
-        QCardTitle,
-        QCardMain,
-        QTransition
+        QCard, //+
+        QCardTitle, //+
+        QCardMain, //+
+        QTransition //+
     } from 'quasar'
 
     export default {
@@ -184,6 +184,9 @@
 
             }
 
+        },
+        beforeCreate(){
+          this.$emit('isGrpNe',1)
         },
         created() {
           this.Initial()

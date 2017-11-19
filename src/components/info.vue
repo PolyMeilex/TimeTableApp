@@ -82,17 +82,17 @@
 
 <script>
     import {
-        QCard,
-        QCardTitle,
-        QCardMain,
-        QCardMedia,
-        QCardActions,
-        QCardSeparator,
-        QTransition,
-        QList,
-        QListHeader,
-        QItem,
-        QItemMain
+        QCard, //+
+        QCardTitle, //+
+        QCardMain, //+
+        QCardMedia, //+
+        //QCardActions, //-
+        //QCardSeparator, //-
+        QTransition, //+
+        QList, //+
+        QListHeader, //+
+        QItem, //+
+        QItemMain //+
     } from 'quasar'
 
     export default {
@@ -103,8 +103,8 @@
             QCardTitle,
             QCardMain,
             QCardMedia,
-            QCardActions,
-            QCardSeparator,
+            //QCardActions,
+            //QCardSeparator,
             QTransition,
             QList,
             QListHeader,
@@ -118,6 +118,9 @@
         },
         methods: {
 
+        },
+        beforeCreate(){
+          this.$emit('isGrpNe',0)
         },
         created() {
 

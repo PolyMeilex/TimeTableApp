@@ -47,11 +47,11 @@
 
 <script>
     import {
-        QCard,
-        QCardTitle,
-        QCardMain,
-        QCardMedia,
-        QCardSeparator,
+        QCard, //+
+        QCardTitle, //+
+        QCardMain, //+
+        //QCardMedia, //-
+        //QCardSeparator, //+
         QTransition
     } from 'quasar'
 
@@ -62,8 +62,8 @@
             QCard,
             QCardTitle,
             QCardMain,
-            QCardMedia,
-            QCardSeparator,
+          //  QCardMedia,
+          //  QCardSeparator,
             QTransition
         },
         data() {
@@ -198,6 +198,9 @@
         },
         created() {
           this.Initial()
+        },
+        beforeCreate(){
+          this.$emit('isGrpNe',1)
         }
 
     }
