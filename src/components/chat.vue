@@ -180,6 +180,18 @@
           sendMSG(name,mes,img){
             var startNew = {"Name":name,"Mes":mes,"img":img};
             Ref.push(startNew);
+
+
+              Ref.limitToFirst(1).once('value', function(snapshot) {
+                  for(var key in snapshot.val()){
+                      Ref.child(key).remove();
+                  }
+                });
+
+
+
+
+
           },
           scrol(){
             document.body.scrollTop = document.body.scrollHeight
@@ -190,6 +202,7 @@
           RefD: Ref
         },
         created() {
+
           if (this.UserD!=null) {
             this.photoURL = this.UserD.photoURL;
             this.DispName = this.UserD.displayName;
