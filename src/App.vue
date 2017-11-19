@@ -58,7 +58,7 @@
 
         <!-- <router-view :GrpDis="grp"/> -->
 
-        <component :GrpDis="grp" :is="page"></component>
+        <component :GrpDis="grp" :is="page" :UserD="UserD" @LogInMain="LogInMain"></component>
 
 
 
@@ -121,7 +121,7 @@ export default {
   data () {
     return {
       grp: 1,
-      FName:"-",
+      UserD:null,
       page: Hello,
       BtnColour1: "primary",
       BtnColour2: "",
@@ -168,44 +168,47 @@ export default {
     },
     launch (url) {
       openURL(url)
+    },
+
+    AlertLogin(){
+
+      Alert.create({
+        enter: 'zoomInDown',
+        leave: 'zoomOut',
+        color: 'positive',
+        icon: 'wifi',
+        html: `Zalogowano:`+ this.UserD.displayName,
+        position: 'bottom',
+        actions: [
+          {
+            label: 'Zamknij',
+            handler() {}
+          }
+        ]
+      })
+
+
+    },
+
+    LogInMain(){
+
+      var provider = new firebase.auth.FacebookAuthProvider();
+
+      provider.addScope('public_profile');
+
+      firebase.auth().signInWithPopup(provider).then(function(result) {}).catch(function(error) {console.log(error);});
+
     }
+
   },
   beforeCreate() {
-    // firebase.auth().getRedirectResult().then(function(result) {
-    //     if (result.credential) {
-    //       // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-    //       var token = result.credential.accessToken;
-    //
-    //     }
-    //     // The signed-in user info.
-    //
-    //     var user = result.user;
-    //     if (user!=null) {
-    //       this.FName = user;
-    //
-    //       Alert.create({
-    //         enter: 'zoomInDown',
-    //         leave: 'zoomOut',
-    //         color: 'positive',
-    //         icon: 'wifi',
-    //         html: `Zalogowano: `,
-    //         position: 'bottom',
-    //         actions: [
-    //           {
-    //             label: 'Zamknij',
-    //             handler() {}
-    //           }
-    //         ]
-    //       })
-    //
-    //     }
-    //
-    //   }.bind(this)).catch(function(error) {});
 
+    firebase.auth().onAuthStateChanged(firebaseUser => {
 
+      this.UserD = firebaseUser
 
-
-
+      this.AlertLogin()
+    });
 
 
 
