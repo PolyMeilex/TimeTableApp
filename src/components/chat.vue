@@ -53,7 +53,7 @@
             :name="message.Name"
             :avatar="message.img"
             :text="[message.Mes]"
-            stamp="4 minutes ago"
+            stamp="- minut temu"
             v-for="message in RefF"
           />
         </QCardMain>
