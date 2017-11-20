@@ -138,7 +138,6 @@
 
     export default {
         name: 'index',
-        props:['FName'],
         components: {
             QCard,
             QCardTitle,
@@ -162,16 +161,17 @@
         data() {
             return {
                 show: true,
-                DispName: this.FName.displayName,
-                photoURL: this.FName.photoURL,
+                DispName: null,
+                photoURL: null,
                 RefD: "",
-                SendMes:""
+                SendMes:"",
+                UserD: null
             }
         },
         watch: {
-          FName: function () {
-            this.photoURL = this.FName.photoURL;
-            this.DispName = this.FName.displayName;
+          UserD: function () {
+            this.photoURL = this.UserD.photoURL;
+            this.DispName = this.UserD.displayName;
           },
           RefD: function () {
             this.scrol()
@@ -179,7 +179,38 @@
         },
         methods: {
           login(){
-              firebase.auth().signInWithRedirect(provider);
+            //  firebase.auth().signInWithRedirect(provider);
+
+
+            firebase.auth().signInWithPopup(provider).then(function(result) {
+                console.log("start");
+
+                var token = result.credential.accessToken;
+                // The signed-in user info.
+                var user = result.user;
+
+
+                this.UserD = user;
+                console.log("end");
+                // this.FName = result.user;
+
+                // this.photoURL = this.FName.photoURL;
+                // this.DispName = this.FName.displayName;
+
+
+
+              }.bind(this)).catch(function(error) {
+                console.log(error);
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                // The email of the user's account used.
+                var email = error.email;
+                // The firebase.auth.AuthCredential type that was used.
+                var credential = error.credential;
+                // ...
+              });
+
           },
           sendMSG(name,mes,img){
             var startNew = {"Name":name,"Mes":mes,"img":img};
