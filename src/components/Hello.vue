@@ -154,7 +154,6 @@
 
                 }
 
-                  console.log(jsonPlanyGRP[0]);
 
                 //var Plan1 = require('../plany/plany.js');
                 //var Plan2 = require('../plany/plany2.js');

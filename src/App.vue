@@ -16,7 +16,7 @@
 
         <q-toolbar-title>
           Plan Lekcji
-          <div slot="subtitle">v3.0.5</div>
+          <div slot="subtitle">v3.0.6</div>
         </q-toolbar-title>
 
         <q-transition appear enter="fadeIn" leave="fadeOut">
@@ -95,9 +95,10 @@ import {
   QItem, //+
   QItemSide, //+
   QItemMain, //+
-  Alert, //+
+  Alert, //-
   //QInput, //-
-  QTransition
+  QTransition, //+
+  Toast //+
 } from 'quasar'
 
 import Hello from "./components/Hello.vue"
@@ -127,9 +128,10 @@ export default {
     mainA1,
     infoC,
     chat,
-    Alert,
+    //Alert,
   //QInput,
-    QTransition
+    QTransition,
+    Toast
   },
   data () {
     return {
@@ -183,20 +185,34 @@ export default {
 
     AlertLogin(){
 
-      Alert.create({
-        enter: 'bounceInUp',
-        leave: 'fadeOut',
-        color: 'positive',
-        icon: 'wifi',
+      Toast.create({
         html: `Zalogowano:`+ this.UserD.displayName,
-        position: 'bottom',
-        actions: [
-          {
-            label: 'Zamknij',
-            handler() {}
+        icon: 'wifi',
+        timeout: 2000,
+        color: '#fff',
+        bgColor: '#21ba45',
+        button: {
+          label: 'Zamknij',
+          handler () {
+            // Specify what to do when button is clicked/tapped
           }
-        ]
+        }
       })
+
+      // Alert.create({
+      //   enter: 'bounceInUp',
+      //   leave: 'fadeOut',
+      //   color: 'positive',
+      //   icon: 'wifi',
+      //   html: `Zalogowano:`+ this.UserD.displayName,
+      //   position: 'bottom',
+      //   actions: [
+      //     {
+      //       label: 'Zamknij',
+      //       handler() {}
+      //     }
+      //   ]
+      // })
 
 
     },
@@ -218,9 +234,12 @@ export default {
 
       this.UserD = firebaseUser
 
-      if (this.UserD.displayName!=null) {
-        this.AlertLogin()
+      if (this.UserD!=null) {
+        if (this.UserD.displayName!=null) {
+          this.AlertLogin()
+        }
       }
+
 
     });
 

@@ -55,6 +55,7 @@
             :text="[message.Mes]"
             stamp="- minut temu"
             v-for="message in RefF"
+            :key="message.name"
           />
         </QCardMain>
 
