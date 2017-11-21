@@ -112,25 +112,60 @@
 
             RequirePlan: function(day) {
 
-              // var jsonPlany1 =
-              // [
-              //   require( "../plany/planPon1.json")
-              // ]
-              //
-              // console.log(jsonPlany1[0]);
 
+              var jsonPlanyGRP = []
 
+              switch (day) {
+                case 1:
+                  jsonPlanyGRP =
+                  [
+                    require( "../plany/1_1.json"),
+                    require( "../plany/1_2.json")
+                  ]
+                  break;
+                case 2:
+                  jsonPlanyGRP =
+                  [
+                    require( "../plany/2_1.json"),
+                    require( "../plany/2_2.json")
+                  ]
+                  break;
+                case 3:
+                  jsonPlanyGRP =
+                  [
+                    require( "../plany/3_1.json"),
+                    require( "../plany/3_2.json")
+                  ]
+                  break;
+                case 4:
+                  jsonPlanyGRP =
+                  [
+                    require( "../plany/4_1.json"),
+                    require( "../plany/4_2.json")
+                  ]
+                  break;
+                case 5:
+                  jsonPlanyGRP =
+                  [
+                    require( "../plany/5_1.json"),
+                    require( "../plany/5_2.json")
+                  ]
+                  break;
 
-                var Plan1 = require('../plany/plany.js');
-                var Plan2 = require('../plany/plany2.js');
+                }
+
+                  console.log(jsonPlanyGRP[0]);
+
+                //var Plan1 = require('../plany/plany.js');
+                //var Plan2 = require('../plany/plany2.js');
                 var dzwonkiLek = require('../plany/dzwonki.js');
 
                 this.MDzwonki = dzwonkiLek
 
                 if (this.GrpDis == 1) {
-                    this.MPlan = Plan1[day - 1];
+                    this.MPlan = jsonPlanyGRP[0];
                 } else if (this.GrpDis == 2) {
-                    this.MPlan = Plan2[day - 1];
+                    this.MPlan = jsonPlanyGRP[1];
                 }
 
             },
