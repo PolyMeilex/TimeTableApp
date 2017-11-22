@@ -16,7 +16,7 @@
 
         <q-toolbar-title>
           Plan Lekcji
-          <div slot="subtitle">v3.0.6</div>
+          <div slot="subtitle">v3.0.7</div>
         </q-toolbar-title>
 
         <q-transition appear enter="fadeIn" leave="fadeOut">
@@ -36,7 +36,10 @@
         </q-transition>
 
 
+
       </q-toolbar>
+
+      <div id="ProgresBar"></div>
 
       <div slot="left">
         <q-list no-border link inset-separator>
@@ -252,16 +255,15 @@ export default {
 }
 </script>
 
-<style lang="stylus">
-.logo-container
-  width 255px
-  height 242px
-  perspective 800px
-  position absolute
-  top 50%
-  left 50%
-  transform translateX(-50%) translateY(-50%)
-.logo
-  position absolute
-  transform-style preserve-3d
+<style>
+#ProgresBar{
+  display: block;
+  width: 0%;
+  max-width: 100%;
+  height: 2px;
+  background-color: #027be3;
+  transition: width 2s;
+  position: fixed;
+  top: 50px;
+}
 </style>

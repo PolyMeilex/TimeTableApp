@@ -51,7 +51,8 @@
                 DzwonekLek: [],
                 MPlan: [],
                 MDzwonki: [],
-                AktualnaL: 0
+                AktualnaL: 0,
+                Mse:null
             }
         },
         watch: {
@@ -110,13 +111,38 @@
                 }
             },
 
+            ProgresLog(h,m){
+              var MseObj = this.Mse;
+
+              var Sh = MseObj.s[0];
+              var Sm = MseObj.s[1];
+
+              var Eh = (MseObj.e[0]-Sh)*60;
+              var Em = MseObj.e[1]-Sm;
+              var Ef = Eh+Em
+
+              var Th = (h-Sh)*60;
+              var Tm = m-Sm;
+              var Tf = Th+Tm;
+
+              var Proc = Tf/Ef * 100
+
+
+
+              setTimeout(function () { document.getElementById('ProgresBar').style.width = Proc+"%"; },100)
+
+
+            },
+
             RequirePlan: function(day) {
 
 
               var jsonPlanyGRP = []
+              var Se = [];
 
               switch (day) {
                 case 1:
+                  Se = [{s:[8,0],e:[14,20]},{s:[8,0],e:[15,15]}];
                   jsonPlanyGRP =
                   [
                     require( "../plany/1_1.json"),
@@ -124,6 +150,7 @@
                   ]
                   break;
                 case 2:
+                  Se = [{s:[8,55],e:[14,20]},{s:[8,55],e:[14,20]}];
                   jsonPlanyGRP =
                   [
                     require( "../plany/2_1.json"),
@@ -131,6 +158,7 @@
                   ]
                   break;
                 case 3:
+                  Se = [{s:[8,0],e:[15,15]},{s:[8,0],e:[15,15]}];
                   jsonPlanyGRP =
                   [
                     require( "../plany/3_1.json"),
@@ -138,6 +166,7 @@
                   ]
                   break;
                 case 4:
+                  Se = [{s:[8,0],e:[15,15]},{s:[8,0],e:[14,20]}];
                   jsonPlanyGRP =
                   [
                     require( "../plany/4_1.json"),
@@ -145,6 +174,7 @@
                   ]
                   break;
                 case 5:
+                  Se = [{s:[8,0],e:[13,20]},{s:[8,0],e:[13,20]}];
                   jsonPlanyGRP =
                   [
                     require( "../plany/5_1.json"),
@@ -162,8 +192,10 @@
                 this.MDzwonki = dzwonkiLek
 
                 if (this.GrpDis == 1) {
+                    this.Mse= Se[0];
                     this.MPlan = jsonPlanyGRP[0];
                 } else if (this.GrpDis == 2) {
+                    this.Mse= Se[1];
                     this.MPlan = jsonPlanyGRP[1];
                 }
 
@@ -200,6 +232,8 @@
               var m = getDate.m
               var day = getDate.day
               this.RequirePlan(day)
+
+              this.ProgresLog(h,m)
 
               if (h==8) {var me = 45-Ofset;var x1 = 1;var x2 = 2;
                 this.PrintPlan(m,me,x1,x2,day,h);
