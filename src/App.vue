@@ -193,7 +193,8 @@ export default {
         icon: 'wifi',
         timeout: 2000,
         color: '#fff',
-        bgColor: '#21ba45',
+        bgColor: '#333',
+        //bgColor: '#21ba45',
         button: {
           label: 'Zamknij',
           handler () {
