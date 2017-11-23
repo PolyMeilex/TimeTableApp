@@ -174,18 +174,17 @@
             this.$emit('LogInMain')
           },
           sendMSG(name,mes,img){
-            var startNew = {"Name":name,"Mes":mes,"img":img};
-            Ref.push(startNew);
 
+            if (mes.split("").length<500) {
+              var startNew = {"Name":name,"Mes":mes,"img":img};
+              Ref.push(startNew);
 
               Ref.limitToFirst(1).once('value', function(snapshot) {
                   for(var key in snapshot.val()){
                       Ref.child(key).remove();
                   }
-                });
-
-
-
+              });
+            }
 
 
           },
