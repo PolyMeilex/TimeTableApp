@@ -265,5 +265,6 @@ export default {
   transition: width 2s;
   position: fixed;
   top: 50px;
+  z-index: 999;
 }
 </style>
