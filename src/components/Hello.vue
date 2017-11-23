@@ -17,7 +17,7 @@
 
       <q-card-main>
         <b>Sala: </b>{{SalaLek}}
-        <p class="text-faded">Dzwonek: {{DzwonekLek}}</p>
+        <p class="text-faded">Dzwonek: {{DzwonekLek}} |--| {{MtD}}</p>
       </q-card-main>
 
     </q-card>
@@ -76,6 +76,7 @@
                 SalaLekNext: "-",
                 MPlan: "",
                 MDzwonki: "",
+                MtD: "-",
                 Mse:null
             }
         },
@@ -214,10 +215,17 @@
                     }
                 }
 
+
                 if (day!= 6 & day!=0) {
                   this.NazwaLek = plan[TimeTest(m, me, x1, x2)].Name;
                   this.SalaLek = plan[TimeTest(m, me, x1, x2)].Sal;
                   this.DzwonekLek = dzwonkiLek[TimeTest(m, me, x1, x2)].dzwon;
+
+
+                  if (me-m>0) {
+                    this.MtD = me-m
+                  }
+
 
                   if (h != 15) {
                       this.NazwaLekNext = plan[TimeTest(m, me, x1, x2) + 1].Name;
