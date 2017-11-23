@@ -69,7 +69,7 @@
 
 <q-toolbar slot="footer" color="dark" v-if="DispName!=null">
  <q-toolbar-title>
-   <q-input v-model="SendMes" inverted float-label="Message" :after="[{icon: 'arrow_forward', content: true,
+   <q-input v-model="SendMes" v-on:keyup.13="sendMSG(DispName,SendMes,photoURL)" inverted float-label="Message" :after="[{icon: 'arrow_forward', content: true,
      handler () {
 
        sendMSG(DispName,SendMes,photoURL)
