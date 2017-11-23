@@ -16,7 +16,7 @@
 
         <q-toolbar-title>
           Plan Lekcji
-          <div slot="subtitle">v3.0.7</div>
+          <div slot="subtitle">v3.0.8</div>
         </q-toolbar-title>
 
         <q-transition appear enter="fadeIn" leave="fadeOut">
