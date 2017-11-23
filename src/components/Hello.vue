@@ -17,7 +17,7 @@
 
       <q-card-main>
         <b>Sala: </b>{{SalaLek}}
-        <p class="text-faded">Dzwonek: {{DzwonekLek}} |--| {{MtD}}</p>
+        <p class="text-faded">Dzwonek: {{DzwonekLek}} |--| {{MtD}}min</p>
       </q-card-main>
 
     </q-card>
