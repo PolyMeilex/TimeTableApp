@@ -16,7 +16,7 @@
 
         <q-toolbar-title>
           Plan Lekcji
-          <div slot="subtitle">v3.0.9</div>
+          <div slot="subtitle">v3.1.0</div>
         </q-toolbar-title>
 
         <q-transition appear enter="fadeIn" leave="fadeOut">
@@ -34,7 +34,7 @@
           </q-btn>
 
         </q-transition>
-        
+
 
 
 
@@ -102,7 +102,8 @@ import {
   Alert, //-
   //QInput, //-
   QTransition, //+
-  Toast //+
+  Toast, //+
+  Events
 } from 'quasar'
 
 import Hello from "./components/Hello.vue"
@@ -111,6 +112,21 @@ import infoC from "./components/info.vue"
 import chat from "./components/chat.vue"
 
 import firebase from 'firebase'
+
+
+
+var TimesLoaded = 0;
+
+Events.$on('app:visibility', state => {
+
+  if (state=="visible" & TimesLoaded > 0) {
+    location.reload();
+  }
+
+  TimesLoaded++;
+
+})
+
 
 // var Firebase = require('firebase')
 // console.log(Firebase);
@@ -165,6 +181,9 @@ export default {
         this.BtnColour2 = "primary"
         this.BtnColour1 = ""
       }
+
+      localStorage.setItem("grpStorage", grp);
+      //localStorage.getItem("grpStorage")
     },
     testFc(l,p){
 
@@ -251,7 +270,16 @@ export default {
 
 
   },
-  beforeDestroy () {
+  created(){
+
+    try {
+      var grp = localStorage.getItem("grpStorage")
+      this.SetColour(grp)
+    }
+    catch (e)
+    {
+
+    }
 
   }
 }
