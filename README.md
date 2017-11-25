@@ -1,19 +1,5 @@
-# Quasar PWA App
-
-> A Quasar PWA project
-
-## Build Setup
-
-``` bash
-# install dependencies
-$ npm install
-
-# serve with hot reload at localhost:8081
-$ quasar dev
-
-# build for production with minification
-$ quasar build
-
-# lint code
-$ quasar lint
-```
+# Time Table App
+### Its simply automaticly display current lesson and with one is next
+Alsow it can display full time table and highlight current lesson, it has small chatroom for users,
+and it can display flew difrent timetables based on user settings.
+[![N|Solid](https://polymagic.github.io/ps.png)]()
