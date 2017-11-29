@@ -166,6 +166,7 @@
             this.scrol();
           },
           RefD: function () {
+            window.navigator.vibrate(200);
             this.scrol()
           }
         },
