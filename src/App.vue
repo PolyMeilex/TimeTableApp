@@ -115,17 +115,17 @@ import firebase from 'firebase'
 
 
 
-// var TimesLoaded = 0;
-//
-// Events.$on('app:visibility', state => {
-//
-//   if (state=="visible" & TimesLoaded > 0) {
-//     location.reload();
-//   }
-//
-//   TimesLoaded++;
-//
-// })
+var TimesLoaded = 0;
+
+Events.$on('app:visibility', state => {
+
+  if (state=="visible" & TimesLoaded > 0) {
+    location.reload();
+  }
+
+  TimesLoaded++;
+
+})
 
 
 // var Firebase = require('firebase')
