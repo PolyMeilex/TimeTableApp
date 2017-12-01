@@ -16,7 +16,7 @@
 
         <q-toolbar-title>
           Plan Lekcji
-          <div slot="subtitle">v3.0.8</div>
+          <div slot="subtitle">v3.1.0</div>
         </q-toolbar-title>
 
         <q-transition appear enter="fadeIn" leave="fadeOut">
@@ -34,6 +34,7 @@
           </q-btn>
 
         </q-transition>
+
 
 
 
@@ -101,7 +102,8 @@ import {
   Alert, //-
   //QInput, //-
   QTransition, //+
-  Toast //+
+  Toast, //+
+  Events
 } from 'quasar'
 
 import Hello from "./components/Hello.vue"
@@ -110,6 +112,21 @@ import infoC from "./components/info.vue"
 import chat from "./components/chat.vue"
 
 import firebase from 'firebase'
+
+
+
+// var TimesLoaded = 0;
+//
+// Events.$on('app:visibility', state => {
+//
+//   if (state=="visible" & TimesLoaded > 0) {
+//     location.reload();
+//   }
+//
+//   TimesLoaded++;
+//
+// })
+
 
 // var Firebase = require('firebase')
 // console.log(Firebase);
@@ -164,6 +181,8 @@ export default {
         this.BtnColour2 = "primary"
         this.BtnColour1 = ""
       }
+      localStorage.setItem("grpStorage", grp);
+      //localStorage.getItem("grpStorage")
     },
     testFc(l,p){
 
@@ -203,22 +222,6 @@ export default {
         }
       })
 
-      // Alert.create({
-      //   enter: 'bounceInUp',
-      //   leave: 'fadeOut',
-      //   color: 'positive',
-      //   icon: 'wifi',
-      //   html: `Zalogowano:`+ this.UserD.displayName,
-      //   position: 'bottom',
-      //   actions: [
-      //     {
-      //       label: 'Zamknij',
-      //       handler() {}
-      //     }
-      //   ]
-      // })
-
-
     },
 
     LogInMain(){
@@ -250,7 +253,20 @@ export default {
 
 
   },
-  beforeDestroy () {
+  created(){
+
+
+      var grp = localStorage.getItem("grpStorage")
+
+
+      if (grp == "null") {
+        this.SetColour(1);
+      }
+      else if(grp != null) {
+        this.SetColour(grp);
+      }
+
+
 
   }
 }
