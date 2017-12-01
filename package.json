@@ -1,8 +1,8 @@
 {
-  "name": "timetable-app",
+  "name": "quasar-app",
   "version": "0.0.1",
-  "description": "A timetable App",
-  "author": "Poly",
+  "description": "A Quasar App",
+  "author": "Your Name",
   "scripts": {
     "start": "quasar dev",
     "clean": "node build/script.clean.js",
