@@ -16,7 +16,7 @@
 
         <q-toolbar-title>
           Plan Lekcji
-          <div slot="subtitle">v3.1.0</div>
+          <div slot="subtitle">v3.2.0</div>
         </q-toolbar-title>
 
         <q-transition appear enter="fadeIn" leave="fadeOut">
@@ -254,20 +254,13 @@ export default {
 
   },
   created(){
-
-
       var grp = localStorage.getItem("grpStorage")
-
-
       if (grp == "null") {
         this.SetColour(1);
       }
       else if(grp != null) {
         this.SetColour(grp);
       }
-
-
-
   }
 }
 </script>

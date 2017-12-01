@@ -1,5 +1,13 @@
 <template>
   <div>
+    <q-tabs color="grey-10">
+      <q-tab :alert="DayData==1" :default="DayData==1" slot="title" name="tab-1" v-on:click="DayData=1">Po</q-tab>
+      <q-tab :alert="DayData==2" :default="DayData==2" slot="title" name="tab-2" v-on:click="DayData=2">Wt</q-tab>
+      <q-tab :alert="DayData==3" :default="DayData==3" slot="title" name="tab-3" v-on:click="DayData=3">Śr</q-tab>
+      <q-tab :alert="DayData==4" :default="DayData==4" slot="title" name="tab-4" v-on:click="DayData=4">Cz</q-tab>
+      <q-tab :alert="DayData==5" :default="DayData==5" slot="title" name="tab-5" v-on:click="DayData=5">Pi</q-tab>
+    </q-tabs>
+
     <q-transition
  appear
  enter="zoomInDown"
@@ -33,7 +41,10 @@
         QCard, //+
         QCardTitle, //+
         QCardMain, //+
-        QTransition //+
+        QTransition, //+
+        QTabs, //+
+        QTab //, //+
+        // QTabPane //-
     } from 'quasar'
 
     export default {
@@ -43,7 +54,10 @@
             QCard,
             QCardTitle,
             QCardMain,
-            QTransition
+            QTransition,
+            QTabs,
+            QTab //,
+            // QTabPane
         },
         data() {
             return {
@@ -52,12 +66,17 @@
                 MPlan: [],
                 MDzwonki: [],
                 AktualnaL: 0,
-                Mse:null
+                Mse:null,
+                DayData: 1
             }
         },
         watch: {
           GrpDis: function () {
             this.grpTogle()
+          },
+          DayData: function () {
+            this.grpTogle_Manual()
+            this.RequirePlan(this.DayData)
           }
         },
         methods: {
@@ -97,12 +116,24 @@
             setTimeout(function () { this.fadeOFF() }.bind(this), 200)
             },
 
+            fadeOFF_Manual: function() {
+              this.show = true;
+            },
+
+            grpTogle_Manual: function() {
+            this.show = false;
+
+            setTimeout(function () { this.fadeOFF_Manual() }.bind(this), 200)
+            },
+
 
             getDate: function() {
                 var d = new Date()
                 var h = d.getHours()
                 var m = d.getMinutes()
                 var day = d.getDay()
+
+                this.DayData = day;
 
                 return {
                     h,
@@ -230,7 +261,7 @@
               var getDate = this.getDate()
               var h = getDate.h
               var m = getDate.m
-              var day = getDate.day
+              var day = this.DayData
               this.RequirePlan(day)
 
               this.ProgresLog(h,m)
