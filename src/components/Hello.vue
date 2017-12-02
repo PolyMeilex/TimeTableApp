@@ -1,12 +1,12 @@
 <template>
   <div>
     <q-transition
- appear
- enter="zoomInDown"
- leave="zoomOut"
+    appear
+    name="test"
+    mode="out-in"
 >
 
-       <div v-show="show">
+       <div :key="trans">
     <q-card color="dark">
 
       <q-card-title>
@@ -78,28 +78,17 @@
                 MPlan: "",
                 MDzwonki: "",
                 MtD: "-",
-                Mse:null
+                Mse:null,
+                trans: false
             }
         },
         watch: {
           GrpDis: function () {
-
-            this.grpTogle()
+            this.Initial()
+            this.trans = !this.trans;
           }
         },
         methods: {
-            fadeOFF: function() {
-              this.show = true;
-              this.Initial()
-            },
-
-            grpTogle: function() {
-            this.show = false;
-
-            setTimeout(function () { this.fadeOFF() }.bind(this), 200)
-            },
-
-
             getDate: function() {
                 var d = new Date()
                 var h = d.getHours()

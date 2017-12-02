@@ -83,6 +83,15 @@
 
 </template>
 
+<style>
+    .test-enter-active, .test-leave-active {
+    transition: opacity .5s
+    }
+    .test-enter, .test-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0
+    }
+</style>
+
 <script>
 
 
