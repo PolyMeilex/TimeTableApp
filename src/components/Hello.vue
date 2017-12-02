@@ -181,24 +181,27 @@
             },
 
             ProgresLog(h,m){
-              var MseObj = this.Mse;
 
-              var Sh = MseObj.s[0];
-              var Sm = MseObj.s[1];
+              try {
+                var MseObj = this.Mse;
 
-              var Eh = (MseObj.e[0]-Sh)*60;
-              var Em = MseObj.e[1]-Sm;
-              var Ef = Eh+Em
+                var Sh = MseObj.s[0];
+                var Sm = MseObj.s[1];
 
-              var Th = (h-Sh)*60;
-              var Tm = m-Sm;
-              var Tf = Th+Tm;
+                var Eh = (MseObj.e[0]-Sh)*60;
+                var Em = MseObj.e[1]-Sm;
+                var Ef = Eh+Em
 
-              var Proc = Tf/Ef * 100
+                var Th = (h-Sh)*60;
+                var Tm = m-Sm;
+                var Tf = Th+Tm;
 
+                var Proc = Tf/Ef * 100
+                setTimeout(function () { document.getElementById('ProgresBar').style.width = Proc+"%"; },100)
+              }
+              catch (e) {
+              }
 
-
-              setTimeout(function () { document.getElementById('ProgresBar').style.width = Proc+"%"; },100)
 
 
             },

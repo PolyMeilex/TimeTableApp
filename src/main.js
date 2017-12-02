@@ -27,6 +27,8 @@ import 'quasar-extras/animate/zoomOut.css'
 import 'quasar-extras/animate/fadeIn.css'
 import 'quasar-extras/animate/fadeOut.css'
 
+// import 'quasar-extras/animate/jello.css'
+
 import 'quasar-extras/animate/bounceInUp.css'
 
 

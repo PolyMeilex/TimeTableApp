@@ -1,40 +1,54 @@
 <template>
   <div>
-    <q-tabs color="grey-10">
-      <q-tab :alert="DayData==1" :default="DayData==1" slot="title" name="tab-1" v-on:click="DayData=1">Po</q-tab>
-      <q-tab :alert="DayData==2" :default="DayData==2" slot="title" name="tab-2" v-on:click="DayData=2">Wt</q-tab>
-      <q-tab :alert="DayData==3" :default="DayData==3" slot="title" name="tab-3" v-on:click="DayData=3">Śr</q-tab>
-      <q-tab :alert="DayData==4" :default="DayData==4" slot="title" name="tab-4" v-on:click="DayData=4">Cz</q-tab>
-      <q-tab :alert="DayData==5" :default="DayData==5" slot="title" name="tab-5" v-on:click="DayData=5">Pi</q-tab>
+    <q-tabs color="grey-10" v-model="selectedTab">
+      <q-tab :alert="DayData==1" :default="DayData==1" slot="title" name="1">Po</q-tab>
+      <q-tab :alert="DayData==2" :default="DayData==2" slot="title" name="2">Wt</q-tab>
+      <q-tab :alert="DayData==3" :default="DayData==3" slot="title" name="3">Śr</q-tab>
+      <q-tab :alert="DayData==4" :default="DayData==4" slot="title" name="4">Cz</q-tab>
+      <q-tab :alert="DayData==5" :default="DayData==5" slot="title" name="5">Pi</q-tab>
     </q-tabs>
 
+
+
+
+<div v-touch-swipe.horizontal="SwipeHandler">
+
+
+
     <q-transition
- appear
- enter="zoomInDown"
- leave="zoomOut"
+    appear
+    name="test"
+    mode="out-in"
 >
 
-    <div v-show="show">
+    <div :key="trans" >
       <q-card :color="PrimaryCheck(MPlan.indexOf(lek))" v-for="lek in MPlan" :key="lek.Id">
         <q-card-title>
           {{lek.Name}}
         </q-card-title>
-
-
         <q-card-main>
           <b>Sala: </b>{{lek.Sal}}
 
           <p :class="FadedTextCheck(MPlan.indexOf(lek))">Dzwonek: {{DzCheck(MPlan.indexOf(lek))}}</p>
         </q-card-main>
-
       </q-card>
     </div>
 
-</q-transition>
 
+  </q-transition>
+</div>
   </div>
 
 </template>
+
+<style>
+    .test-enter-active, .test-leave-active {
+    transition: opacity .5s
+    }
+    .test-enter, .test-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0
+    }
+</style>
 
 <script>
     import {
@@ -43,11 +57,15 @@
         QCardMain, //+
         QTransition, //+
         QTabs, //+
-        QTab //, //+
+        QTab, //+
+        TouchSwipe
         // QTabPane //-
     } from 'quasar'
 
     export default {
+        directives:{
+          TouchSwipe
+        },
         name: 'index',
         props:['GrpDis'],
         components: {
@@ -67,19 +85,44 @@
                 MDzwonki: [],
                 AktualnaL: 0,
                 Mse:null,
-                DayData: 1
+                DayData: 1,
+                selectedTab: "1",
+                trans: false
             }
         },
         watch: {
+          selectedTab: function() {
+            console.log(this.selectedTab);
+
+            this.RequirePlan(Number(this.selectedTab))
+
+            this.trans = !this.trans;
+          },
           GrpDis: function () {
             this.grpTogle()
+            this.trans = !this.trans;
           },
           DayData: function () {
-            this.grpTogle_Manual()
-            this.RequirePlan(this.DayData)
+
           }
         },
         methods: {
+            SwipeHandler(obj){
+              var direction = obj.direction
+
+
+                if (direction == "right" & Number(this.selectedTab) < 5) {
+                  var num = Number(this.selectedTab) + 1
+
+                  this.selectedTab = num.toString()
+                }
+                else if (direction == "left" & Number(this.selectedTab) > 1) {
+                  var num = Number(this.selectedTab) - 1
+                  this.selectedTab = num.toString()
+                }
+
+
+            },
             FadedTextCheck(i){
               if (i==this.AktualnaL) {
                 return {'text-faded':false}
@@ -105,35 +148,25 @@
                 return "-"
               }
             },
-            fadeOFF: function() {
-              this.show = true;
-              this.Initial()
-            },
-
             grpTogle: function() {
-            this.show = false;
-
-            setTimeout(function () { this.fadeOFF() }.bind(this), 200)
+                  this.RequirePlan(Number(this.selectedTab))
             },
-
-            fadeOFF_Manual: function() {
-              this.show = true;
-            },
-
-            grpTogle_Manual: function() {
-            this.show = false;
-
-            setTimeout(function () { this.fadeOFF_Manual() }.bind(this), 200)
-            },
-
-
             getDate: function() {
                 var d = new Date()
                 var h = d.getHours()
                 var m = d.getMinutes()
                 var day = d.getDay()
 
-                this.DayData = day;
+                if (day!=6 & day!=7 & day!=0) {
+                  this.DayData = day;
+                  this.selectedTab = this.DayData.toString();
+                }
+                else {
+                  this.DayData = 1;
+                  this.selectedTab = this.DayData.toString();
+                }
+
+
 
                 return {
                     h,
@@ -143,31 +176,29 @@
             },
 
             ProgresLog(h,m){
-              var MseObj = this.Mse;
+              try {
+                var MseObj = this.Mse;
 
-              var Sh = MseObj.s[0];
-              var Sm = MseObj.s[1];
+                var Sh = MseObj.s[0];
+                var Sm = MseObj.s[1];
 
-              var Eh = (MseObj.e[0]-Sh)*60;
-              var Em = MseObj.e[1]-Sm;
-              var Ef = Eh+Em
+                var Eh = (MseObj.e[0]-Sh)*60;
+                var Em = MseObj.e[1]-Sm;
+                var Ef = Eh+Em
 
-              var Th = (h-Sh)*60;
-              var Tm = m-Sm;
-              var Tf = Th+Tm;
+                var Th = (h-Sh)*60;
+                var Tm = m-Sm;
+                var Tf = Th+Tm;
 
-              var Proc = Tf/Ef * 100
-
-
-
-              setTimeout(function () { document.getElementById('ProgresBar').style.width = Proc+"%"; },100)
-
+                var Proc = Tf/Ef * 100
+                setTimeout(function () { document.getElementById('ProgresBar').style.width = Proc+"%"; },100)
+              }
+              catch (e) {
+              }
 
             },
 
             RequirePlan: function(day) {
-
-
               var jsonPlanyGRP = []
               var Se = [];
 
@@ -214,10 +245,6 @@
                   break;
 
                 }
-
-
-                //var Plan1 = require('../plany/plany.js');
-                //var Plan2 = require('../plany/plany2.js');
                 var dzwonkiLek = require('../plany/dzwonki.js');
 
                 this.MDzwonki = dzwonkiLek
@@ -229,15 +256,10 @@
                     this.Mse= Se[1];
                     this.MPlan = jsonPlanyGRP[1];
                 }
-
-
             },
             PrintPlan: function(m, me, x1, x2, day, h) {
-
                 var plan = this.MPlan;
                 var dzwonkiLek = this.MDzwonki;
-
-
 
                 function TimeTest(m, me, x1, x2) {
                     if (m < me) {
@@ -248,12 +270,6 @@
                 }
 
                 this.AktualnaL = TimeTest(m, me, x1, x2)
-                // console.log(this.AktualnaL);
-
-                // this.NazwaLek = plan[TimeTest(m, me, x1, x2)].Name;
-                // this.SalaLek = plan[TimeTest(m, me, x1, x2)].Sal;
-                // this.DzwonekLek = dzwonkiLek[TimeTest(m, me, x1, x2)].dzwon;
-
 
             },
             Initial(){
@@ -262,8 +278,8 @@
               var h = getDate.h
               var m = getDate.m
               var day = this.DayData
-              this.RequirePlan(day)
 
+              this.RequirePlan(day)
               this.ProgresLog(h,m)
 
               if (h==8) {var me = 45-Ofset;var x1 = 1;var x2 = 2;
@@ -290,8 +306,6 @@
               else if(h==15){var me = 15-Ofset; var x1 = 8; var x2 = 8;
                 this.PrintPlan(m,me,x1,x2,day,h);
               }
-
-
             }
 
         },
