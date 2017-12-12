@@ -82,49 +82,49 @@
 
 <script>
     import {
-        QCard, //+
-        QCardTitle, //+
-        QCardMain, //+
-        QCardMedia, //+
-        //QCardActions, //-
-        //QCardSeparator, //-
-        QTransition, //+
-        QList, //+
-        QListHeader, //+
-        QItem, //+
-        QItemMain //+
+      QCard, // +
+      QCardTitle, // +
+      QCardMain, // +
+      QCardMedia, // +
+      // QCardActions, //-
+      // QCardSeparator, //-
+      QTransition, // +
+      QList, // +
+      QListHeader, // +
+      QItem, // +
+      QItemMain // +
     } from 'quasar'
 
     export default {
-        name: 'index',
-        props:['GrpDis'],
-        components: {
-            QCard,
-            QCardTitle,
-            QCardMain,
-            QCardMedia,
-            //QCardActions,
-            //QCardSeparator,
-            QTransition,
-            QList,
-            QListHeader,
-            QItem,
-            QItemMain
-        },
-        data() {
-            return {
-                show: true,
-            }
-        },
-        methods: {
-
-        },
-        beforeCreate(){
-          this.$emit('isGrpNe',0)
-        },
-        created() {
-
+      name: 'index',
+      props: ['GrpDis'],
+      components: {
+        QCard,
+        QCardTitle,
+        QCardMain,
+        QCardMedia,
+        // QCardActions,
+        // QCardSeparator,
+        QTransition,
+        QList,
+        QListHeader,
+        QItem,
+        QItemMain
+      },
+      data () {
+        return {
+          show: true
         }
+      },
+      methods: {
+
+      },
+      beforeCreate () {
+        this.$emit('isGrpNe', 0)
+      },
+      created () {
+
+      }
 
     }
 </script>

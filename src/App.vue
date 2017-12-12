@@ -94,35 +94,31 @@
 
 <script>
 
-
-
 import {
 //  openURL,
-  QLayout, //+
-  QToolbar, //+
-  QToolbarTitle, //+
-  QBtn, //+
-  QIcon, //+
-  QList, //+
-  QListHeader, //+
-  QItem, //+
-  QItemSide, //+
-  QItemMain, //+
-  Alert, //-
-  //QInput, //-
-  QTransition, //+
-  Toast, //+
-  Events
+  QLayout, // +
+  QToolbar, // +
+  QToolbarTitle, // +
+  QBtn, // +
+  QIcon, // +
+  QList, // +
+  QListHeader, // +
+  QItem, // +
+  QItemSide, // +
+  QItemMain, // +
+  // Alert, // -
+  // QInput, //-
+  QTransition, // +
+  Toast // +
+  // Events
 } from 'quasar'
 
-import Hello from "./components/Hello.vue"
-import mainA1 from "./components/mainA1.vue"
-import infoC from "./components/info.vue"
-import chat from "./components/chat.vue"
+import Hello from './components/Hello.vue'
+import mainA1 from './components/mainA1.vue'
+import infoC from './components/info.vue'
+import chat from './components/chat.vue'
 
 import firebase from 'firebase'
-
-
 
 // var TimesLoaded = 0;
 //
@@ -135,7 +131,6 @@ import firebase from 'firebase'
 //   TimesLoaded++;
 //
 // })
-
 
 // var Firebase = require('firebase')
 // console.log(Firebase);
@@ -157,20 +152,20 @@ export default {
     mainA1,
     infoC,
     chat,
-    //Alert,
-  //QInput,
+    // Alert,
+    // QInput,
     QTransition,
     Toast
   },
   data () {
     return {
       grp: 1,
-      isGrpNe:1,
-      UserD:null,
+      isGrpNe: 1,
+      UserD: null,
       page: Hello,
-      BtnColour1: "primary",
-      BtnColour2: "",
-      SendMes:""
+      BtnColour1: 'primary',
+      BtnColour2: '',
+      SendMes: ''
     }
   },
   computed: {
@@ -180,49 +175,46 @@ export default {
     // onDoubleTap(){
     //   console.log("left");
     // },
-    SetColour(grp){
-      this.grp=grp
-      if (grp==1) {
-        this.BtnColour1 = "primary"
-        this.BtnColour2 = ""
+    SetColour (grp) {
+      this.grp = grp
+      if (grp == 1) {
+        this.BtnColour1 = 'primary'
+        this.BtnColour2 = ''
       }
-      else if (grp==2){
-        this.BtnColour2 = "primary"
-        this.BtnColour1 = ""
+      else if (grp == 2) {
+        this.BtnColour2 = 'primary'
+        this.BtnColour1 = ''
       }
-      localStorage.setItem("grpStorage", grp);
-      //localStorage.getItem("grpStorage")
+      localStorage.setItem('grpStorage', grp)
+      // localStorage.getItem("grpStorage")
     },
-    testFc(l,p){
-
+    testFc (l, p) {
       switch (p) {
         case 1:
           this.page = Hello
-          break;
+          break
         case 2:
           this.page = mainA1
-          break;
+          break
         case 3:
           this.page = infoC
-          break;
+          break
         case 4:
-            this.page = chat
-          break;
+          this.page = chat
+          break
       }
 
-
-     l.toggleLeft()
+      l.toggleLeft()
     },
 
-    AlertLogin(){
-
+    AlertLogin () {
       Toast.create({
-        html: `Zalogowano:`+ this.UserD.displayName,
+        html: `Zalogowano:` + this.UserD.displayName,
         icon: 'wifi',
         timeout: 2000,
         color: '#fff',
         bgColor: '#333',
-        //bgColor: '#21ba45',
+        // bgColor: '#21ba45',
         button: {
           label: 'Zamknij',
           handler () {
@@ -230,46 +222,36 @@ export default {
           }
         }
       })
-
     },
 
-    LogInMain(){
+    LogInMain () {
+      var provider = new firebase.auth.FacebookAuthProvider()
 
-      var provider = new firebase.auth.FacebookAuthProvider();
+      provider.addScope('public_profile')
 
-      provider.addScope('public_profile');
-
-      firebase.auth().signInWithPopup(provider).then(function(result) {}).catch(function(error) {console.log(error);});
-
+      firebase.auth().signInWithPopup(provider).then(function (result) {}).catch(function (error) { console.log(error) })
     }
 
   },
-  beforeCreate() {
-
+  beforeCreate () {
     firebase.auth().onAuthStateChanged(firebaseUser => {
-
       this.UserD = firebaseUser
 
-      if (this.UserD!=null) {
-        if (this.UserD.displayName!=null) {
+      if (this.UserD != null) {
+        if (this.UserD.displayName != null) {
           this.AlertLogin()
         }
       }
-
-
-    });
-
-
-
+    })
   },
-  created(){
-      var grp = localStorage.getItem("grpStorage")
-      if (grp == "null") {
-        this.SetColour(1);
-      }
-      else if(grp != null) {
-        this.SetColour(grp);
-      }
+  created () {
+    var grp = localStorage.getItem('grpStorage')
+    if (grp == 'null') {
+      this.SetColour(1)
+    }
+    else if (grp != null) {
+      this.SetColour(grp)
+    }
   }
 }
 </script>

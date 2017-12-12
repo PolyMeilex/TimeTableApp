@@ -14,12 +14,9 @@ import Vue from 'vue'
 import Quasar from 'quasar'
 // import router from './router'
 
-
-
 import VueFire from 'vuefire'
 
 Vue.use(VueFire)
-
 
 import 'quasar-extras/animate/zoomInDown.css'
 import 'quasar-extras/animate/zoomOut.css'
@@ -27,10 +24,9 @@ import 'quasar-extras/animate/zoomOut.css'
 import 'quasar-extras/animate/fadeIn.css'
 import 'quasar-extras/animate/fadeOut.css'
 
-// import 'quasar-extras/animate/jello.css'
+import 'quasar-extras/animate/jello.css'
 
 import 'quasar-extras/animate/bounceInUp.css'
-
 
 // import VueResource from 'vue-resource'
 // Vue.use(VueResource)
