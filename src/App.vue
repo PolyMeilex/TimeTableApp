@@ -61,10 +61,10 @@
             <q-item-main label="Informacje" sublabel="Krótki Opis Projektu" />
           </q-item>
 
-          <q-item @click="testFc($refs.layout,4)">
+          <!-- <q-item @click="testFc($refs.layout,4)">
             <q-item-side icon="warning" />
             <q-item-main label="Experimental" sublabel="Chat" />
-          </q-item>
+          </q-item> -->
 
         </q-list>
       </div>
