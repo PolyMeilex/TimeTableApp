@@ -118,7 +118,7 @@ import mainA1 from './components/mainA1.vue'
 import infoC from './components/info.vue'
 import chat from './components/chat.vue'
 
-import firebase from 'firebase'
+// import firebase from 'firebase'
 
 // var TimesLoaded = 0;
 //
@@ -208,41 +208,41 @@ export default {
     },
 
     AlertLogin () {
-      Toast.create({
-        html: `Zalogowano:` + this.UserD.displayName,
-        icon: 'wifi',
-        timeout: 2000,
-        color: '#fff',
-        bgColor: '#333',
-        // bgColor: '#21ba45',
-        button: {
-          label: 'Zamknij',
-          handler () {
-            // Specify what to do when button is clicked/tapped
-          }
-        }
-      })
+      // Toast.create({
+      //   html: `Zalogowano:` + this.UserD.displayName,
+      //   icon: 'wifi',
+      //   timeout: 2000,
+      //   color: '#fff',
+      //   bgColor: '#333',
+      //   // bgColor: '#21ba45',
+      //   button: {
+      //     label: 'Zamknij',
+      //     handler () {
+      //       // Specify what to do when button is clicked/tapped
+      //     }
+      //   }
+      // })
     },
 
     LogInMain () {
-      var provider = new firebase.auth.FacebookAuthProvider()
-
-      provider.addScope('public_profile')
-
-      firebase.auth().signInWithPopup(provider).then(function (result) {}).catch(function (error) { console.log(error) })
+      // var provider = new firebase.auth.FacebookAuthProvider()
+      //
+      // provider.addScope('public_profile')
+      //
+      // firebase.auth().signInWithPopup(provider).then(function (result) {}).catch(function (error) { console.log(error) })
     }
 
   },
   beforeCreate () {
-    firebase.auth().onAuthStateChanged(firebaseUser => {
-      this.UserD = firebaseUser
-
-      if (this.UserD != null) {
-        if (this.UserD.displayName != null) {
-          this.AlertLogin()
-        }
-      }
-    })
+    // firebase.auth().onAuthStateChanged(firebaseUser => {
+    //   this.UserD = firebaseUser
+    //
+    //   if (this.UserD != null) {
+    //     if (this.UserD.displayName != null) {
+    //       this.AlertLogin()
+    //     }
+    //   }
+    // })
   },
   created () {
     var grp = localStorage.getItem('grpStorage')

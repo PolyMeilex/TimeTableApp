@@ -11,9 +11,8 @@
 
       <q-card-title>
         {{NazwaLek}}
-        <div slot="right" class="row items-center">{{MtD}}min</div>
+        <div slot="right" class="row items-center">{{MtD}}min {{StD}}s</div>
       </q-card-title>
-
       <!-- <q-card-separator /> -->
 
       <q-card-main>
@@ -78,13 +77,15 @@
           MPlan: '',
           MDzwonki: '',
           MtD: '-',
+          StD: '-',
           Mse: null,
-          trans: false
+          trans: false,
+          destroyed: true
         }
       },
       watch: {
         GrpDis: function () {
-          this.Initial()
+          // this.Initial()
           this.trans = !this.trans
         }
       },
@@ -93,11 +94,19 @@
           var d = new Date()
           var h = d.getHours()
           var m = d.getMinutes()
+          var s = d.getSeconds()
+          if (this.MtD != '-') {
+            this.StD = 60 - s
+          }
+          else {
+            this.StD = '-'
+          }
           var day = d.getDay()
 
           return {
             h,
             m,
+            s,
             day
           }
         },
@@ -205,8 +214,17 @@
             this.SalaLek = plan[TimeTest(m, me, x1, x2)].Sal
             this.DzwonekLek = dzwonkiLek[TimeTest(m, me, x1, x2)].dzwon
 
-            if (me - m > 0) {
-              this.MtD = me - m
+            var Mtd = me - m
+            if (Mtd > 0) {
+              if (Mtd != 1) {
+                this.MtD = Mtd
+              }
+              else if (Mtd == 1) {
+                this.MtD = 0
+              }
+            }
+            else {
+              this.MtD = '-'
             }
 
             if (h != 15) {
@@ -257,15 +275,23 @@
             var me = 15 - Ofset; var x1 = 8; var x2 = 8
             this.PrintPlan(m, me, x1, x2, day, h)
           }
+
+          if (this.destroyed != true) {
+            setTimeout(this.Initial, 1000)
+          }
         }
 
       },
       created () {
+        this.destroyed = false
         this.Initial()
       },
       beforeCreate () {
         this.$emit('isGrpNe', 1)
+      },
+      destroyed () {
+        console.log('destroyed')
+        this.destroyed = true
       }
-
     }
 </script>
