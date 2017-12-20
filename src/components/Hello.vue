@@ -133,7 +133,7 @@
                   ]
               break
             case 3:
-              Se = [{s: [8, 0], e: [15, 15]}, {s: [8, 0], e: [15, 15]}]
+              Se = [{s: [8, 0], e: [14, 20]}, {s: [8, 0], e: [14, 20]}]
               jsonPlanyGRP =
                   [
                     require('../plany/3_1.json'),
@@ -149,7 +149,7 @@
                   ]
               break
             case 5:
-              Se = [{s: [8, 0], e: [13, 20]}, {s: [8, 0], e: [13, 20]}]
+              Se = [{s: [8, 0], e: [14, 20]}, {s: [8, 0], e: [14, 20]}]
               jsonPlanyGRP =
                   [
                     require('../plany/5_1.json'),
