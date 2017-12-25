@@ -11,7 +11,14 @@
 
       <q-card-title>
         {{NazwaLek}}
-        <div slot="right" class="row items-center">{{MtD}}min {{StD}}s</div>
+        <div slot="right" class="row items-center">
+
+          <!-- <div id="odometer" class="odometer">{{MtD}}</div>min: -->
+          <div id="odometerM" class="odometer"></div>min
+          <div id="odometerS" class="odometer"></div>s
+
+
+        </div>
       </q-card-title>
       <!-- <q-card-separator /> -->
 
@@ -46,6 +53,9 @@
 </template>
 
 <script>
+
+    // import VueOdometer from 'v-odometer/src'
+
     import {
       QCard, // +
       QCardTitle, // +
@@ -87,6 +97,10 @@
         GrpDis: function () {
           // this.Initial()
           this.trans = !this.trans
+        },
+        StD: function() {
+          document.getElementById('odometerS').innerHTML = this.StD;
+          document.getElementById('odometerM').innerHTML = this.MtD;
         }
       },
       methods: {
