@@ -1,101 +1,98 @@
 <template>
-  <!-- Don't drop "q-app" class -->
-  <div id="q-app">
-    <q-layout
-      ref="layout"
-      view="lHh Lpr fff"
-      :left-class="{'bg-grey-2': true}"
-    >
-      <q-toolbar slot="header" color="dark">
-        <q-btn
-          flat
-          @click="$refs.layout.toggleLeft()"
-        >
-          <q-icon name="menu" />
+<!-- Don't drop "q-app" class -->
+<div id="q-app">
+  <q-layout ref="layout" view="lHh Lpr fff" :left-class="{'bg-grey-2': true}">
+    <q-toolbar slot="header" color="dark">
+      <q-btn flat @click="$refs.layout.toggleLeft()">
+        <q-icon name="menu" />
+      </q-btn>
+
+      <q-toolbar-title>
+        Plan Lekcji
+        <div slot="subtitle">v3.2.7</div>
+      </q-toolbar-title>
+
+      <q-transition appear enter="fadeIn" leave="fadeOut">
+
+        <q-btn flat @click="SetColour(1)" :color="BtnColour1" v-if="isGrpNe==1">
+          <q-icon name="bookmark" />1
         </q-btn>
 
-        <q-toolbar-title>
-          Plan Lekcji
-          <div slot="subtitle">v3.2.7</div>
-        </q-toolbar-title>
+      </q-transition>
 
-        <q-transition appear enter="fadeIn" leave="fadeOut">
+      <q-transition appear enter="fadeIn" leave="fadeOut">
 
-          <q-btn flat @click="SetColour(1)" :color="BtnColour1" v-if="isGrpNe==1">
-            <q-icon name="bookmark" />1
-          </q-btn>
+        <q-btn flat @click="SetColour(2)" :color="BtnColour2" v-if="isGrpNe==1">
+          <q-icon name="bookmark" />2
+        </q-btn>
 
-        </q-transition>
-
-        <q-transition appear enter="fadeIn" leave="fadeOut">
-
-          <q-btn flat @click="SetColour(2)" :color="BtnColour2" v-if="isGrpNe==1">
-            <q-icon name="bookmark" />2
-          </q-btn>
-
-        </q-transition>
+      </q-transition>
 
 
 
 
-      </q-toolbar>
+    </q-toolbar>
 
-      <div id="ProgresBar"></div>
+    <div id="ProgresBar"></div>
 
-      <div slot="left">
-        <q-list no-border link inset-separator>
-          <q-list-header>Menu</q-list-header>
+    <div slot="left">
+      <q-list no-border link inset-separator>
+        <q-list-header>Menu</q-list-header>
 
-          <q-item @click="testFc($refs.layout,1)">
-            <q-item-side icon="schedule" />
-            <q-item-main label="Bieżące Lekcje" sublabel="Aktualna i przyszła lekcja" />
-          </q-item>
+        <q-item @click="testFc($refs.layout,1)">
+          <q-item-side icon="schedule" />
+          <q-item-main label="Bieżące Lekcje" sublabel="Aktualna i przyszła lekcja" />
+        </q-item>
 
-          <q-item @click="testFc($refs.layout,2)">
-            <q-item-side icon="list" />
-            <q-item-main label="Pełen Plan" sublabel="Wyświetla Plan Całego Dnia" />
-          </q-item>
+        <q-item @click="testFc($refs.layout,2)">
+          <q-item-side icon="list" />
+          <q-item-main label="Pełen Plan" sublabel="Wyświetla Plan Całego Dnia" />
+        </q-item>
 
-          <q-item @click="testFc($refs.layout,3)">
-            <q-item-side icon="chat" />
-            <q-item-main label="Informacje" sublabel="Krótki Opis Projektu" />
-          </q-item>
+        <q-item @click="testFc($refs.layout,3)">
+          <q-item-side icon="chat" />
+          <q-item-main label="Informacje" sublabel="Krótki Opis Projektu" />
+        </q-item>
 
-          <!-- <q-item @click="testFc($refs.layout,4)">
+        <!-- <q-item @click="testFc($refs.layout,4)">
             <q-item-side icon="warning" />
             <q-item-main label="Experimental" sublabel="Chat" />
           </q-item> -->
 
-        </q-list>
-      </div>
+      </q-list>
+    </div>
 
 
 
-        <!-- <router-view :GrpDis="grp"/> -->
+    <!-- <router-view :GrpDis="grp"/> -->
 
-        <component :GrpDis="grp" :is="page" :UserD="UserD" @isGrpNe="isGrpNe=$event" @LogInMain="LogInMain"></component>
-
-
+    <component :GrpDis="grp" :is="page" :UserD="UserD" @isGrpNe="isGrpNe=$event"></component>
 
 
-    </q-layout>
-  </div>
 
+
+  </q-layout>
+</div>
 </template>
 
 <style>
-    .test-enter-active, .test-leave-active {
-    transition: opacity .5s
-    }
-    .test-enter, .test-leave-to /* .fade-leave-active below version 2.1.8 */ {
-    opacity: 0
-    }
+.test-enter-active,
+.test-leave-active {
+  transition: opacity .5s
+}
+
+.test-enter,
+.test-leave-to
+/* .fade-leave-active below version 2.1.8 */
+
+  {
+  opacity: 0
+}
 </style>
 
 <script>
-
 import {
-//  openURL,
+  //  openURL,
   QLayout, // +
   QToolbar, // +
   QToolbarTitle, // +
@@ -117,23 +114,6 @@ import Hello from './components/Hello.vue'
 import mainA1 from './components/mainA1.vue'
 import infoC from './components/info.vue'
 import chat from './components/chat.vue'
-
-// import firebase from 'firebase'
-
-// var TimesLoaded = 0;
-//
-// Events.$on('app:visibility', state => {
-//
-//   if (state=="visible" & TimesLoaded > 0) {
-//     location.reload();
-//   }
-//
-//   TimesLoaded++;
-//
-// })
-
-// var Firebase = require('firebase')
-// console.log(Firebase);
 
 export default {
   name: 'index',
@@ -157,7 +137,7 @@ export default {
     QTransition,
     Toast
   },
-  data () {
+  data() {
     return {
       grp: 1,
       isGrpNe: 1,
@@ -172,23 +152,18 @@ export default {
 
   },
   methods: {
-    // onDoubleTap(){
-    //   console.log("left");
-    // },
-    SetColour (grp) {
+    SetColour(grp) {
       this.grp = grp
       if (grp == 1) {
         this.BtnColour1 = 'primary'
         this.BtnColour2 = ''
-      }
-      else if (grp == 2) {
+      } else if (grp == 2) {
         this.BtnColour2 = 'primary'
         this.BtnColour1 = ''
       }
       localStorage.setItem('grpStorage', grp)
-      // localStorage.getItem("grpStorage")
     },
-    testFc (l, p) {
+    testFc(l, p) {
       switch (p) {
         case 1:
           this.page = Hello
@@ -206,58 +181,68 @@ export default {
 
       l.toggleLeft()
     },
-
-    AlertLogin () {
-      // Toast.create({
-      //   html: `Zalogowano:` + this.UserD.displayName,
-      //   icon: 'wifi',
-      //   timeout: 2000,
-      //   color: '#fff',
-      //   bgColor: '#333',
-      //   // bgColor: '#21ba45',
-      //   button: {
-      //     label: 'Zamknij',
-      //     handler () {
-      //       // Specify what to do when button is clicked/tapped
-      //     }
-      //   }
-      // })
-    },
-
-    LogInMain () {
-      // var provider = new firebase.auth.FacebookAuthProvider()
-      //
-      // provider.addScope('public_profile')
-      //
-      // firebase.auth().signInWithPopup(provider).then(function (result) {}).catch(function (error) { console.log(error) })
-    }
+  },
+  beforeCreate() {
 
   },
-  beforeCreate () {
-    // firebase.auth().onAuthStateChanged(firebaseUser => {
-    //   this.UserD = firebaseUser
-    //
-    //   if (this.UserD != null) {
-    //     if (this.UserD.displayName != null) {
-    //       this.AlertLogin()
-    //     }
-    //   }
-    // })
-  },
-  created () {
+  created() {
     var grp = localStorage.getItem('grpStorage')
     if (grp == 'null') {
       this.SetColour(1)
-    }
-    else if (grp != null) {
+    } else if (grp != null) {
       this.SetColour(grp)
     }
+
+
+    try {
+      var data = null;
+
+      var xhr = new XMLHttpRequest();
+      xhr.withCredentials = false;
+
+      xhr.addEventListener("readystatechange", function() {
+        if (this.readyState === 4) {
+
+          var JOBJ = JSON.parse(this.responseText);
+          // var JOBJ = string;
+
+          console.log(JOBJ);
+
+          JOBJ.forEach(function(elem) {
+            Toast.create({
+              html: "<b>Nr:</b>" + elem.NrLekcji + " <b>Sal:</b>" + elem.Sala + "<b>Opis:</b>" + elem.Opis,
+              icon: 'list',
+              timeout: 10000,
+              color: '#fff',
+              bgColor: '#333',
+              button: {
+                label: 'Zamknij',
+                handler() {
+                  // Specify what to do when button is clicked/tapped
+                }
+              }
+            })
+          });
+
+
+        }
+      });
+
+      xhr.open("GET", "http://ekonomik-api-ekonomik-api.7e14.starter-us-west-2.openshiftapps.com/");
+      xhr.setRequestHeader("cache-control", "no-cache");
+      xhr.setRequestHeader("postman-token", "9e5b7f5a-13d5-a3a1-e585-5fd7269128b9");
+
+      xhr.send(data);
+    } catch (e) {
+
+    }
+
   }
 }
 </script>
 
 <style>
-#ProgresBar{
+#ProgresBar {
   display: block;
   width: 0%;
   max-width: 100%;
