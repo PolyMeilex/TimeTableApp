@@ -9,7 +9,7 @@
 
       <q-toolbar-title>
         Plan Lekcji
-        <div slot="subtitle">v3.2.7</div>
+        <div slot="subtitle">v3.2.8</div>
       </q-toolbar-title>
 
       <q-transition appear enter="fadeIn" leave="fadeOut">
@@ -228,7 +228,7 @@ export default {
         }
       });
 
-      xhr.open("GET", "http://ekonomik-api-ekonomik-api.7e14.starter-us-west-2.openshiftapps.com/");
+      xhr.open("GET", "https://ekonomik-api-ekonomik-api.7e14.starter-us-west-2.openshiftapps.com/");
       xhr.setRequestHeader("cache-control", "no-cache");
       xhr.setRequestHeader("postman-token", "9e5b7f5a-13d5-a3a1-e585-5fd7269128b9");
 
