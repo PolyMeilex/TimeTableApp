@@ -54,10 +54,10 @@
           <q-item-main label="Informacje" sublabel="Krótki Opis Projektu" />
         </q-item>
 
-        <!-- <q-item @click="testFc($refs.layout,4)">
+        <q-item @click="testFc($refs.layout,4)">
             <q-item-side icon="warning" />
-            <q-item-main label="Experimental" sublabel="Chat" />
-          </q-item> -->
+            <q-item-main label="Experimental" sublabel="Zastępstwa" />
+          </q-item>
 
       </q-list>
     </div>
@@ -66,7 +66,7 @@
 
     <!-- <router-view :GrpDis="grp"/> -->
 
-    <component :GrpDis="grp" :is="page" :UserD="UserD" @isGrpNe="isGrpNe=$event"></component>
+    <component :GrpDis="grp" :ZastArray="ZastArray" :is="page" :UserD="UserD" @isGrpNe="isGrpNe=$event"></component>
 
 
 
@@ -114,6 +114,7 @@ import Hello from './components/Hello.vue'
 import mainA1 from './components/mainA1.vue'
 import infoC from './components/info.vue'
 import chat from './components/chat.vue'
+import zasts from './components/zasts.vue'
 
 export default {
   name: 'index',
@@ -131,7 +132,8 @@ export default {
     Hello,
     mainA1,
     infoC,
-    chat,
+    // chat,
+    zasts,
     // Alert,
     // QInput,
     QTransition,
@@ -145,7 +147,8 @@ export default {
       page: Hello,
       BtnColour1: 'primary',
       BtnColour2: '',
-      SendMes: ''
+      SendMes: '',
+      ZastArray:null
     }
   },
   computed: {
@@ -175,7 +178,7 @@ export default {
           this.page = infoC
           break
         case 4:
-          this.page = chat
+          this.page = zasts
           break
       }
 
@@ -199,11 +202,13 @@ export default {
 
       var xhr = new XMLHttpRequest();
       xhr.withCredentials = false;
+      var VueParent = this;
 
       xhr.addEventListener("readystatechange", function() {
         if (this.readyState === 4) {
 
           var JOBJ = JSON.parse(this.responseText);
+          VueParent.ZastArray = JOBJ;
           // var JOBJ = string;
 
           console.log(JOBJ);
