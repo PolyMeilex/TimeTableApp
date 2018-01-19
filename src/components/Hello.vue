@@ -134,47 +134,47 @@
               Se = [{s: [8, 0], e: [14, 20]}, {s: [8, 0], e: [15, 15]}]
               jsonPlanyGRP =
                   [
-                    require('../plany/1_1.json'),
-                    require('../plany/1_2.json')
+                    require('../Plany/1_1.json'),
+                    require('../Plany/1_2.json')
                   ]
               break
             case 2:
               Se = [{s: [8, 55], e: [14, 20]}, {s: [8, 55], e: [14, 20]}]
               jsonPlanyGRP =
                   [
-                    require('../plany/2_1.json'),
-                    require('../plany/2_2.json')
+                    require('../Plany/2_1.json'),
+                    require('../Plany/2_2.json')
                   ]
               break
             case 3:
               Se = [{s: [8, 0], e: [14, 20]}, {s: [8, 0], e: [14, 20]}]
               jsonPlanyGRP =
                   [
-                    require('../plany/3_1.json'),
-                    require('../plany/3_2.json')
+                    require('../Plany/3_1.json'),
+                    require('../Plany/3_2.json')
                   ]
               break
             case 4:
               Se = [{s: [8, 0], e: [15, 15]}, {s: [8, 0], e: [14, 20]}]
               jsonPlanyGRP =
                   [
-                    require('../plany/4_1.json'),
-                    require('../plany/4_2.json')
+                    require('../Plany/4_1.json'),
+                    require('../Plany/4_2.json')
                   ]
               break
             case 5:
               Se = [{s: [8, 0], e: [14, 20]}, {s: [8, 0], e: [14, 20]}]
               jsonPlanyGRP =
                   [
-                    require('../plany/5_1.json'),
-                    require('../plany/5_2.json')
+                    require('../Plany/5_1.json'),
+                    require('../Plany/5_2.json')
                   ]
               break
           }
 
-          // var Plan1 = require('../plany/plany.js');
-          // var Plan2 = require('../plany/plany2.js');
-          var dzwonkiLek = require('../plany/dzwonki.js')
+          // var Plan1 = require('../Plany/Plany.js');
+          // var Plan2 = require('../Plany/Plany2.js');
+          var dzwonkiLek = require('../Plany/dzwonki.js')
 
           this.MDzwonki = dzwonkiLek
 
