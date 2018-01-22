@@ -143,7 +143,7 @@ export default {
   },
   watch:{
     ZastArray: function() {
-      if (this.ZastArray[0].Opis != "Brak Zastępstw") {
+      if (this.ZastArray[0].dateTitle != "Brak Zastępstw") {
         Toast.create({
           html: "Wykryto Nowe Zastępstwa",
           icon: 'list',
@@ -182,7 +182,8 @@ export default {
     }
 
     try {
-      fetch('https://ekonomik-api-ekonomik-api.7e14.starter-us-west-2.openshiftapps.com/')
+      // fetch('https://ekonomik-api-ekonomik-api.7e14.starter-us-west-2.openshiftapps.com/')
+      fetch('http://127.0.0.1:8080')
       .then(response  => response.json())
       .then(response => this.ZastArray = response)
     } catch (e) {}

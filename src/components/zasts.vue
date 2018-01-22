@@ -4,20 +4,31 @@
 
     <div :key="trans">
 
-      <q-card color="dark" v-for="zas in ZastArray" :key="zas.NrLekcji">
+      <div v-for="info in ZastArray">
+        <q-card color="primary">
+          <q-card-title>
+            {{info.dateTitle}}
+          </q-card-title>
+        </q-card>
 
-        <q-card-title>
-          {{zas.Opis}}
-          <div slot="right" class="row items-center">{{zas.NrLekcji}}</div>
-        </q-card-title>
-        <!-- <q-card-separator /> -->
+        <q-card color="dark" v-for="zas in info.zast" :key="zas.NrLekcji">
 
-        <q-card-main>
-          <b>{{zas.Klasa}}</b>
-          <p class="text-faded">{{zas.Sala}}</p>
-        </q-card-main>
+          <q-card-title>
+            {{zas.Opis}}
+            <div slot="right" class="row items-center">{{zas.NrLekcji}}</div>
+          </q-card-title>
+          <!-- <q-card-separator /> -->
 
-      </q-card>
+          <q-card-main>
+            <b>{{zas.Klasa}}</b>
+            <p class="text-faded">{{zas.Sala}}</p>
+          </q-card-main>
+
+        </q-card>
+
+      </div>
+
+
 
     </div>
 
