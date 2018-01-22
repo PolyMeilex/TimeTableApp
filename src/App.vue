@@ -9,7 +9,7 @@
 
       <q-toolbar-title>
         Plan Lekcji
-        <div slot="subtitle">v3.2.8</div>
+        <div slot="subtitle">v3.3.0</div>
       </q-toolbar-title>
 
       <q-transition appear enter="fadeIn" leave="fadeOut">
@@ -39,37 +39,32 @@
       <q-list no-border link inset-separator>
         <q-list-header>Menu</q-list-header>
 
-        <q-item @click="testFc($refs.layout,1)">
+        <q-side-link item to="/">
           <q-item-side icon="schedule" />
           <q-item-main label="Bieżące Lekcje" sublabel="Aktualna i przyszła lekcja" />
-        </q-item>
+        </q-side-link>
 
-        <q-item @click="testFc($refs.layout,2)">
+        <q-side-link item to="/mainA1">
           <q-item-side icon="list" />
           <q-item-main label="Pełen Plan" sublabel="Wyświetla Plan Całego Dnia" />
-        </q-item>
+        </q-side-link>
 
-        <q-item @click="testFc($refs.layout,3)">
+        <q-side-link item to="/info">
           <q-item-side icon="chat" />
           <q-item-main label="Informacje" sublabel="Krótki Opis Projektu" />
-        </q-item>
+        </q-side-link>
 
-        <q-item @click="testFc($refs.layout,4)">
-            <q-item-side icon="warning" />
-            <q-item-main label="Experimental" sublabel="Zastępstwa" />
-          </q-item>
+        <q-side-link item to="/zasts">
+          <q-item-side icon="warning" />
+          <q-item-main label="Experimental" sublabel="Zastępstwa" />
+        </q-side-link>
 
       </q-list>
     </div>
 
-
-
-    <!-- <router-view :GrpDis="grp"/> -->
-
-    <component :GrpDis="grp" :ZastArray="ZastArray" :is="page" :UserD="UserD" @isGrpNe="isGrpNe=$event"></component>
-
-
-
+    <q-transition appear name="test" mode="out-in">
+      <router-view :GrpDis="grp" :ZastArray="ZastArray" @isGrpNe="isGrpNe=$event"/>
+    </q-transition>
 
   </q-layout>
 </div>
@@ -83,8 +78,6 @@
 
 .test-enter,
 .test-leave-to
-/* .fade-leave-active below version 2.1.8 */
-
   {
   opacity: 0
 }
@@ -92,7 +85,7 @@
 
 <script>
 import {
-  //  openURL,
+  QSideLink,
   QLayout, // +
   QToolbar, // +
   QToolbarTitle, // +
@@ -113,12 +106,13 @@ import {
 import Hello from './components/Hello.vue'
 import mainA1 from './components/mainA1.vue'
 import infoC from './components/info.vue'
-import chat from './components/chat.vue'
+// import chat from './components/chat.vue'
 import zasts from './components/zasts.vue'
 
 export default {
   name: 'index',
   components: {
+    QSideLink,
     QLayout,
     QToolbar,
     QToolbarTitle,
@@ -129,13 +123,6 @@ export default {
     QItem,
     QItemSide,
     QItemMain,
-    Hello,
-    mainA1,
-    infoC,
-    // chat,
-    zasts,
-    // Alert,
-    // QInput,
     QTransition,
     Toast
   },
@@ -143,16 +130,29 @@ export default {
     return {
       grp: 1,
       isGrpNe: 1,
-      UserD: null,
-      page: Hello,
       BtnColour1: 'primary',
       BtnColour2: '',
-      SendMes: '',
       ZastArray:null
     }
   },
-  computed: {
-
+  watch:{
+    ZastArray: function() {
+      if (this.ZastArray[0].Opis != "Brak Zastępstw") {
+        Toast.create({
+          html: "Wykryto Nowe Zastępstwa",
+          icon: 'list',
+          timeout: 10000,
+          color: '#fff',
+          bgColor: '#333',
+          button: {
+            label: 'Otwórz',
+            handler:() => {
+              this.$router.push("/zasts")
+            }
+          }
+        })
+      }
+    }
   },
   methods: {
     SetColour(grp) {
@@ -165,28 +165,7 @@ export default {
         this.BtnColour1 = ''
       }
       localStorage.setItem('grpStorage', grp)
-    },
-    testFc(l, p) {
-      switch (p) {
-        case 1:
-          this.page = Hello
-          break
-        case 2:
-          this.page = mainA1
-          break
-        case 3:
-          this.page = infoC
-          break
-        case 4:
-          this.page = zasts
-          break
-      }
-
-      l.toggleLeft()
-    },
-  },
-  beforeCreate() {
-
+    }
   },
   created() {
     var grp = localStorage.getItem('grpStorage')
@@ -196,51 +175,11 @@ export default {
       this.SetColour(grp)
     }
 
-
     try {
-      var data = null;
-
-      var xhr = new XMLHttpRequest();
-      xhr.withCredentials = false;
-      var VueParent = this;
-
-      xhr.addEventListener("readystatechange", function() {
-        if (this.readyState === 4) {
-
-          var JOBJ = JSON.parse(this.responseText);
-          VueParent.ZastArray = JOBJ;
-          // var JOBJ = string;
-
-          console.log(JOBJ);
-
-          JOBJ.forEach(function(elem) {
-            Toast.create({
-              html: "<b>Nr:</b>" + elem.NrLekcji + " <b>Sal:</b>" + elem.Sala + "<b>Opis:</b>" + elem.Opis,
-              icon: 'list',
-              timeout: 10000,
-              color: '#fff',
-              bgColor: '#333',
-              button: {
-                label: 'Zamknij',
-                handler() {
-                  // Specify what to do when button is clicked/tapped
-                }
-              }
-            })
-          });
-
-
-        }
-      });
-
-      xhr.open("GET", "https://ekonomik-api-ekonomik-api.7e14.starter-us-west-2.openshiftapps.com/");
-      xhr.setRequestHeader("cache-control", "no-cache");
-      xhr.setRequestHeader("postman-token", "9e5b7f5a-13d5-a3a1-e585-5fd7269128b9");
-
-      xhr.send(data);
-    } catch (e) {
-
-    }
+      fetch('https://ekonomik-api-ekonomik-api.7e14.starter-us-west-2.openshiftapps.com/')
+      .then(response  => response.json())
+      .then(response => this.ZastArray = response)
+    } catch (e) {}
 
   }
 }

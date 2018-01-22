@@ -1,6 +1,6 @@
 <template>
 <div>
-  <q-transition appear name="test" mode="out-in">
+  <!-- <q-transition appear name="test" mode="out-in"> -->
 
     <div :key="trans">
 
@@ -21,7 +21,7 @@
 
     </div>
 
-  </q-transition>
+  <!-- </q-transition> -->
 
 </div>
 </template>

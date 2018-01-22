@@ -22,7 +22,7 @@
 >
 
     <div :key="trans" >
-      <q-card :color="PrimaryCheck(MPlan.indexOf(lek))" v-for="lek in MPlan" :key="lek.Id">
+      <q-card :color="PrimaryCheck(MPlan.indexOf(lek))" v-for="lek in MPlan" v-if="MPlan.indexOf(lek) != 0 & MPlan.indexOf(lek) != 9" :key="lek.Id">
         <q-card-title>
           {{lek.Name}}
         </q-card-title>
@@ -85,8 +85,6 @@
       },
       watch: {
         selectedTab: function () {
-          console.log(this.selectedTab)
-
           this.RequirePlan(Number(this.selectedTab))
 
           this.trans = !this.trans
@@ -103,13 +101,13 @@
         SwipeHandler (obj) {
           var direction = obj.direction
 
-          if (direction == 'right' & Number(this.selectedTab) < 5) {
-            var num = Number(this.selectedTab) + 1
+          if (direction == 'right' & Number(this.selectedTab) > 1 ) {
+            var num = Number(this.selectedTab) - 1
 
             this.selectedTab = num.toString()
           }
-          else if (direction == 'left' & Number(this.selectedTab) > 1) {
-            var num = Number(this.selectedTab) - 1
+          else if (direction == 'left' & Number(this.selectedTab) < 5) {
+            var num = Number(this.selectedTab) + 1
             this.selectedTab = num.toString()
           }
         },
@@ -142,8 +140,10 @@
         },
         getDate: function () {
           var d = new Date()
-          var h = d.getHours()
-          var m = d.getMinutes()
+          var h = 14
+          var m = 10
+          // var h = d.getHours()
+          // var m = d.getMinutes()
           var day = d.getDay()
 
           if (day != 6 & day != 7 & day != 0) {

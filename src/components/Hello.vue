@@ -1,7 +1,6 @@
 <template>
   <div>
     <q-transition
-    appear
     name="test"
     mode="out-in"
 >
@@ -12,11 +11,17 @@
       <q-card-title>
         {{NazwaLek}}
         <div slot="right" class="row items-center">
-
+          <q-btn flat small round color="faded" @click="OpenSettings">
+            <q-icon name="settings" />
+          </q-btn>
           <!-- <div id="odometer" class="odometer">{{MtD}}</div>min: -->
-          <div id="odometerM" class="odometer"></div>min
-          <div id="odometerS" class="odometer"></div>s
+          {{MtD}}min
+          {{StD}}s
 
+
+        </div>
+
+        <div slot="right" class="row items-center">
 
         </div>
       </q-card-title>
@@ -26,6 +31,9 @@
         <b>Sala: </b>{{SalaLek}}
         <p class="text-faded">Dzwonek: {{DzwonekLek}}</p>
       </q-card-main>
+
+
+
 
     </q-card>
 
@@ -43,6 +51,7 @@
       </q-card-main>
 
     </q-card>
+
 
     </div>
 
@@ -62,7 +71,11 @@
       QCardMain, // +
       // QCardMedia, //-
       // QCardSeparator, //+
-      QTransition
+      QTransition,
+      Dialog,
+      Alert,
+      QBtn,
+      QIcon
     } from 'quasar'
 
     export default {
@@ -74,7 +87,9 @@
         QCardMain,
         //  QCardMedia,
         //  QCardSeparator,
-        QTransition
+        QTransition,
+        QBtn,
+        QIcon
       },
       data () {
         return {
@@ -90,17 +105,25 @@
           StD: '-',
           Mse: null,
           trans: false,
-          destroyed: true
+          destroyed: true,
+          SecOffset: 0
         }
       },
       watch: {
-        GrpDis: function () {
-          // this.Initial()
-          this.trans = !this.trans
+        SecOffset () {
+          var LocalOffset = localStorage.getItem('LocalOffset')
+
+          if (LocalOffset != null) {
+            if (this.SecOffset != LocalOffset) {
+              localStorage.setItem('LocalOffset', this.SecOffset)
+            }
+          }
+          else{
+              localStorage.setItem('LocalOffset', this.SecOffset)
+          }
         },
-        StD: function() {
-          document.getElementById('odometerS').innerHTML = this.StD;
-          document.getElementById('odometerM').innerHTML = this.MtD;
+        GrpDis () {
+          this.trans = !this.trans
         }
       },
       methods: {
@@ -110,7 +133,12 @@
           var m = d.getMinutes()
           var s = d.getSeconds()
           if (this.MtD != '-') {
-            this.StD = 60 - s
+            if (this.MtD == 0) {
+              this.StD = 60 - s - this.SecOffset
+            }
+            else {
+              this.StD = 60 - s
+            }
           }
           else {
             this.StD = '-'
@@ -247,6 +275,62 @@
             }
           }
         },
+
+        OpenSettings () {
+          Dialog.create({
+            title: 'Kalibracja',
+            message: 'Wpisz ile sekund spóźnia się dzwonek',
+            form: {
+              offset: {
+                type: 'number',
+                label: 'Sekundy',
+                model: this.SecOffset,
+              }
+            },
+            buttons: [
+              'Cancel',
+              {
+                label: 'Pobierz',
+                handler: (data) => {
+                  fetch("https://planapp-f8adb.firebaseio.com/TimeOffset/.json")
+                  .then(response  => response.json())
+                  .then(response => {
+                    this.SecOffset = response
+                    let a1 = Alert.create({
+                      color: 'positive',
+                      position: 'right',
+                      enter: 'fadeIn',
+                      leave: 'fadeOut',
+                      html: "Ustawiono: "+this.SecOffset+"s"
+                    })
+
+                    setTimeout(function () {
+                      a1.dismiss()
+                    }, 2000);
+                  })
+                }
+              },
+              {
+                label: 'Ok',
+                handler: (data) => {
+                  this.SecOffset = data.offset;
+                  let a2 = Alert.create({
+                    color: 'positive',
+                    position: 'right',
+                    enter: 'fadeIn',
+                    leave: 'fadeOut',
+                    html: "Ustawiono: "+this.SecOffset+"s"
+                  })
+
+                  setTimeout(function () {
+                    a2.dismiss()
+                  }, 2000);
+                }
+              }
+            ]
+          })
+        },
+
         Initial () {
           var Ofset = 0
           var getDate = this.getDate()
@@ -257,36 +341,40 @@
 
           this.ProgresLog(h, m)
 
-          if (h == 8) {
-            var me = 45 - Ofset; var x1 = 1; var x2 = 2
+          if (h < 8) {
+            let me = 0; var x1 = 1; var x2 = 1
+            this.PrintPlan(m, me, x1, x2, day, h)
+          }
+          else if (h == 8) {
+            let me = 45 - Ofset; var x1 = 1; var x2 = 2
             this.PrintPlan(m, me, x1, x2, day, h)
           }
           else if (h == 9) {
-            var me = 40 - Ofset; var x1 = 2; var x2 = 3
+            let me = 40 - Ofset; var x1 = 2; var x2 = 3
             this.PrintPlan(m, me, x1, x2, day, h)
           }
           else if (h == 10) {
-            var me = 35 - Ofset; var x1 = 3; var x2 = 4
+            let me = 35 - Ofset; var x1 = 3; var x2 = 4
             this.PrintPlan(m, me, x1, x2, day, h)
           }
           else if (h == 11) {
-            var me = 30 - Ofset; var x1 = 4; var x2 = 5
+            let me = 30 - Ofset; var x1 = 4; var x2 = 5
             this.PrintPlan(m, me, x1, x2, day, h)
           }
           else if (h == 12) {
-            var me = 25 - Ofset; var x1 = 5; var x2 = 6
+            let me = 25 - Ofset; var x1 = 5; var x2 = 6
             this.PrintPlan(m, me, x1, x2, day, h)
           }
           else if (h == 13) {
-            var me = 20 - Ofset; var x1 = 6; var x2 = 7
+            let me = 20 - Ofset; var x1 = 6; var x2 = 7
             this.PrintPlan(m, me, x1, x2, day, h)
           }
           else if (h == 14) {
-            var me = 20 - Ofset; var x1 = 7; var x2 = 8
+            let me = 20 - Ofset; var x1 = 7; var x2 = 8
             this.PrintPlan(m, me, x1, x2, day, h)
           }
           else if (h == 15) {
-            var me = 15 - Ofset; var x1 = 8; var x2 = 8
+            let me = 15 - Ofset; var x1 = 8; var x2 = 8
             this.PrintPlan(m, me, x1, x2, day, h)
           }
 
@@ -298,13 +386,18 @@
       },
       created () {
         this.destroyed = false
+
+        let locOff = localStorage.getItem('LocalOffset');
+        if (locOff != null) {
+          this.SecOffset = locOff
+        }
+
         this.Initial()
       },
       beforeCreate () {
         this.$emit('isGrpNe', 1)
       },
       destroyed () {
-        console.log('destroyed')
         this.destroyed = true
       }
     }

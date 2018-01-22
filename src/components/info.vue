@@ -1,10 +1,10 @@
 <template>
   <div>
-    <q-transition
+    <!-- <q-transition
  appear
  enter="zoomInDown"
  leave="zoomOut"
->
+> -->
 
     <div v-show="show">
       <q-card  color="dark">
@@ -74,7 +74,7 @@
 
     </div>
 
-</q-transition>
+<!-- </q-transition> -->
 
   </div>
 
