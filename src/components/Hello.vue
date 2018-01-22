@@ -6,7 +6,7 @@
 >
 
        <div :key="trans">
-    <q-card color="dark">
+    <q-card color="dark" class="animated" :class="{shake: StD==0}">
 
       <q-card-title>
         {{NazwaLek}}
@@ -346,35 +346,35 @@
             this.PrintPlan(m, me, x1, x2, day, h)
           }
           else if (h == 8) {
-            let me = 45 - Ofset; var x1 = 1; var x2 = 2
+            let me = 45 - Ofset; let x1 = 1; let x2 = 2
             this.PrintPlan(m, me, x1, x2, day, h)
           }
           else if (h == 9) {
-            let me = 40 - Ofset; var x1 = 2; var x2 = 3
+            let me = 40 - Ofset; let x1 = 2; let x2 = 3
             this.PrintPlan(m, me, x1, x2, day, h)
           }
           else if (h == 10) {
-            let me = 35 - Ofset; var x1 = 3; var x2 = 4
+            let me = 35 - Ofset; let x1 = 3; let x2 = 4
             this.PrintPlan(m, me, x1, x2, day, h)
           }
           else if (h == 11) {
-            let me = 30 - Ofset; var x1 = 4; var x2 = 5
+            let me = 30 - Ofset; let x1 = 4; let x2 = 5
             this.PrintPlan(m, me, x1, x2, day, h)
           }
           else if (h == 12) {
-            let me = 25 - Ofset; var x1 = 5; var x2 = 6
+            let me = 25 - Ofset; let x1 = 5; let x2 = 6
             this.PrintPlan(m, me, x1, x2, day, h)
           }
           else if (h == 13) {
-            let me = 20 - Ofset; var x1 = 6; var x2 = 7
+            let me = 20 - Ofset; let x1 = 6; let x2 = 7
             this.PrintPlan(m, me, x1, x2, day, h)
           }
           else if (h == 14) {
-            let me = 20 - Ofset; var x1 = 7; var x2 = 8
+            let me = 20 - Ofset; let x1 = 7; let x2 = 8
             this.PrintPlan(m, me, x1, x2, day, h)
           }
           else if (h == 15) {
-            let me = 15 - Ofset; var x1 = 8; var x2 = 8
+            let me = 15 - Ofset; let x1 = 8; let x2 = 8
             this.PrintPlan(m, me, x1, x2, day, h)
           }
 
@@ -393,9 +393,6 @@
         }
 
         this.Initial()
-      },
-      beforeCreate () {
-        this.$emit('isGrpNe', 1)
       },
       destroyed () {
         this.destroyed = true

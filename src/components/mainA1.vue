@@ -140,10 +140,8 @@
         },
         getDate: function () {
           var d = new Date()
-          var h = 14
-          var m = 10
-          // var h = d.getHours()
-          // var m = d.getMinutes()
+          var h = d.getHours()
+          var m = d.getMinutes()
           var day = d.getDay()
 
           if (day != 6 & day != 7 & day != 0) {
@@ -302,9 +300,6 @@
           }
         }
 
-      },
-      beforeCreate () {
-        this.$emit('isGrpNe', 1)
       },
       created () {
         this.Initial()

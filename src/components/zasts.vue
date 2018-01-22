@@ -4,7 +4,7 @@
 
     <div :key="trans">
 
-      <q-card color="dark" v-for="zas in ZastArray">
+      <q-card color="dark" v-for="zas in ZastArray" :key="zas.NrLekcji">
 
         <q-card-title>
           {{zas.Opis}}

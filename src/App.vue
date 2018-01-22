@@ -63,7 +63,7 @@
     </div>
 
     <q-transition appear name="test" mode="out-in">
-      <router-view :GrpDis="grp" :ZastArray="ZastArray" @isGrpNe="isGrpNe=$event"/>
+      <router-view :GrpDis="grp" :ZastArray="ZastArray"/>
     </q-transition>
 
   </q-layout>
@@ -71,6 +71,12 @@
 </template>
 
 <style>
+
+.animated {
+  animation-duration: 1s;
+  animation-fill-mode: both;
+}
+
 .test-enter-active,
 .test-leave-active {
   transition: opacity .5s
