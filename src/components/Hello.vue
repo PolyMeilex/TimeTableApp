@@ -278,6 +278,9 @@
           if (auto==true) {
             localStorage.setItem('autoMode', true)
           }
+          else if (auto==false) {
+            localStorage.setItem('autoMode', false)
+          }
 
           fetch("https://planapp-f8adb.firebaseio.com/TimeOffset/.json")
           .then(response  => response.json())
@@ -327,6 +330,7 @@
               {
                 label: 'Ok',
                 handler: (data) => {
+                  localStorage.setItem('autoMode', false)
                   this.SecOffset = data.offset;
                   let a2 = Alert.create({
                     color: 'positive',
@@ -408,9 +412,8 @@
 
         this.Initial()
 
-
-        if (localStorage.getItem('autoMode')==true) {
-          this.FetOffset(false)
+        if (localStorage.getItem('autoMode')=='true') {
+          this.FetOffset(true)
         }
       },
       destroyed () {
