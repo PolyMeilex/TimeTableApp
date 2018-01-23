@@ -143,6 +143,21 @@ export default {
   },
   watch:{
     ZastArray: function() {
+
+      this.ZastArray.forEach(function(elem) {
+        function compare(a, b) {
+          if (a.NrLekcji < b.NrLekcji)
+            return -1;
+          if (a.NrLekcji > b.NrLekcji)
+            return 1;
+          return 0;
+        }
+        return elem.zast.sort(compare);
+      });
+      console.log(this.ZastArray);
+
+
+
       if (this.ZastArray[0].dateTitle != "Brak Zastępstw") {
         Toast.create({
           html: "Wykryto Nowe Zastępstwa",
