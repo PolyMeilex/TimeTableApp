@@ -63,8 +63,6 @@
 
 <script>
 
-    // import VueOdometer from 'v-odometer/src'
-
     import {
       QCard, // +
       QCardTitle, // +
@@ -276,6 +274,31 @@
           }
         },
 
+        FetOffset(auto){
+          if (auto==true) {
+            localStorage.setItem('autoMode', true)
+          }
+
+          fetch("https://planapp-f8adb.firebaseio.com/TimeOffset/.json")
+          .then(response  => response.json())
+          .then(response => {
+            this.SecOffset = response
+            let a1 = Alert.create({
+              color: 'positive',
+              position: 'right',
+              enter: 'fadeIn',
+              leave: 'fadeOut',
+              html: "Ustawiono: "+this.SecOffset+"s"
+            })
+
+            setTimeout(function () {
+              a1.dismiss()
+            }, 2000);
+          })
+
+
+        },
+
         OpenSettings () {
           Dialog.create({
             title: 'Kalibracja',
@@ -290,24 +313,15 @@
             buttons: [
               'Cancel',
               {
+                label: 'Auto',
+                handler: (data) => {
+                  this.FetOffset(true)
+                }
+              },
+              {
                 label: 'Pobierz',
                 handler: (data) => {
-                  fetch("https://planapp-f8adb.firebaseio.com/TimeOffset/.json")
-                  .then(response  => response.json())
-                  .then(response => {
-                    this.SecOffset = response
-                    let a1 = Alert.create({
-                      color: 'positive',
-                      position: 'right',
-                      enter: 'fadeIn',
-                      leave: 'fadeOut',
-                      html: "Ustawiono: "+this.SecOffset+"s"
-                    })
-
-                    setTimeout(function () {
-                      a1.dismiss()
-                    }, 2000);
-                  })
+                  this.FetOffset(false)
                 }
               },
               {
@@ -393,6 +407,11 @@
         }
 
         this.Initial()
+
+
+        if (localStorage.getItem('autoMode')==true) {
+          this.FetOffset(false)
+        }
       },
       destroyed () {
         this.destroyed = true
