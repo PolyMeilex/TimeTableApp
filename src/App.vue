@@ -182,8 +182,8 @@ export default {
     }
 
     try {
-      fetch('https://ekonomik-api-ekonomik-api.7e14.starter-us-west-2.openshiftapps.com/')
       // fetch('http://127.0.0.1:8080')
+      fetch('https://ekonomik-api-ekonomik-api.7e14.starter-us-west-2.openshiftapps.com/')
       .then(response  => response.json())
       .then(response => this.ZastArray = response)
     } catch (e) {}
