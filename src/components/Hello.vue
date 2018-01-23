@@ -286,17 +286,22 @@
           .then(response  => response.json())
           .then(response => {
             this.SecOffset = response
-            let a1 = Alert.create({
-              color: 'positive',
-              position: 'right',
-              enter: 'fadeIn',
-              leave: 'fadeOut',
-              html: "Ustawiono: "+this.SecOffset+"s"
-            })
 
-            setTimeout(function () {
-              a1.dismiss()
-            }, 2000);
+            if (auto==false) {
+              let a1 = Alert.create({
+                color: 'positive',
+                position: 'bottom-left',
+                enter: 'fadeIn',
+                leave: 'fadeOut',
+                html: "Ustawiono: "+this.SecOffset+"s"
+              })
+              setTimeout(function () {
+                a1.dismiss()
+              }, 2000);
+            }
+
+
+
           })
 
 
@@ -334,7 +339,7 @@
                   this.SecOffset = data.offset;
                   let a2 = Alert.create({
                     color: 'positive',
-                    position: 'right',
+                    position: 'bottom-left',
                     enter: 'fadeIn',
                     leave: 'fadeOut',
                     html: "Ustawiono: "+this.SecOffset+"s"
