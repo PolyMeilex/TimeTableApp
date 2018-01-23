@@ -9,7 +9,7 @@
 
       <q-toolbar-title>
         Plan Lekcji
-        <div slot="subtitle">v3.3.0</div>
+        <div slot="subtitle">v3.3.1</div>
       </q-toolbar-title>
 
       <q-transition appear enter="fadeIn" leave="fadeOut">
@@ -154,9 +154,6 @@ export default {
         }
         return elem.zast.sort(compare);
       });
-      console.log(this.ZastArray);
-
-
 
       if (this.ZastArray[0].dateTitle != "Brak Zastępstw") {
         Toast.create({

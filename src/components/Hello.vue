@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="overflow-x: hidden">
     <q-transition
     name="test"
     mode="out-in"

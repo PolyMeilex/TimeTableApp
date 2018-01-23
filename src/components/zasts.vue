@@ -15,13 +15,13 @@
 
           <q-card-title>
             {{zas.Opis}}
-            <div slot="right" class="row items-center">{{zas.NrLekcji}}</div>
+            <div slot="right" class="row items-center">nr.{{zas.NrLekcji}}</div>
           </q-card-title>
           <!-- <q-card-separator /> -->
 
           <q-card-main>
-            <b>{{zas.Klasa}}</b>
-            <p class="text-faded">{{zas.Sala}}</p>
+            Grp: <b>{{zas.Klasa}}</b>
+            <p class="text-faded">Sala: {{zas.Sala}}</p>
           </q-card-main>
 
         </q-card>
