@@ -22,6 +22,7 @@
           <q-card-main>
             Grp: <b>{{zas.Klasa}}</b>
             <p class="text-faded">Sala: {{zas.Sala}}</p>
+            <p class="text-faded">Nauczyciel: {{zas.Nauczyciel}}</p>
           </q-card-main>
 
         </q-card>
