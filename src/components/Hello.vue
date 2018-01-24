@@ -21,15 +21,21 @@
 
         </div>
 
-        <div slot="right" class="row items-center">
-
-        </div>
       </q-card-title>
       <!-- <q-card-separator /> -->
 
       <q-card-main>
         <b>Sala: </b>{{SalaLek}}
         <p class="text-faded">Dzwonek: {{DzwonekLek}}</p>
+
+        <q-collapsible class="bg-primary" icon="warning" label="Zastępstwo" v-if="getZastsFtd().Opis != null">
+          <div>
+                    <p><b>Opis:</b> {{getZastsFtd().Opis}}</p>
+                    <p><b>Sala:</b> {{getZastsFtd().Sala}}</p>
+                    <p><b>Grp:</b> {{getZastsFtd().Klasa}}</p>
+                    <p><b>Nauczyciel:</b> {{getZastsFtd().Nauczyciel}}</p>
+          </div>
+        </q-collapsible>
       </q-card-main>
 
 
@@ -73,12 +79,13 @@
       Dialog,
       Alert,
       QBtn,
-      QIcon
+      QIcon,
+      QCollapsible
     } from 'quasar'
 
     export default {
       name: 'index',
-      props: ['GrpDis'],
+      props: ['GrpDis','SortedByDayArray'],
       components: {
         QCard,
         QCardTitle,
@@ -87,7 +94,8 @@
         //  QCardSeparator,
         QTransition,
         QBtn,
-        QIcon
+        QIcon,
+        QCollapsible
       },
       data () {
         return {
@@ -97,6 +105,7 @@
           NazwaLekNext: '-',
           DzwonekLek: '-',
           SalaLekNext: '-',
+          NrLek: 0,
           MPlan: '',
           MDzwonki: '',
           MtD: '-',
@@ -125,7 +134,30 @@
         }
       },
       methods: {
-        getDate: function () {
+        getZastsFtd(){
+          function isItDay(element) {
+            let date = new Date();
+            let day = date.getDay();
+            return element.d == day;
+          }
+          let DayArray = this.SortedByDayArray.find(isItDay)
+
+
+          if (DayArray != null) {
+            let ZastArray = DayArray.e.zast;
+            let test = ZastArray.find((element) => {
+              return element.NrLekcji == this.NrLek;
+            })
+            return test;
+          }
+          else{
+            return {
+              Opis:null
+            }
+          }
+
+        },
+        getDate() {
           var d = new Date()
           var h = d.getHours()
           var m = d.getMinutes()
@@ -253,6 +285,7 @@
             this.NazwaLek = plan[TimeTest(m, me, x1, x2)].Name
             this.SalaLek = plan[TimeTest(m, me, x1, x2)].Sal
             this.DzwonekLek = dzwonkiLek[TimeTest(m, me, x1, x2)].dzwon
+            this.NrLek = TimeTest(m, me, x1, x2)
 
             var Mtd = me - m
             if (Mtd > 0) {
@@ -363,6 +396,8 @@
           this.RequirePlan(day)
 
           this.ProgresLog(h, m)
+
+          // this.getZastsFtd()
 
           if (h < 8) {
             let me = 0; var x1 = 1; var x2 = 1

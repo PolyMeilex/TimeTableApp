@@ -63,7 +63,7 @@
     </div>
 
     <q-transition appear name="test" mode="out-in">
-      <router-view :GrpDis="grp" :ZastArray="ZastArray"/>
+      <router-view :GrpDis="grp" :ZastArray="ZastArray" :SortedByDayArray="SortedByDayArray"/>
     </q-transition>
 
   </q-layout>
@@ -138,12 +138,12 @@ export default {
       isGrpNe: 1,
       BtnColour1: 'primary',
       BtnColour2: '',
-      ZastArray:null
+      ZastArray:null,
+      SortedByDayArray:[]
     }
   },
   watch:{
     ZastArray: function() {
-
       this.ZastArray.forEach(function(elem) {
         function compare(a, b) {
           if (a.NrLekcji < b.NrLekcji)
@@ -154,6 +154,25 @@ export default {
         }
         return elem.zast.sort(compare);
       });
+
+      this.ZastArray.forEach((elem) => {
+        let Splited = elem.dateTitle.replace( /^\D+/g, '');
+
+        if (Splited!='') {
+          let dateExtract = Splited.split('.');
+
+          if (dateExtract!=null) {
+            let year = 2018;
+            let month = dateExtract[1] - 1;
+            let day = dateExtract[0];
+            let DayTester = new Date(year,month,day);
+            let Day = DayTester.getDay();
+
+            let obj = {'e':elem,'d':Day}
+            this.SortedByDayArray.push(obj)
+          }
+        }
+      })
 
       if (this.ZastArray[0].dateTitle != "Brak Zastępstw") {
         Toast.create({
