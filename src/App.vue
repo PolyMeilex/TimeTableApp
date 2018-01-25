@@ -139,7 +139,8 @@ export default {
       BtnColour1: 'primary',
       BtnColour2: '',
       ZastArray:null,
-      SortedByDayArray:[]
+      SortedByDayArray:[],
+      localZast: false
     }
   },
   watch:{
@@ -173,22 +174,24 @@ export default {
           }
         }
       })
-
-      if (this.ZastArray[0].dateTitle != "Brak Zastępstw") {
-        Toast.create({
-          html: "Wykryto Nowe Zastępstwa",
-          icon: 'list',
-          timeout: 10000,
-          color: '#fff',
-          bgColor: '#333',
-          button: {
-            label: 'Otwórz',
-            handler:() => {
-              this.$router.push("/zasts")
+      if (this.ZastArray != null) {
+        if (this.ZastArray[0].dateTitle != "Brak Zastępstw" & this.localZast==false) {
+          Toast.create({
+            html: "Wykryto Nowe Zastępstwa",
+            icon: 'list',
+            timeout: 10000,
+            color: '#fff',
+            bgColor: '#333',
+            button: {
+              label: 'Otwórz',
+              handler:() => {
+                this.$router.push("/zasts")
+              }
             }
-          }
-        })
+          })
+        }
       }
+
     }
   },
   methods: {
@@ -212,11 +215,18 @@ export default {
       this.SetColour(grp)
     }
 
+    this.ZastArray = JSON.parse(localStorage.getItem('LocalZasts'));
+    this.localZast = true
+
     try {
       // fetch('http://127.0.0.1:8080')
       fetch('https://ekonomik-api-ekonomik-api.7e14.starter-us-west-2.openshiftapps.com/')
       .then(response  => response.json())
-      .then(response => this.ZastArray = response)
+      .then(response => {
+        this.ZastArray = response
+        localStorage.setItem('LocalZasts', JSON.stringify(response))
+        this.localZast = false
+      })
     } catch (e) {}
 
   }
