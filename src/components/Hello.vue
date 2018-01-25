@@ -28,7 +28,7 @@
         <b>Sala: </b>{{SalaLek}}
         <p class="text-faded">Dzwonek: {{DzwonekLek}}</p>
 
-        <q-collapsible class="bg-primary" icon="warning" label="Zastępstwo" v-if="getZastsFtd().Opis != null">
+        <q-collapsible class="bg-primary" icon="warning" label="Zastępstwo" v-if="getZastsFtd() != null">
           <div>
                     <p><b>Opis:</b> {{getZastsFtd().Opis}}</p>
                     <p><b>Sala:</b> {{getZastsFtd().Sala}}</p>
@@ -151,9 +151,7 @@
             return test;
           }
           else{
-            return {
-              Opis:null
-            }
+            return null
           }
 
         },
