@@ -8,51 +8,41 @@
       <q-tab :alert="DayData==5" :default="DayData==5" slot="title" name="5">Pi</q-tab>
     </q-tabs>
 
+    <div v-touch-swipe.horizontal="SwipeHandler">
+      <q-transition
+      appear
+      name="test"
+      mode="out-in"
+      >
+        <div :key="trans" >
+          <q-card :color="PrimaryCheck(MPlan.indexOf(lek))" v-for="lek in MPlan" v-if="MPlan.indexOf(lek) != 0 & MPlan.indexOf(lek) != 9" :key="lek.Id">
+            <q-card-title>
+              {{lek.Name}}
+            </q-card-title>
+            <q-card-main>
+              <b>Sala: </b>{{lek.Sal}}
 
-
-
-<div v-touch-swipe.horizontal="SwipeHandler">
-
-
-
-    <q-transition
-    appear
-    name="test"
-    mode="out-in"
->
-
-    <div :key="trans" >
-      <q-card :color="PrimaryCheck(MPlan.indexOf(lek))" v-for="lek in MPlan" v-if="MPlan.indexOf(lek) != 0 & MPlan.indexOf(lek) != 9" :key="lek.Id">
-        <q-card-title>
-          {{lek.Name}}
-        </q-card-title>
-        <q-card-main>
-          <b>Sala: </b>{{lek.Sal}}
-
-          <p :class="FadedTextCheck(MPlan.indexOf(lek))">Dzwonek: {{DzCheck(MPlan.indexOf(lek))}}</p>
-        </q-card-main>
-      </q-card>
+              <p :class="FadedTextCheck(MPlan.indexOf(lek))">Dzwonek: {{DzCheck(MPlan.indexOf(lek))}}</p>
+            </q-card-main>
+          </q-card>
+        </div>
+      </q-transition>
     </div>
 
-
-  </q-transition>
-</div>
   </div>
-
 </template>
 
 
 
 <script>
     import {
-      QCard, // +
-      QCardTitle, // +
-      QCardMain, // +
-      QTransition, // +
-      QTabs, // +
-      QTab, // +
+      QCard,
+      QCardTitle,
+      QCardMain,
+      QTransition,
+      QTabs,
+      QTab,
       TouchSwipe
-      // QTabPane //-
     } from 'quasar'
 
     export default {
@@ -60,7 +50,7 @@
         TouchSwipe
       },
       name: 'index',
-      props: ['GrpDis'],
+      props: ['GrpDis','PlanRequirer','MDzwonki'],
       components: {
         QCard,
         QCardTitle,
@@ -75,7 +65,6 @@
           show: true,
           DzwonekLek: [],
           MPlan: [],
-          MDzwonki: [],
           AktualnaL: 0,
           Mse: null,
           DayData: 1,
@@ -98,7 +87,7 @@
         }
       },
       methods: {
-        SwipeHandler (obj) {
+        SwipeHandler(obj) {
           var direction = obj.direction
 
           if (direction == 'right' & Number(this.selectedTab) > 1 ) {
@@ -111,7 +100,7 @@
             this.selectedTab = num.toString()
           }
         },
-        FadedTextCheck (i) {
+        FadedTextCheck(i) {
           if (i == this.AktualnaL) {
             return {'text-faded': false}
           }
@@ -119,7 +108,7 @@
             return {'text-faded': true}
           }
         },
-        PrimaryCheck (i) {
+        PrimaryCheck(i) {
           if (i == this.AktualnaL) {
             return 'primary'
           }
@@ -127,7 +116,7 @@
             return 'dark'
           }
         },
-        DzCheck (i) {
+        DzCheck(i) {
           if (this.MDzwonki[i]) {
             return this.MDzwonki[i].dzwon
           }
@@ -135,10 +124,10 @@
             return '-'
           }
         },
-        grpTogle: function () {
+        grpTogle() {
           this.RequirePlan(Number(this.selectedTab))
         },
-        getDate: function () {
+        getDate() {
           var d = new Date()
           var h = d.getHours()
           var m = d.getMinutes()
@@ -159,92 +148,30 @@
             day
           }
         },
-
-        ProgresLog (h, m) {
-          try {
+        ProgresLog(h, m) {
             var MseObj = this.Mse
-
             var Sh = MseObj.s[0]
             var Sm = MseObj.s[1]
-
             var Eh = (MseObj.e[0] - Sh) * 60
             var Em = MseObj.e[1] - Sm
             var Ef = Eh + Em
-
             var Th = (h - Sh) * 60
             var Tm = m - Sm
             var Tf = Th + Tm
-
             var Proc = Tf / Ef * 100
-            setTimeout(function () { document.getElementById('ProgresBar').style.width = Proc + '%' }, 100)
-          }
-          catch (e) {
-          }
+            setTimeout(() => document.getElementById('ProgresBar').style.width = Proc + '%',100)
         },
-
-        RequirePlan: function (day) {
-          var jsonPlanyGRP = []
-          var Se = []
-
-          switch (day) {
-            case 1:
-              Se = [{s: [8, 0], e: [14, 20]}, {s: [8, 0], e: [15, 15]}]
-              jsonPlanyGRP =
-                  [
-                    require('../Plany/1_1.json'),
-                    require('../Plany/1_2.json')
-                  ]
-              break
-            case 2:
-              Se = [{s: [8, 55], e: [14, 20]}, {s: [8, 55], e: [14, 20]}]
-              jsonPlanyGRP =
-                  [
-                    require('../Plany/2_1.json'),
-                    require('../Plany/2_2.json')
-                  ]
-              break
-            case 3:
-              Se = [{s: [8, 0], e: [15, 15]}, {s: [8, 0], e: [15, 15]}]
-              jsonPlanyGRP =
-                  [
-                    require('../Plany/3_1.json'),
-                    require('../Plany/3_2.json')
-                  ]
-              break
-            case 4:
-              Se = [{s: [8, 0], e: [15, 15]}, {s: [8, 0], e: [14, 20]}]
-              jsonPlanyGRP =
-                  [
-                    require('../Plany/4_1.json'),
-                    require('../Plany/4_2.json')
-                  ]
-              break
-            case 5:
-              Se = [{s: [8, 0], e: [13, 20]}, {s: [8, 0], e: [13, 20]}]
-              jsonPlanyGRP =
-                  [
-                    require('../Plany/5_1.json'),
-                    require('../Plany/5_2.json')
-                  ]
-              break
-          }
-          var dzwonkiLek = require('../Plany/dzwonki.js')
-
-          this.MDzwonki = dzwonkiLek
-
+        RequirePlan(day) {
           if (this.GrpDis == 1) {
-            this.Mse = Se[0]
-            this.MPlan = jsonPlanyGRP[0]
+            this.Mse = this.PlanRequirer[day-1].Se[0]
+            this.MPlan = this.PlanRequirer[day-1].Plan[0]
           }
           else if (this.GrpDis == 2) {
-            this.Mse = Se[1]
-            this.MPlan = jsonPlanyGRP[1]
+            this.Mse = this.PlanRequirer[day-1].Se[1]
+            this.MPlan = this.PlanRequirer[day-1].Plan[1]
           }
         },
-        PrintPlan: function (m, me, x1, x2, day, h) {
-          // var plan = this.MPlan
-          // var dzwonkiLek = this.MDzwonki
-
+        PrintPlan(m, me, x1, x2, day, h) {
           function TimeTest (m, me, x1, x2) {
             if (m < me) {
               return x1
@@ -253,11 +180,9 @@
               return x2
             }
           }
-
           this.AktualnaL = TimeTest(m, me, x1, x2)
         },
         Initial () {
-          var Ofset = 0
           var getDate = this.getDate()
           var h = getDate.h
           var m = getDate.m
@@ -267,35 +192,35 @@
           this.ProgresLog(h, m)
 
           if (h == 8) {
-            var me = 45 - Ofset; var x1 = 1; var x2 = 2
+            var me = 45; var x1 = 1; var x2 = 2
             this.PrintPlan(m, me, x1, x2, day, h)
           }
           else if (h == 9) {
-            var me = 40 - Ofset; var x1 = 2; var x2 = 3
+            var me = 40; var x1 = 2; var x2 = 3
             this.PrintPlan(m, me, x1, x2, day, h)
           }
           else if (h == 10) {
-            var me = 35 - Ofset; var x1 = 3; var x2 = 4
+            var me = 35; var x1 = 3; var x2 = 4
             this.PrintPlan(m, me, x1, x2, day, h)
           }
           else if (h == 11) {
-            var me = 30 - Ofset; var x1 = 4; var x2 = 5
+            var me = 30; var x1 = 4; var x2 = 5
             this.PrintPlan(m, me, x1, x2, day, h)
           }
           else if (h == 12) {
-            var me = 25 - Ofset; var x1 = 5; var x2 = 6
+            var me = 25; var x1 = 5; var x2 = 6
             this.PrintPlan(m, me, x1, x2, day, h)
           }
           else if (h == 13) {
-            var me = 20 - Ofset; var x1 = 6; var x2 = 7
+            var me = 20; var x1 = 6; var x2 = 7
             this.PrintPlan(m, me, x1, x2, day, h)
           }
           else if (h == 14) {
-            var me = 20 - Ofset; var x1 = 7; var x2 = 8
+            var me = 20; var x1 = 7; var x2 = 8
             this.PrintPlan(m, me, x1, x2, day, h)
           }
           else if (h == 15) {
-            var me = 15 - Ofset; var x1 = 8; var x2 = 8
+            var me = 15; var x1 = 8; var x2 = 8
             this.PrintPlan(m, me, x1, x2, day, h)
           }
         }

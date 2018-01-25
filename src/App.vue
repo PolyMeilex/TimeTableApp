@@ -63,7 +63,13 @@
     </div>
 
     <q-transition appear name="test" mode="out-in">
-      <router-view :GrpDis="grp" :ZastArray="ZastArray" :SortedByDayArray="SortedByDayArray"/>
+      <router-view
+        :GrpDis="grp"
+        :ZastArray="ZastArray"
+        :SortedByDayArray="SortedByDayArray"
+        :MDzwonki="dzwonkiLek"
+        :PlanRequirer="PlanRequirer"
+      />
     </q-transition>
 
   </q-layout>
@@ -140,7 +146,30 @@ export default {
       BtnColour2: '',
       ZastArray:null,
       SortedByDayArray:[],
-      localZast: false
+      localZast: false,
+      dzwonkiLek: require('./Plany/dzwonki.js'),
+      PlanRequirer: [
+        {
+          'Se': [{s: [8, 0], e: [14, 20]}, {s: [8, 0], e: [15, 15]}],
+          'Plan':[require('./Plany/1_1.json'),require('./Plany/1_2.json')]
+        },
+        {
+          'Se':[{s: [8, 55], e: [14, 20]}, {s: [8, 55], e: [14, 20]}],
+          'Plan':[require('./Plany/2_1.json'),require('./Plany/2_2.json')]
+        },
+        {
+          'Se':[{s: [8, 0], e: [14, 20]}, {s: [8, 0], e: [14, 20]}],
+          'Plan':[require('./Plany/3_1.json'),require('./Plany/3_2.json')]
+        },
+        {
+          'Se':[{s: [8, 0], e: [15, 15]}, {s: [8, 0], e: [14, 20]}],
+          'Plan':[require('./Plany/4_1.json'),require('./Plany/4_2.json')]
+        },
+        {
+          'Se':[{s: [8, 0], e: [14, 20]}, {s: [8, 0], e: [14, 20]}],
+          'Plan':[require('./Plany/5_1.json'),require('./Plany/5_2.json')]
+        }
+      ]
     }
   },
   watch:{
