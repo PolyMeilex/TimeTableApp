@@ -1,1 +1,42 @@
-[{"Name":"-","Sal":"-"},{"Name":"Polski","Sal":"9"},{"Name":"Niemiecki","Sal":"9"},{"Name":"Systemy","Sal":"17"},{"Name":"Systemy","Sal":"17"},{"Name":"WF","Sal":""},{"Name":"Wychowawcza","Sal":"9"},{"Name":"Religia","Sal":"9"},{"Name":"","Sal":""},{"Name":"-","Sal":"-"}]
+[
+   {
+      "Name":"-",
+      "Sal":"-"
+   },
+   {
+      "Name":"Polski",
+      "Sal":"9"
+   },
+   {
+      "Name":"Niemiecki",
+      "Sal":"39"
+   },
+   {
+      "Name":"Systemy",
+      "Sal":"17"
+   },
+   {
+      "Name":"Systemy",
+      "Sal":"17"
+   },
+   {
+      "Name":"WF",
+      "Sal":""
+   },
+   {
+      "Name":"Wychowawcza",
+      "Sal":"4"
+   },
+   {
+      "Name":"Religia",
+      "Sal":"4"
+   },
+   {
+      "Name":"",
+      "Sal":""
+   },
+   {
+      "Name":"-",
+      "Sal":"-"
+   }
+]
