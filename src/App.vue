@@ -69,6 +69,7 @@
         :SortedByDayArray="SortedByDayArray"
         :MDzwonki="dzwonkiLek"
         :PlanRequirer="PlanRequirer"
+        :OnlinePlanJson="OnlinePlanJson"
       />
     </q-transition>
 
@@ -148,6 +149,7 @@ export default {
       SortedByDayArray:[],
       localZast: false,
       dzwonkiLek: require('./Plany/dzwonki.js'),
+      OnlinePlanJson:null,
       PlanRequirer: [
         {
           'Se': [{s: [8, 0], e: [14, 20]}, {s: [8, 0], e: [15, 15]}],
@@ -245,7 +247,8 @@ export default {
     }
 
     this.ZastArray = JSON.parse(localStorage.getItem('LocalZasts'));
-    this.localZast = true
+    this.localZast = true;
+    this.OnlinePlanJson = JSON.parse(localStorage.getItem('OnlinePlanJson'));
 
     try {
       // fetch('http://127.0.0.1:8080')
@@ -257,6 +260,18 @@ export default {
         this.localZast = false
       })
     } catch (e) {}
+
+    try {
+      // fetch('http://127.0.0.1:8080')
+      fetch('https://ekonomik-api-ekonomik-api.7e14.starter-us-west-2.openshiftapps.com/plan')
+      .then(response  => response.json())
+      .then(response => {
+        this.OnlinePlanJson = response;
+        localStorage.setItem('OnlinePlanJson', JSON.stringify(response))
+        // this.localZast = false
+      })
+    } catch (e) {}
+
 
   }
 }

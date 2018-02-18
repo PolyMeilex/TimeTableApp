@@ -6,54 +6,52 @@
 >
 
        <div :key="trans">
-    <q-card color="dark" class="animated" :class="{shake: StD==0}">
+         <q-card color="dark" class="animated" :class="{shake: StD==0}" v-if="LekcjaOBJ != null">
 
-      <q-card-title>
-        {{NazwaLek}}
-        <div slot="right" class="row items-center">
-          <q-btn flat small round color="faded" @click="OpenSettings">
-            <q-icon name="settings" />
-          </q-btn>
-          <!-- <div id="odometer" class="odometer">{{MtD}}</div>min: -->
-          {{MtD}}min
-          {{StD}}s
+           <q-card-title>
+             {{getLekcjaForGrp().ln}}
+             <div slot="right" class="row items-center">
+               <q-btn flat small round color="faded" @click="OpenSettings">
+                 <q-icon name="settings" />
+               </q-btn>
+               {{MtD}}min
+               {{StD}}s
 
 
-        </div>
+             </div>
 
-      </q-card-title>
-      <!-- <q-card-separator /> -->
+           </q-card-title>
 
-      <q-card-main>
-        <b>Sala: </b>{{SalaLek}}
-        <p class="text-faded">Dzwonek: {{DzwonekLek}}</p>
+           <q-card-main>
+             <b>Sala: </b>{{getLekcjaForGrp().s}}
+             <p class="text-faded">Dzwonek: {{DzwonekLek}}</p>
 
-        <q-collapsible class="bg-primary" icon="warning" label="Zastępstwo" v-if="getZastsFtd() != null">
-          <div>
-                    <p><b>Opis:</b> {{getZastsFtd().Opis}}</p>
-                    <p><b>Sala:</b> {{getZastsFtd().Sala}}</p>
-                    <p><b>Grp:</b> {{getZastsFtd().Klasa}}</p>
-                    <p><b>Nauczyciel:</b> {{getZastsFtd().Nauczyciel}}</p>
-          </div>
-        </q-collapsible>
-      </q-card-main>
+             <q-collapsible class="bg-primary" icon="warning" label="Zastępstwo" v-if="getZastsFtd() != null">
+               <div>
+                         <p><b>Opis:</b> {{getZastsFtd().Opis}}</p>
+                         <p><b>Sala:</b> {{getZastsFtd().Sala}}</p>
+                         <p><b>Grp:</b> {{getZastsFtd().Klasa}}</p>
+                         <p><b>Nauczyciel:</b> {{getZastsFtd().Nauczyciel}}</p>
+               </div>
+             </q-collapsible>
+           </q-card-main>
 
 
 
 
-    </q-card>
+         </q-card>
 
-    <q-card color="dark">
+        <q-card color="dark">
 
-      <q-card-title>
-        {{NazwaLekNext}}
-      </q-card-title>
+          <q-card-title>
+            {{NazwaLekNext}}
+          </q-card-title>
 
-      <q-card-main>
-        <b>Sala: </b>{{SalaLekNext}}
-      </q-card-main>
+          <q-card-main>
+            <b>Sala: </b>{{SalaLekNext}}
+          </q-card-main>
 
-    </q-card>
+        </q-card>
 
 
     </div>
@@ -80,7 +78,7 @@
 
     export default {
       name: 'index',
-      props: ['GrpDis','SortedByDayArray','PlanRequirer','MDzwonki'],
+      props: ['GrpDis','SortedByDayArray','PlanRequirer','MDzwonki','OnlinePlanJson'],
       components: {
         QCard,
         QCardTitle,
@@ -92,6 +90,8 @@
       },
       data () {
         return {
+          TodayPlanOnline:null,
+          LekcjaOBJ:null,
           show: true,
           NazwaLek: '-',
           SalaLek: '-',
@@ -126,6 +126,14 @@
         }
       },
       methods: {
+        getLekcjaForGrp(){
+          if (this.GrpDis == 0) {
+            return this.LekcjaOBJ.g1;
+          }
+          else if (this.GrpDis ==1) {
+            return this.LekcjaOBJ.g2;
+          }
+        },
         getZastsFtd(){
           function isItDay(element) {
             let date = new Date();
@@ -250,15 +258,51 @@
             day
           }
         },
+        SetGrpData(day,g) {
+          this.Mse = this.PlanRequirer[day].Se[g]
+          this.MPlan = this.PlanRequirer[day].Plan[g]
+        },
         RequirePlan(day) {
-          if (this.GrpDis == 1) {
-            this.Mse = this.PlanRequirer[day-1].Se[0]
-            this.MPlan = this.PlanRequirer[day-1].Plan[0]
+          if (this.OnlinePlanJson != null) {
+            switch (day) {
+              case 1:
+                this.TodayPlanOnline = this.OnlinePlanJson.Po;
+              break;
+              case 2:
+                this.TodayPlanOnline = this.OnlinePlanJson.Wt;
+              break;
+              case 3:
+                this.TodayPlanOnline = this.OnlinePlanJson.Si;
+              break;
+              case 4:
+                this.TodayPlanOnline = this.OnlinePlanJson.Cz;
+              break;
+              case 5:
+                this.TodayPlanOnline = this.OnlinePlanJson.Pi;
+              break;
+              default:
+                this.TodayPlanOnline = this.OnlinePlanJson.Po;
+              break;
+            }
           }
-          else if (this.GrpDis == 2) {
-            this.Mse = this.PlanRequirer[day-1].Se[1]
-            this.MPlan = this.PlanRequirer[day-1].Plan[1]
+
+          if(day!=0 & day!=6){
+            if (this.GrpDis == 1) {
+              this.SetGrpData(day-1,0)
+            }
+            else if (this.GrpDis == 2) {
+              this.SetGrpData(day-1,1)
+            }
           }
+          else{
+            if (this.GrpDis == 1) {
+              this.SetGrpData(1,0)
+            }
+            else if (this.GrpDis == 2) {
+              this.SetGrpData(1,1)
+            }
+          }
+
         },
         ProgresLog(h, m) {
             let MseObj = this.Mse
@@ -274,10 +318,7 @@
             let Proc = Tf / Ef * 100
             setTimeout(() => document.getElementById('ProgresBar').style.width = Proc + '%',100)
         },
-        PrintPlan(m, me, x1, x2, day, h) {
-          var plan = this.MPlan
-          var dzwonkiLek = this.MDzwonki
-
+        PrintOnlinePlan(m, me, x1, x2, day, h){
           function TimeTest (m, me, x1, x2) {
             if (m < me) {
               return x1
@@ -287,30 +328,62 @@
             }
           }
 
-          if (day != 6 & day != 0) {
-            this.NazwaLek = plan[TimeTest(m, me, x1, x2)].Name
-            this.SalaLek = plan[TimeTest(m, me, x1, x2)].Sal
-            this.DzwonekLek = dzwonkiLek[TimeTest(m, me, x1, x2)].dzwon
-            this.NrLek = TimeTest(m, me, x1, x2)
+          this.LekcjaOBJ = this.TodayPlanOnline[TimeTest(m, me, x1, x2)-1];
+          this.DzwonekLek = dzwonkiLek[TimeTest(m, me, x1, x2)].dzwon;
+          this.NrLek = TimeTest(m, me, x1, x2);
 
-            var Mtd = me - m
-            if (Mtd > 0) {
-              if (Mtd != 1) {
-                this.MtD = Mtd
-              }
-              else if (Mtd == 1) {
-                this.MtD = 0
-              }
+          var Mtd = me - m
+          if (Mtd > 0) {
+            if (Mtd != 1) {
+              this.MtD = Mtd
             }
-            else {
-              this.MtD = '-'
-            }
-
-            if (h != 15) {
-              this.NazwaLekNext = plan[TimeTest(m, me, x1, x2) + 1].Name
-              this.SalaLekNext = plan[TimeTest(m, me, x1, x2) + 1].Sal
+            else if (Mtd == 1) {
+              this.MtD = 0
             }
           }
+          else {
+            this.MtD = '-'
+          }
+
+        },
+        PrintPlan(m, me, x1, x2, day, h) {
+          this.PrintOnlinePlan(m, me, x1, x2, day, h)
+          // var plan = this.MPlan
+          // var dzwonkiLek = this.MDzwonki
+          //
+          // function TimeTest (m, me, x1, x2) {
+          //   if (m < me) {
+          //     return x1
+          //   }
+          //   else if (m >= me) {
+          //     return x2
+          //   }
+          // }
+          //
+          // if (day != 6 & day != 0) {
+          //   this.NazwaLek = plan[TimeTest(m, me, x1, x2)].Name
+          //   this.SalaLek = plan[TimeTest(m, me, x1, x2)].Sal
+          //   this.DzwonekLek = dzwonkiLek[TimeTest(m, me, x1, x2)].dzwon
+          //   this.NrLek = TimeTest(m, me, x1, x2)
+          //
+          //   var Mtd = me - m
+          //   if (Mtd > 0) {
+          //     if (Mtd != 1) {
+          //       this.MtD = Mtd
+          //     }
+          //     else if (Mtd == 1) {
+          //       this.MtD = 0
+          //     }
+          //   }
+          //   else {
+          //     this.MtD = '-'
+          //   }
+          //
+          //   if (h != 15) {
+          //     this.NazwaLekNext = plan[TimeTest(m, me, x1, x2) + 1].Name
+          //     this.SalaLekNext = plan[TimeTest(m, me, x1, x2) + 1].Sal
+          //   }
+          // }
         },
         Initial () {
           var getDate = this.getDate()
