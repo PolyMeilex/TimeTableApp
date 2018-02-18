@@ -9,7 +9,7 @@
          <q-card color="dark" class="animated" :class="{shake: StD==0}" v-if="LekcjaOBJ != null">
 
            <q-card-title>
-             {{getLekcjaForGrp().ln}}
+             {{GetDataToDisplay(NrLek,GrpDis).ln}}
              <div slot="right" class="row items-center">
                <q-btn flat small round color="faded" @click="OpenSettings">
                  <q-icon name="settings" />
@@ -23,7 +23,7 @@
            </q-card-title>
 
            <q-card-main>
-             <b>Sala: </b>{{getLekcjaForGrp().s}}
+             <b>Sala: </b>{{GetDataToDisplay(NrLek,GrpDis).s}}
              <p class="text-faded">Dzwonek: {{DzwonekLek}}</p>
 
              <q-collapsible class="bg-primary" icon="warning" label="Zastępstwo" v-if="getZastsFtd() != null">
@@ -44,11 +44,11 @@
         <q-card color="dark">
 
           <q-card-title>
-            {{NazwaLekNext}}
+            {{GetDataToDisplay(NrLek+1,GrpDis).ln}}
           </q-card-title>
 
           <q-card-main>
-            <b>Sala: </b>{{SalaLekNext}}
+            <b>Sala: </b>{{GetDataToDisplay(NrLek+1,GrpDis).s}}
           </q-card-main>
 
         </q-card>
@@ -126,11 +126,11 @@
         }
       },
       methods: {
-        getLekcjaForGrp(){
-          if (this.GrpDis == 0) {
+        GetDataToDisplay(lekNr,grp){
+          if (grp == 0) {
             return this.LekcjaOBJ.g1;
           }
-          else if (this.GrpDis ==1) {
+          else if (grp ==1) {
             return this.LekcjaOBJ.g2;
           }
         },
@@ -235,7 +235,7 @@
         },
         getDate() {
           var d = new Date();
-          var h = d.getHours();
+          var h = 8;
           var m = d.getMinutes();
           var s = d.getSeconds();
           if (this.MtD != '-') {
@@ -257,10 +257,6 @@
             s,
             day
           }
-        },
-        SetGrpData(day,g) {
-          this.Mse = this.PlanRequirer[day].Se[g]
-          this.MPlan = this.PlanRequirer[day].Plan[g]
         },
         RequirePlan(day) {
           if (this.OnlinePlanJson != null) {
@@ -285,38 +281,6 @@
               break;
             }
           }
-
-          if(day!=0 & day!=6){
-            if (this.GrpDis == 1) {
-              this.SetGrpData(day-1,0)
-            }
-            else if (this.GrpDis == 2) {
-              this.SetGrpData(day-1,1)
-            }
-          }
-          else{
-            if (this.GrpDis == 1) {
-              this.SetGrpData(1,0)
-            }
-            else if (this.GrpDis == 2) {
-              this.SetGrpData(1,1)
-            }
-          }
-
-        },
-        ProgresLog(h, m) {
-            let MseObj = this.Mse
-            let Sh = MseObj.s[0]
-            let Sm = MseObj.s[1]
-            let Eh = (MseObj.e[0] - Sh) * 60
-            let Em = MseObj.e[1] - Sm
-            let Ef = Eh + Em
-            let Th = (h - Sh) * 60
-            let Tm = m - Sm
-            let Tf = Th + Tm
-
-            let Proc = Tf / Ef * 100
-            setTimeout(() => document.getElementById('ProgresBar').style.width = Proc + '%',100)
         },
         PrintOnlinePlan(m, me, x1, x2, day, h){
           function TimeTest (m, me, x1, x2) {
@@ -348,42 +312,20 @@
         },
         PrintPlan(m, me, x1, x2, day, h) {
           this.PrintOnlinePlan(m, me, x1, x2, day, h)
-          // var plan = this.MPlan
-          // var dzwonkiLek = this.MDzwonki
-          //
-          // function TimeTest (m, me, x1, x2) {
-          //   if (m < me) {
-          //     return x1
-          //   }
-          //   else if (m >= me) {
-          //     return x2
-          //   }
-          // }
-          //
-          // if (day != 6 & day != 0) {
-          //   this.NazwaLek = plan[TimeTest(m, me, x1, x2)].Name
-          //   this.SalaLek = plan[TimeTest(m, me, x1, x2)].Sal
-          //   this.DzwonekLek = dzwonkiLek[TimeTest(m, me, x1, x2)].dzwon
-          //   this.NrLek = TimeTest(m, me, x1, x2)
-          //
-          //   var Mtd = me - m
-          //   if (Mtd > 0) {
-          //     if (Mtd != 1) {
-          //       this.MtD = Mtd
-          //     }
-          //     else if (Mtd == 1) {
-          //       this.MtD = 0
-          //     }
-          //   }
-          //   else {
-          //     this.MtD = '-'
-          //   }
-          //
-          //   if (h != 15) {
-          //     this.NazwaLekNext = plan[TimeTest(m, me, x1, x2) + 1].Name
-          //     this.SalaLekNext = plan[TimeTest(m, me, x1, x2) + 1].Sal
-          //   }
-          // }
+
+          var dzwonkiLek = this.MDzwonki;
+          var Mtd = me - m;
+          if (Mtd > 0) {
+            if (Mtd != 1) {
+              this.MtD = Mtd;
+            }
+            else if (Mtd == 1) {
+              this.MtD = 0;
+            }
+          }
+          else {
+            this.MtD = '-';
+          }
         },
         Initial () {
           var getDate = this.getDate()
@@ -391,7 +333,6 @@
           var m = getDate.m
           var day = getDate.day
           this.RequirePlan(day)
-          this.ProgresLog(h, m)
 
           if (h < 8) {
             let me = 0; var x1 = 1; var x2 = 1
