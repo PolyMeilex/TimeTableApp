@@ -6,10 +6,10 @@
 >
 
        <div :key="trans">
-         <q-card color="dark" class="animated" :class="{shake: StD==0}" v-if="GetDataToDisplay(NrLek,GrpDis) != null">
+         <q-card color="dark" class="animated" :class="{shake: StD==0}" v-if="TodayPlanOnline != null">
 
            <q-card-title>
-             {{GetDataToDisplay(NrLek,GrpDis).ln}}
+             {{GetDataToDisplay(NrLek,GrpDis).l.ln}}
              <div slot="right" class="row items-center">
                <q-btn flat small round color="faded" @click="OpenSettings">
                  <q-icon name="settings" />
@@ -23,8 +23,8 @@
            </q-card-title>
 
            <q-card-main>
-             <b>Sala: </b>{{GetDataToDisplay(NrLek,GrpDis).s}}
-             <p class="text-faded">Dzwonek: {{DzwonekLek}}</p>
+             <b>Sala: </b>{{GetDataToDisplay(NrLek,GrpDis).l.s}}
+             <p class="text-faded">Dzwonek: {{GetDataToDisplay(NrLek,GrpDis).d}}</p>
 
              <q-collapsible class="bg-primary" icon="warning" label="Zastępstwo" v-if="getZastsFtd() != null">
                <div>
@@ -44,11 +44,12 @@
         <q-card color="dark">
 
           <q-card-title>
-            {{GetDataToDisplay(NrLek+1,GrpDis).ln}}
+            {{GetDataToDisplay(NrLek+1,GrpDis).l.ln}}
           </q-card-title>
 
           <q-card-main>
-            <b>Sala: </b>{{GetDataToDisplay(NrLek+1,GrpDis).s}}
+            <b>Sala: </b>{{GetDataToDisplay(NrLek+1,GrpDis).l.s}}
+            <p class="text-faded">Dzwonek: {{GetDataToDisplay(NrLek+1,GrpDis).d}}</p>
           </q-card-main>
 
         </q-card>
@@ -127,19 +128,29 @@
       },
       methods: {
         GetDataToDisplay(lekNr,grp){
+          // this.DzwonekLek = this.MDzwonki[lekNr];
           if (lekNr<8) {
-            if (grp == 0) {
-              return this.TodayPlanOnline[lekNr].g1;
+            if (grp == 1) {
+              return {
+                l:this.TodayPlanOnline[lekNr].g1,
+                d:this.MDzwonki[lekNr]
+              }
             }
-            else if (grp ==1) {
-              return this.TodayPlanOnline[lekNr].g2;
+            else if (grp ==2) {
+              return {
+                l:this.TodayPlanOnline[lekNr].g2,
+                d:this.MDzwonki[lekNr]
+              }
             }
           }
           else {
-              return {
-                ln:"-",
-                s:"-"
-              };
+              return{
+                l:{
+                  ln:"-",
+                  s:"-"
+                },
+                d:"-"
+              }
           }
 
         },
@@ -244,7 +255,7 @@
         },
         getDate() {
           var d = new Date();
-          var h = 14;
+          var h = 8;
           var m = d.getMinutes();
           var s = d.getSeconds();
           if (this.MtD != '-') {
@@ -301,28 +312,14 @@
             }
           }
 
-          this.LekcjaOBJ = this.TodayPlanOnline[TimeTest(m, me, x1, x2)-1];
-          this.DzwonekLek = dzwonkiLek[TimeTest(m, me, x1, x2)].dzwon;
           this.NrLek = TimeTest(m, me, x1, x2)-1;
 
-          var Mtd = me - m
-          if (Mtd > 0) {
-            if (Mtd != 1) {
-              this.MtD = Mtd
-            }
-            else if (Mtd == 1) {
-              this.MtD = 0
-            }
-          }
-          else {
-            this.MtD = '-'
-          }
 
         },
         PrintPlan(m, me, x1, x2, day, h) {
           this.PrintOnlinePlan(m, me, x1, x2, day, h)
 
-          var dzwonkiLek = this.MDzwonki;
+
           var Mtd = me - m;
           if (Mtd > 0) {
             if (Mtd != 1) {
