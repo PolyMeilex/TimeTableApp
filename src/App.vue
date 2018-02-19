@@ -9,7 +9,7 @@
 
       <q-toolbar-title>
         Plan Lekcji
-        <div slot="subtitle">v3.3.2</div>
+        <div slot="subtitle">v3.5</div>
       </q-toolbar-title>
 
       <q-transition appear enter="fadeIn" leave="fadeOut">
