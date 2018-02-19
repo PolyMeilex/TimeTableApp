@@ -15,14 +15,14 @@
       mode="out-in"
       >
         <div :key="trans" >
-          <q-card :color="PrimaryCheck(MPlan.indexOf(lek))" v-for="lek in MPlan" v-if="MPlan.indexOf(lek) != 0 & MPlan.indexOf(lek) != 9" :key="lek.Id">
+          <q-card :color="PrimaryCheck(TodayPlanOnline.indexOf(lek))" v-for="lek in TodayPlanOnline" :key="GetDataToDisplay(lek,GrpDis).ln">
             <q-card-title>
-              {{lek.Name}}
+              {{GetDataToDisplay(lek,GrpDis).ln}}
             </q-card-title>
             <q-card-main>
-              <b>Sala: </b>{{lek.Sal}}
+              <b>Sala: </b>{{GetDataToDisplay(lek,GrpDis).s}}
 
-              <p :class="FadedTextCheck(MPlan.indexOf(lek))">Dzwonek: {{DzCheck(MPlan.indexOf(lek))}}</p>
+              <p :class="FadedTextCheck(TodayPlanOnline.indexOf(lek))">Dzwonek: {{DzCheck(TodayPlanOnline.indexOf(lek))}}</p>
             </q-card-main>
           </q-card>
         </div>
@@ -50,7 +50,7 @@
         TouchSwipe
       },
       name: 'index',
-      props: ['GrpDis','PlanRequirer','MDzwonki'],
+      props: ['GrpDis','PlanRequirer','MDzwonki','OnlinePlanJson'],
       components: {
         QCard,
         QCardTitle,
@@ -62,10 +62,10 @@
       },
       data () {
         return {
+          TodayPlanOnline:null,
           show: true,
           DzwonekLek: [],
-          MPlan: [],
-          AktualnaL: 0,
+          NrLek: 0,
           Mse: null,
           DayData: 1,
           selectedTab: '1',
@@ -87,21 +87,36 @@
         }
       },
       methods: {
-        SwipeHandler(obj) {
-          var direction = obj.direction
+        GetDataToDisplay(lek,grp){
+          // this.DzwonekLek = this.MDzwonki[lekNr];
 
-          if (direction == 'right' & Number(this.selectedTab) > 1 ) {
-            var num = Number(this.selectedTab) - 1
-
-            this.selectedTab = num.toString()
+          if (grp == 1) {
+            return lek.g1;
           }
-          else if (direction == 'left' & Number(this.selectedTab) < 5) {
-            var num = Number(this.selectedTab) + 1
-            this.selectedTab = num.toString()
+          else if (grp ==2) {
+            return lek.g2;
+          }
+
+
+        },
+        SwipeHandler(obj) {
+          console.log(obj.distance);
+          if (obj.distance.x > 100) {
+            var direction = obj.direction;
+
+            if (direction == 'right' & Number(this.selectedTab) > 1 ) {
+              var num = Number(this.selectedTab) - 1
+
+              this.selectedTab = num.toString()
+            }
+            else if (direction == 'left' & Number(this.selectedTab) < 5) {
+              var num = Number(this.selectedTab) + 1
+              this.selectedTab = num.toString()
+            }
           }
         },
         FadedTextCheck(i) {
-          if (i == this.AktualnaL) {
+          if (i == this.NrLek) {
             return {'text-faded': false}
           }
           else {
@@ -109,7 +124,7 @@
           }
         },
         PrimaryCheck(i) {
-          if (i == this.AktualnaL) {
+          if (i == this.NrLek) {
             return 'primary'
           }
           else {
@@ -118,7 +133,7 @@
         },
         DzCheck(i) {
           if (this.MDzwonki[i]) {
-            return this.MDzwonki[i].dzwon
+            return this.MDzwonki[i]
           }
           else {
             return '-'
@@ -141,34 +156,30 @@
             this.DayData = 1
             this.selectedTab = this.DayData.toString()
           }
-
-          return {
-            h,
-            m,
-            day
-          }
-        },
-        ProgresLog(h, m) {
-            var MseObj = this.Mse
-            var Sh = MseObj.s[0]
-            var Sm = MseObj.s[1]
-            var Eh = (MseObj.e[0] - Sh) * 60
-            var Em = MseObj.e[1] - Sm
-            var Ef = Eh + Em
-            var Th = (h - Sh) * 60
-            var Tm = m - Sm
-            var Tf = Th + Tm
-            var Proc = Tf / Ef * 100
-            setTimeout(() => document.getElementById('ProgresBar').style.width = Proc + '%',100)
+          return {h,m,day};
         },
         RequirePlan(day) {
-          if (this.GrpDis == 1) {
-            this.Mse = this.PlanRequirer[day-1].Se[0]
-            this.MPlan = this.PlanRequirer[day-1].Plan[0]
-          }
-          else if (this.GrpDis == 2) {
-            this.Mse = this.PlanRequirer[day-1].Se[1]
-            this.MPlan = this.PlanRequirer[day-1].Plan[1]
+          if (this.OnlinePlanJson != null) {
+            switch (day) {
+              case 1:
+                this.TodayPlanOnline = this.OnlinePlanJson.Po;
+              break;
+              case 2:
+                this.TodayPlanOnline = this.OnlinePlanJson.Wt;
+              break;
+              case 3:
+                this.TodayPlanOnline = this.OnlinePlanJson.Si;
+              break;
+              case 4:
+                this.TodayPlanOnline = this.OnlinePlanJson.Cz;
+              break;
+              case 5:
+                this.TodayPlanOnline = this.OnlinePlanJson.Pi;
+              break;
+              default:
+                this.TodayPlanOnline = this.OnlinePlanJson.Po;
+              break;
+            }
           }
         },
         PrintPlan(m, me, x1, x2, day, h) {
@@ -180,7 +191,7 @@
               return x2
             }
           }
-          this.AktualnaL = TimeTest(m, me, x1, x2)
+          this.NrLek = TimeTest(m, me, x1, x2)-1;
         },
         Initial () {
           var getDate = this.getDate()
@@ -189,7 +200,6 @@
           var day = this.DayData
 
           this.RequirePlan(day)
-          this.ProgresLog(h, m)
 
           if (h == 8) {
             var me = 45; var x1 = 1; var x2 = 2

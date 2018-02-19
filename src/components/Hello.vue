@@ -255,7 +255,7 @@
         },
         getDate() {
           let d = new Date();
-          let h = 8;
+          let h = d.getHours();
           let m = d.getMinutes();
           let s = d.getSeconds();
           let day = d.getDay();
