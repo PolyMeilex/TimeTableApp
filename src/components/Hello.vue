@@ -6,54 +6,53 @@
 >
 
        <div :key="trans">
-    <q-card color="dark" class="animated" :class="{shake: StD==0}">
+         <q-card color="dark" class="animated" :class="{shake: StD==0}" v-if="TodayPlanOnline != null">
 
-      <q-card-title>
-        {{NazwaLek}}
-        <div slot="right" class="row items-center">
-          <q-btn flat small round color="faded" @click="OpenSettings">
-            <q-icon name="settings" />
-          </q-btn>
-          <!-- <div id="odometer" class="odometer">{{MtD}}</div>min: -->
-          {{MtD}}min
-          {{StD}}s
+           <q-card-title>
+             {{GetDataToDisplay(NrLek,GrpDis).l.ln}}
+             <div slot="right" class="row items-center">
+               <q-btn flat small round color="faded" @click="OpenSettings">
+                 <q-icon name="settings" />
+               </q-btn>
+               {{MtD}}min
+               {{StD}}s
 
 
-        </div>
+             </div>
 
-      </q-card-title>
-      <!-- <q-card-separator /> -->
+           </q-card-title>
 
-      <q-card-main>
-        <b>Sala: </b>{{SalaLek}}
-        <p class="text-faded">Dzwonek: {{DzwonekLek}}</p>
+           <q-card-main>
+             <b>Sala: </b>{{GetDataToDisplay(NrLek,GrpDis).l.s}}
+             <p class="text-faded">Dzwonek: {{GetDataToDisplay(NrLek,GrpDis).d}}</p>
 
-        <q-collapsible class="bg-primary" icon="warning" label="Zastępstwo" v-if="getZastsFtd() != null">
-          <div>
-                    <p><b>Opis:</b> {{getZastsFtd().Opis}}</p>
-                    <p><b>Sala:</b> {{getZastsFtd().Sala}}</p>
-                    <p><b>Grp:</b> {{getZastsFtd().Klasa}}</p>
-                    <p><b>Nauczyciel:</b> {{getZastsFtd().Nauczyciel}}</p>
-          </div>
-        </q-collapsible>
-      </q-card-main>
+             <q-collapsible class="bg-primary" icon="warning" label="Zastępstwo" v-if="getZastsFtd() != null">
+               <div>
+                         <p><b>Opis:</b> {{getZastsFtd().Opis}}</p>
+                         <p><b>Sala:</b> {{getZastsFtd().Sala}}</p>
+                         <p><b>Grp:</b> {{getZastsFtd().Klasa}}</p>
+                         <p><b>Nauczyciel:</b> {{getZastsFtd().Nauczyciel}}</p>
+               </div>
+             </q-collapsible>
+           </q-card-main>
 
 
 
 
-    </q-card>
+         </q-card>
 
-    <q-card color="dark">
+        <q-card color="dark">
 
-      <q-card-title>
-        {{NazwaLekNext}}
-      </q-card-title>
+          <q-card-title>
+            {{GetDataToDisplay(NrLek+1,GrpDis).l.ln}}
+          </q-card-title>
 
-      <q-card-main>
-        <b>Sala: </b>{{SalaLekNext}}
-      </q-card-main>
+          <q-card-main>
+            <b>Sala: </b>{{GetDataToDisplay(NrLek+1,GrpDis).l.s}}
+            <p class="text-faded">Dzwonek: {{GetDataToDisplay(NrLek+1,GrpDis).d}}</p>
+          </q-card-main>
 
-    </q-card>
+        </q-card>
 
 
     </div>
@@ -80,7 +79,7 @@
 
     export default {
       name: 'index',
-      props: ['GrpDis','SortedByDayArray','PlanRequirer','MDzwonki'],
+      props: ['GrpDis','SortedByDayArray','PlanRequirer','MDzwonki','OnlinePlanJson'],
       components: {
         QCard,
         QCardTitle,
@@ -92,6 +91,8 @@
       },
       data () {
         return {
+          TodayPlanOnline:null,
+          LekcjaOBJ:null,
           show: true,
           NazwaLek: '-',
           SalaLek: '-',
@@ -126,6 +127,33 @@
         }
       },
       methods: {
+        GetDataToDisplay(lekNr,grp){
+          // this.DzwonekLek = this.MDzwonki[lekNr];
+          if (lekNr<8) {
+            if (grp == 1) {
+              return {
+                l:this.TodayPlanOnline[lekNr].g1,
+                d:this.MDzwonki[lekNr]
+              }
+            }
+            else if (grp ==2) {
+              return {
+                l:this.TodayPlanOnline[lekNr].g2,
+                d:this.MDzwonki[lekNr]
+              }
+            }
+          }
+          else {
+              return{
+                l:{
+                  ln:"-",
+                  s:"-"
+                },
+                d:"-"
+              }
+          }
+
+        },
         getZastsFtd(){
           function isItDay(element) {
             let date = new Date();
@@ -226,10 +254,13 @@
           })
         },
         getDate() {
-          var d = new Date();
-          var h = d.getHours();
-          var m = d.getMinutes();
-          var s = d.getSeconds();
+          let d = new Date();
+          let h = d.getHours();
+          let m = d.getMinutes();
+          let s = d.getSeconds();
+          let day = d.getDay();
+
+          //Secound Countdown
           if (this.MtD != '-') {
             if (this.MtD == 0) {
               this.StD = 60 - s - this.SecOffset
@@ -241,43 +272,35 @@
           else {
             this.StD = '-'
           }
-          var day = d.getDay()
+          //////End/////////
 
-          return {
-            h,
-            m,
-            s,
-            day
-          }
+          return {h,m,s,day}
         },
         RequirePlan(day) {
-          if (this.GrpDis == 1) {
-            this.Mse = this.PlanRequirer[day-1].Se[0]
-            this.MPlan = this.PlanRequirer[day-1].Plan[0]
+          if (this.OnlinePlanJson != null) {
+            switch (day) {
+              case 1:
+                this.TodayPlanOnline = this.OnlinePlanJson.Po;
+              break;
+              case 2:
+                this.TodayPlanOnline = this.OnlinePlanJson.Wt;
+              break;
+              case 3:
+                this.TodayPlanOnline = this.OnlinePlanJson.Si;
+              break;
+              case 4:
+                this.TodayPlanOnline = this.OnlinePlanJson.Cz;
+              break;
+              case 5:
+                this.TodayPlanOnline = this.OnlinePlanJson.Pi;
+              break;
+              default:
+                this.TodayPlanOnline = this.OnlinePlanJson.Po;
+              break;
+            }
           }
-          else if (this.GrpDis == 2) {
-            this.Mse = this.PlanRequirer[day-1].Se[1]
-            this.MPlan = this.PlanRequirer[day-1].Plan[1]
-          }
-        },
-        ProgresLog(h, m) {
-            let MseObj = this.Mse
-            let Sh = MseObj.s[0]
-            let Sm = MseObj.s[1]
-            let Eh = (MseObj.e[0] - Sh) * 60
-            let Em = MseObj.e[1] - Sm
-            let Ef = Eh + Em
-            let Th = (h - Sh) * 60
-            let Tm = m - Sm
-            let Tf = Th + Tm
-
-            let Proc = Tf / Ef * 100
-            setTimeout(() => document.getElementById('ProgresBar').style.width = Proc + '%',100)
         },
         PrintPlan(m, me, x1, x2, day, h) {
-          var plan = this.MPlan
-          var dzwonkiLek = this.MDzwonki
-
           function TimeTest (m, me, x1, x2) {
             if (m < me) {
               return x1
@@ -287,41 +310,30 @@
             }
           }
 
-          if (day != 6 & day != 0) {
-            this.NazwaLek = plan[TimeTest(m, me, x1, x2)].Name
-            this.SalaLek = plan[TimeTest(m, me, x1, x2)].Sal
-            this.DzwonekLek = dzwonkiLek[TimeTest(m, me, x1, x2)].dzwon
-            this.NrLek = TimeTest(m, me, x1, x2)
+          this.NrLek = TimeTest(m, me, x1, x2)-1;
 
-            var Mtd = me - m
-            if (Mtd > 0) {
-              if (Mtd != 1) {
-                this.MtD = Mtd
-              }
-              else if (Mtd == 1) {
-                this.MtD = 0
-              }
+          var Mtd = me - m;
+          if (Mtd > 0) {
+            if (Mtd != 1) {
+              this.MtD = Mtd;
             }
-            else {
-              this.MtD = '-'
+            else if (Mtd == 1) {
+              this.MtD = 0;
             }
-
-            if (h != 15) {
-              this.NazwaLekNext = plan[TimeTest(m, me, x1, x2) + 1].Name
-              this.SalaLekNext = plan[TimeTest(m, me, x1, x2) + 1].Sal
-            }
+          }
+          else {
+            this.MtD = '-';
           }
         },
         Initial () {
-          var getDate = this.getDate()
-          var h = getDate.h
-          var m = getDate.m
-          var day = getDate.day
+          let getDate = this.getDate()
+          let h = getDate.h
+          let m = getDate.m
+          let day = getDate.day
           this.RequirePlan(day)
-          this.ProgresLog(h, m)
 
           if (h < 8) {
-            let me = 0; var x1 = 1; var x2 = 1
+            let me = 0; let x1 = 1; let x2 = 1
             this.PrintPlan(m, me, x1, x2, day, h)
           }
           else if (h == 8) {
