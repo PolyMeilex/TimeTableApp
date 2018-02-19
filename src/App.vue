@@ -1,5 +1,4 @@
 <template>
-<!-- Don't drop "q-app" class -->
 <div id="q-app">
   <q-layout ref="layout" view="lHh Lpr fff" :left-class="{'bg-grey-2': true}">
     <q-toolbar slot="header" color="dark">
@@ -259,7 +258,9 @@ export default {
         localStorage.setItem('LocalZasts', JSON.stringify(response))
         this.localZast = false
       })
-    } catch (e) {}
+    } catch (e) {
+
+    }
 
     try {
       // fetch('http://127.0.0.1:8080')
