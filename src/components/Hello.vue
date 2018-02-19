@@ -6,7 +6,7 @@
 >
 
        <div :key="trans">
-         <q-card color="dark" class="animated" :class="{shake: StD==0}" v-if="LekcjaOBJ != null">
+         <q-card color="dark" class="animated" :class="{shake: StD==0}" v-if="GetDataToDisplay(NrLek,GrpDis) != null">
 
            <q-card-title>
              {{GetDataToDisplay(NrLek,GrpDis).ln}}
@@ -127,12 +127,21 @@
       },
       methods: {
         GetDataToDisplay(lekNr,grp){
-          if (grp == 0) {
-            return this.LekcjaOBJ.g1;
+          if (lekNr<8) {
+            if (grp == 0) {
+              return this.TodayPlanOnline[lekNr].g1;
+            }
+            else if (grp ==1) {
+              return this.TodayPlanOnline[lekNr].g2;
+            }
           }
-          else if (grp ==1) {
-            return this.LekcjaOBJ.g2;
+          else {
+              return {
+                ln:"-",
+                s:"-"
+              };
           }
+
         },
         getZastsFtd(){
           function isItDay(element) {
@@ -235,7 +244,7 @@
         },
         getDate() {
           var d = new Date();
-          var h = 8;
+          var h = 14;
           var m = d.getMinutes();
           var s = d.getSeconds();
           if (this.MtD != '-') {
@@ -294,7 +303,7 @@
 
           this.LekcjaOBJ = this.TodayPlanOnline[TimeTest(m, me, x1, x2)-1];
           this.DzwonekLek = dzwonkiLek[TimeTest(m, me, x1, x2)].dzwon;
-          this.NrLek = TimeTest(m, me, x1, x2);
+          this.NrLek = TimeTest(m, me, x1, x2)-1;
 
           var Mtd = me - m
           if (Mtd > 0) {
