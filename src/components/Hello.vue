@@ -254,10 +254,13 @@
           })
         },
         getDate() {
-          var d = new Date();
-          var h = 8;
-          var m = d.getMinutes();
-          var s = d.getSeconds();
+          let d = new Date();
+          let h = 8;
+          let m = d.getMinutes();
+          let s = d.getSeconds();
+          let day = d.getDay();
+
+          //Secound Countdown
           if (this.MtD != '-') {
             if (this.MtD == 0) {
               this.StD = 60 - s - this.SecOffset
@@ -269,14 +272,9 @@
           else {
             this.StD = '-'
           }
-          var day = d.getDay()
+          //////End/////////
 
-          return {
-            h,
-            m,
-            s,
-            day
-          }
+          return {h,m,s,day}
         },
         RequirePlan(day) {
           if (this.OnlinePlanJson != null) {
@@ -302,7 +300,7 @@
             }
           }
         },
-        PrintOnlinePlan(m, me, x1, x2, day, h){
+        PrintPlan(m, me, x1, x2, day, h) {
           function TimeTest (m, me, x1, x2) {
             if (m < me) {
               return x1
@@ -313,12 +311,6 @@
           }
 
           this.NrLek = TimeTest(m, me, x1, x2)-1;
-
-
-        },
-        PrintPlan(m, me, x1, x2, day, h) {
-          this.PrintOnlinePlan(m, me, x1, x2, day, h)
-
 
           var Mtd = me - m;
           if (Mtd > 0) {
@@ -334,14 +326,14 @@
           }
         },
         Initial () {
-          var getDate = this.getDate()
-          var h = getDate.h
-          var m = getDate.m
-          var day = getDate.day
+          let getDate = this.getDate()
+          let h = getDate.h
+          let m = getDate.m
+          let day = getDate.day
           this.RequirePlan(day)
 
           if (h < 8) {
-            let me = 0; var x1 = 1; var x2 = 1
+            let me = 0; let x1 = 1; let x2 = 1
             this.PrintPlan(m, me, x1, x2, day, h)
           }
           else if (h == 8) {
