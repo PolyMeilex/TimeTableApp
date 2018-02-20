@@ -41,7 +41,7 @@
 
          </q-card>
 
-        <q-card color="dark">
+        <q-card color="dark" v-if="TodayPlanOnline != null">
 
           <q-card-title>
             {{GetDataToDisplay(NrLek+1,GrpDis).l.ln}}

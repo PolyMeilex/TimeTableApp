@@ -247,7 +247,12 @@ export default {
 
     this.ZastArray = JSON.parse(localStorage.getItem('LocalZasts'));
     this.localZast = true;
-    this.OnlinePlanJson = JSON.parse(localStorage.getItem('OnlinePlanJson'));
+
+    let LocalPlan = localStorage.getItem('OnlinePlanJson');
+    if (LocalPlan!=null) {
+      this.OnlinePlanJson = JSON.parse(LocalPlan);
+    }
+
 
     try {
       // fetch('http://127.0.0.1:8080')
