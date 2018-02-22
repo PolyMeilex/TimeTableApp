@@ -8,7 +8,7 @@
 
       <q-toolbar-title>
         Plan Lekcji
-        <div slot="subtitle">v3.5</div>
+        <div slot="subtitle">v3.5.1</div>
       </q-toolbar-title>
 
       <q-transition appear enter="fadeIn" leave="fadeOut">
@@ -256,7 +256,7 @@ export default {
 
     try {
       // fetch('http://127.0.0.1:8080')
-      fetch('https://ekonomik-api-ekonomik-api.7e14.starter-us-west-2.openshiftapps.com/')
+      fetch('https://ekonomik-api.herokuapp.com')
       .then(response  => response.json())
       .then(response => {
         this.ZastArray = response
@@ -269,7 +269,7 @@ export default {
 
     try {
       // fetch('http://127.0.0.1:8080')
-      fetch('https://ekonomik-api-ekonomik-api.7e14.starter-us-west-2.openshiftapps.com/plan')
+      fetch('https://ekonomik-api.herokuapp.com/plan')
       .then(response  => response.json())
       .then(response => {
         this.OnlinePlanJson = response;
