@@ -166,7 +166,7 @@
           if (DayArray != null) {
             let ZastArray = DayArray.e.zast;
             let test = ZastArray.find((element) => {
-              return element.NrLekcji == this.NrLek & element.Grp==GrpDis || element.NrLekcji == this.NrLek & element.Grp==0;
+              return element.NrLekcji == this.NrLek & element.Grp==this.GrpDis || element.NrLekcji == this.NrLek & element.Grp==0;
             })
             return test;
           }
