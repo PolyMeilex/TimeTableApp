@@ -254,29 +254,22 @@ export default {
     }
 
 
-    try {
-      // fetch('http://127.0.0.1:8080')
-      fetch('https://ekonomik-api.herokuapp.com')
-      .then(response  => response.json())
-      .then(response => {
-        this.ZastArray = response
-        localStorage.setItem('LocalZasts', JSON.stringify(response))
-        this.localZast = false
-      })
-    } catch (e) {
+    fetch('https://ekonomik-api-ekonomik-api.7e14.starter-us-west-2.openshiftapps.com')
+    .then(response  => response.json())
+    .then(response => {
+      this.ZastArray = response
+      localStorage.setItem('LocalZasts', JSON.stringify(response))
+      this.localZast = false
+    }).catch(e=>console.log(e))
 
-    }
+    fetch('https://ekonomik-api-ekonomik-api.7e14.starter-us-west-2.openshiftapps.com/plan/')
+    .then(response  => response.json())
+    .then(response => {
+      this.OnlinePlanJson = response;
+      localStorage.setItem('OnlinePlanJson', JSON.stringify(response))
+      // this.localZast = false
+    }).catch(e=>console.log(e))
 
-    try {
-      // fetch('http://127.0.0.1:8080')
-      fetch('https://ekonomik-api.herokuapp.com/plan')
-      .then(response  => response.json())
-      .then(response => {
-        this.OnlinePlanJson = response;
-        localStorage.setItem('OnlinePlanJson', JSON.stringify(response))
-        // this.localZast = false
-      })
-    } catch (e) {}
 
 
   }
