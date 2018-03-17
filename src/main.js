@@ -23,6 +23,7 @@ Vue.use(VueFire)
 //
 import 'quasar-extras/animate/fadeIn.css'
 import 'quasar-extras/animate/fadeOut.css'
+import 'quasar-extras/animate/bounceOutRight.css'
 
 import 'quasar-extras/animate/shake.css'
 //

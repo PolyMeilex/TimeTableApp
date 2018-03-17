@@ -32,8 +32,6 @@
 
     </q-toolbar>
 
-    <div id="ProgresBar"></div>
-
     <div slot="left">
       <q-list no-border link inset-separator>
         <q-list-header>Menu</q-list-header>
@@ -51,6 +49,11 @@
         <q-side-link item to="/info">
           <q-item-side icon="chat" />
           <q-item-main label="Informacje" sublabel="Krótki Opis Projektu" />
+        </q-side-link>
+
+        <q-side-link item to="/Pack">
+          <q-item-side icon="warning" />
+          <q-item-main label="Experimental" sublabel="Pack" />
         </q-side-link>
 
         <q-side-link item to="/zasts">
@@ -277,15 +280,9 @@ export default {
 </script>
 
 <style>
-#ProgresBar {
-  display: block;
-  width: 0%;
-  max-width: 100%;
-  height: 2px;
-  background-color: #027be3;
-  transition: width 2s;
-  position: fixed;
-  top: 50px;
-  z-index: 999;
+
+* {
+  user-select: none;
 }
+
 </style>
