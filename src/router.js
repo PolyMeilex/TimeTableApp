@@ -29,6 +29,7 @@ export default new VueRouter({
     { path: '/mainA1', component: load('mainA1') },
     { path: '/info', component: load('info') },
     { path: '/zasts', component: load('zasts') },
+    { path: '/pack', component: load('pack') },
     // Always leave this last one
     { path: '*', component: load('Hello') } // Not found
   ]
