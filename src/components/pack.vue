@@ -9,7 +9,7 @@
         <div :key="trans" >
 
           <transition-group
-          leave-active-class="animated bounceOutRight"
+          leave-active-class="animated fadeOutRight"
           mode="out-in"
           >
             <q-card color="dark" v-for="lek in TodayPlanOnline" :key="GetDataToDisplay(lek,GrpDis).ln" v-touch-hold:300=" (e) => SwipeHandler(e,lek)">
@@ -56,6 +56,7 @@
       watch: {
         GrpDis: function () {
           this.trans = !this.trans
+          this.Initial()
         }
       },
       methods: {

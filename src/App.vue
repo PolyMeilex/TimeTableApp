@@ -52,8 +52,8 @@
         </q-side-link>
 
         <q-side-link item to="/Pack">
-          <q-item-side icon="warning" />
-          <q-item-main label="Experimental" sublabel="Pack" />
+          <q-item-side icon="chrome reader mode" />
+          <q-item-main label="Pack Books" sublabel="Oznaczać na kóre przedmioty jesteś już spakowany." />
         </q-side-link>
 
         <q-side-link item to="/zasts">
@@ -70,7 +70,6 @@
         :ZastArray="ZastArray"
         :SortedByDayArray="SortedByDayArray"
         :MDzwonki="dzwonkiLek"
-        :PlanRequirer="PlanRequirer"
         :OnlinePlanJson="OnlinePlanJson"
       />
     </q-transition>
@@ -151,29 +150,7 @@ export default {
       SortedByDayArray:[],
       localZast: false,
       dzwonkiLek: require('./Plany/dzwonki.js'),
-      OnlinePlanJson:null,
-      PlanRequirer: [
-        {
-          'Se': [{s: [8, 0], e: [14, 20]}, {s: [8, 0], e: [15, 15]}],
-          'Plan':[require('./Plany/1_1.json'),require('./Plany/1_2.json')]
-        },
-        {
-          'Se':[{s: [8, 55], e: [14, 20]}, {s: [8, 55], e: [14, 20]}],
-          'Plan':[require('./Plany/2_1.json'),require('./Plany/2_2.json')]
-        },
-        {
-          'Se':[{s: [8, 0], e: [14, 20]}, {s: [8, 0], e: [14, 20]}],
-          'Plan':[require('./Plany/3_1.json'),require('./Plany/3_2.json')]
-        },
-        {
-          'Se':[{s: [8, 0], e: [15, 15]}, {s: [8, 0], e: [14, 20]}],
-          'Plan':[require('./Plany/4_1.json'),require('./Plany/4_2.json')]
-        },
-        {
-          'Se':[{s: [8, 0], e: [14, 20]}, {s: [8, 0], e: [14, 20]}],
-          'Plan':[require('./Plany/5_1.json'),require('./Plany/5_2.json')]
-        }
-      ]
+      OnlinePlanJson:null
     }
   },
   watch:{

@@ -50,7 +50,7 @@
         TouchSwipe
       },
       name: 'index',
-      props: ['GrpDis','PlanRequirer','MDzwonki','OnlinePlanJson'],
+      props: ['GrpDis','MDzwonki','OnlinePlanJson'],
       components: {
         QCard,
         QCardTitle,

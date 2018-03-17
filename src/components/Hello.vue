@@ -79,7 +79,7 @@
 
     export default {
       name: 'index',
-      props: ['GrpDis','SortedByDayArray','PlanRequirer','MDzwonki','OnlinePlanJson'],
+      props: ['GrpDis','SortedByDayArray','MDzwonki','OnlinePlanJson'],
       components: {
         QCard,
         QCardTitle,
