@@ -47,7 +47,7 @@
 
         <q-side-link item to="/Pack">
           <q-item-side icon="chrome reader mode" />
-          <q-item-main label="Pack Books" sublabel="Oznaczać na kóre przedmioty jesteś już spakowany." />
+          <q-item-main label="Pack Books" sublabel="" />
         </q-side-link>
 
         <q-side-link item to="/zasts">
