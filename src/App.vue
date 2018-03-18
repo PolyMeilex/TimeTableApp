@@ -8,24 +8,18 @@
 
       <q-toolbar-title>
         Plan Lekcji
-        <div slot="subtitle">v3.5.1</div>
+        <div slot="subtitle">v3.5.2</div>
       </q-toolbar-title>
 
-      <q-transition appear enter="fadeIn" leave="fadeOut">
 
-        <q-btn flat @click="SetColour(1)" :color="BtnColour1" v-if="isGrpNe==1">
-          <q-icon name="bookmark" />1
-        </q-btn>
+      <q-btn flat @click="SetColour(1)" :color="BtnColour1" v-if="isGrpNe==1">
+        <q-icon name="bookmark" />1
+      </q-btn>
 
-      </q-transition>
+      <q-btn flat @click="SetColour(2)" :color="BtnColour2" v-if="isGrpNe==1">
+        <q-icon name="bookmark" />2
+      </q-btn>
 
-      <q-transition appear enter="fadeIn" leave="fadeOut">
-
-        <q-btn flat @click="SetColour(2)" :color="BtnColour2" v-if="isGrpNe==1">
-          <q-icon name="bookmark" />2
-        </q-btn>
-
-      </q-transition>
 
 
 
@@ -64,15 +58,17 @@
       </q-list>
     </div>
 
-    <q-transition appear name="test" mode="out-in">
+    <transition appear name="test" mode="out-in">
       <router-view
+        :key="trans"
         :GrpDis="grp"
         :ZastArray="ZastArray"
         :SortedByDayArray="SortedByDayArray"
         :MDzwonki="dzwonkiLek"
         :OnlinePlanJson="OnlinePlanJson"
+        @grpTrigger="trans=!trans"
       />
-    </q-transition>
+    </transition>
 
   </q-layout>
 </div>
@@ -112,7 +108,6 @@ import {
   QItemMain, // +
   // Alert, // -
   // QInput, //-
-  QTransition, // +
   Toast // +
   // Events
 } from 'quasar'
@@ -137,12 +132,12 @@ export default {
     QItem,
     QItemSide,
     QItemMain,
-    QTransition,
     Toast
   },
   data() {
     return {
       grp: 1,
+      trans:false,
       isGrpNe: 1,
       BtnColour1: 'primary',
       BtnColour2: '',

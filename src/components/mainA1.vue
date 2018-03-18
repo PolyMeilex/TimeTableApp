@@ -9,24 +9,18 @@
     </q-tabs>
 
     <div v-touch-swipe.horizontal="SwipeHandler">
-      <q-transition
-      appear
-      name="test"
-      mode="out-in"
-      >
-        <div :key="trans" >
-          <q-card :color="PrimaryCheck(TodayPlanOnline.indexOf(lek))" v-for="lek in TodayPlanOnline" :key="GetDataToDisplay(lek,GrpDis).ln">
-            <q-card-title>
-              {{GetDataToDisplay(lek,GrpDis).ln}}
-            </q-card-title>
-            <q-card-main>
-              <b>Sala: </b>{{GetDataToDisplay(lek,GrpDis).s}}
 
-              <p :class="FadedTextCheck(TodayPlanOnline.indexOf(lek))">Dzwonek: {{DzCheck(TodayPlanOnline.indexOf(lek))}}</p>
-            </q-card-main>
-          </q-card>
-        </div>
-      </q-transition>
+      <q-card :color="PrimaryCheck(TodayPlanOnline.indexOf(lek))" v-for="lek in TodayPlanOnline" :key="lek.i">
+        <q-card-title>
+          {{GetDataToDisplay(lek,GrpDis).ln}}
+        </q-card-title>
+        <q-card-main>
+          <b>Sala: </b>{{GetDataToDisplay(lek,GrpDis).s}}
+
+          <p :class="FadedTextCheck(TodayPlanOnline.indexOf(lek))">Dzwonek: {{DzCheck(TodayPlanOnline.indexOf(lek))}}</p>
+        </q-card-main>
+      </q-card>
+
     </div>
 
   </div>
@@ -39,7 +33,6 @@
       QCard,
       QCardTitle,
       QCardMain,
-      QTransition,
       QTabs,
       QTab,
       TouchSwipe
@@ -55,7 +48,6 @@
         QCard,
         QCardTitle,
         QCardMain,
-        QTransition,
         QTabs,
         QTab
         // QTabPane
@@ -63,24 +55,22 @@
       data () {
         return {
           TodayPlanOnline:null,
-          show: true,
           DzwonekLek: [],
           NrLek: 0,
           Mse: null,
           DayData: 1,
-          selectedTab: '1',
-          trans: false
+          selectedTab: '1'
         }
       },
       watch: {
         selectedTab: function () {
           this.RequirePlan(Number(this.selectedTab))
 
-          this.trans = !this.trans
+          // this.$emit('grpTrigger')
         },
         GrpDis: function () {
           this.grpTogle()
-          this.trans = !this.trans
+          this.$emit('grpTrigger')
         },
         DayData: function () {
 
@@ -100,7 +90,6 @@
 
         },
         SwipeHandler(obj) {
-          console.log(obj.distance);
           if (obj.distance.x > 100) {
             var direction = obj.direction;
 
@@ -180,6 +169,15 @@
                 this.TodayPlanOnline = this.OnlinePlanJson.Po;
               break;
             }
+
+            this.TodayPlanOnline = this.TodayPlanOnline.map( (lek,i) => {
+                return {
+                  g1:lek.g1,
+                  g2:lek.g2,
+                  i:i
+                }
+            })
+
           }
         },
         PrintPlan(m, me, x1, x2, day, h) {
@@ -242,17 +240,3 @@
 
     }
 </script>
-
-<style lang="stylus">
-.logo-container
-  width 255px
-  height 242px
-  perspective 800px
-  position absolute
-  top 50%
-  left 50%
-  transform translateX(-50%) translateY(-50%)
-.logo
-  position absolute
-  transform-style preserve-3d
-</style>

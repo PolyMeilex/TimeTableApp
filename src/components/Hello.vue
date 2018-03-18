@@ -1,11 +1,7 @@
 <template>
   <div style="overflow-x: hidden">
-    <q-transition
-    name="test"
-    mode="out-in"
->
 
-       <div :key="trans">
+       <div>
          <q-card color="dark" class="animated" :class="{shake: Dtriger}" v-if="TodayPlanOnline != null">
 
            <q-card-title>
@@ -22,7 +18,7 @@
 
            <q-card-main>
              <b>Sala: </b>{{GetDataToDisplay(NrLek,GrpDis).l.s}}
-             <p class="text-faded">Dzwonek: {{GetDataToDisplay(NrLek,GrpDis).d}} : {{SecOffset}}s</p>
+             <p class="text-faded">Dzwonek: {{GetDataToDisplay(NrLek,GrpDis).d}}</p>
 
              <q-collapsible class="bg-primary" icon="warning" label="Zastępstwo" v-if="getZastsFtd() != null">
                <div>
@@ -55,8 +51,6 @@
 
     </div>
 
-</q-transition>
-
   </div>
 
 </template>
@@ -67,7 +61,6 @@
       QCard,
       QCardTitle,
       QCardMain,
-      QTransition,
       Dialog,
       Alert,
       QBtn,
@@ -82,7 +75,6 @@
         QCard,
         QCardTitle,
         QCardMain,
-        QTransition,
         QBtn,
         QIcon,
         QCollapsible
@@ -91,7 +83,6 @@
         return {
           TodayPlanOnline:null,
           LekcjaOBJ:null,
-          show: true,
           NazwaLek: '-',
           SalaLek: '-',
           NazwaLekNext: '-',
@@ -100,7 +91,6 @@
           NrLek: 0,
           TtD:0,
           Dtriger:false,
-          trans: false,
           destroyed: true,
           SecOffset: 0
         }
@@ -119,7 +109,7 @@
           }
         },
         GrpDis () {
-          this.trans = !this.trans
+          this.$emit('grpTrigger')
         }
       },
       methods: {
@@ -171,59 +161,23 @@
           }
 
         },
-        FetOffset(auto){
-          if (auto==true) {
-            localStorage.setItem('autoMode', true)
-          }
-          else if (auto==false) {
-            localStorage.setItem('autoMode', false)
-          }
-
+        FetOffset(){
           fetch("https://planapp-f8adb.firebaseio.com/TimeOffset/.json")
           .then(response  => response.json())
-          .then(response => {
-            this.SecOffset = response
+          .then(response => this.SecOffset = response)
+        },
+        msToTime(s) {
+          let ms = s % 1000;
+          s = (s - ms) / 1000;
+          let secs = s % 60;
+          s = (s - secs) / 60;
+          let mins = s % 60;
+          let hrs = (s - mins) / 60;
 
-            if (auto==false) {
-              let a1 = Alert.create({
-                color: 'positive',
-                position: 'bottom-left',
-                enter: 'fadeIn',
-                leave: 'fadeOut',
-                html: "Ustawiono: "+this.SecOffset+"s"
-              })
-              setTimeout(function () {
-                a1.dismiss()
-              }, 2000);
-            }
-
-
-
-          })
-
-
+          return {hrs,mins,secs}
         },
         OpenSettings () {
-          function secondsToTime(secs)
-          {
-              secs = Math.round(secs);
-              var hours = Math.floor(secs / (60 * 60));
-
-              var divisor_for_minutes = secs % (60 * 60);
-              var minutes = Math.floor(divisor_for_minutes / 60);
-
-              var divisor_for_seconds = divisor_for_minutes % 60;
-              var seconds = Math.ceil(divisor_for_seconds);
-
-              var obj = {
-                  "h": hours,
-                  "m": minutes,
-                  "s": seconds
-              };
-              return obj;
-          }
-
-          let time = secondsToTime(this.SecOffset);
+          let time = this.msToTime(this.SecOffset*1000)
 
           Dialog.create({
             title: 'Kalibracja',
@@ -232,26 +186,21 @@
               oS: {
                 type: 'number',
                 label: 'Sekundy',
-                model: time.s
+                model: time.secs
               },
               oM: {
                 type: 'number',
                 label: 'Minuty',
-                model: time.m
+                model: time.mins
               }
             },
             buttons: [
               'Cancel',
               {
-                label: 'Auto',
-                handler: (data) => {
-                  this.FetOffset(true)
-                }
-              },
-              {
                 label: 'Pobierz',
                 handler: (data) => {
-                  this.FetOffset(false)
+                  localStorage.setItem('autoMode', true)
+                  this.FetOffset()
                 }
               },
               {
@@ -259,30 +208,25 @@
                 handler: (data) => {
                   localStorage.setItem('autoMode', false)
 
-                  if (data.oS) {
-                    if (data.oM) {
-                      this.SecOffset = data.oM * 60 + data.oS;
-                    }
-                    else {
-                      this.SecOffset = data.oS;
-                    }
-                  }
-                  else if(data.oM){
-                    this.SecOffset = data.oM * 60;
-                  }
+                  if (data.oS == null) {data.oS = 0}
+                  if (data.oM == null) {data.oM = 0}
 
+                  this.SecOffset = data.oM * 60 + data.oS;
+
+                  let nTime = this.msToTime(this.SecOffset*1000)
 
                   let a2 = Alert.create({
                     color: 'positive',
                     position: 'bottom-left',
                     enter: 'fadeIn',
                     leave: 'fadeOut',
-                    html: "Ustawiono: "+this.SecOffset+"s"
+                    html: `Ustawiono: ${nTime.hrs}h ${nTime.mins}m ${nTime.secs}s`
                   })
 
                   setTimeout(function () {
                     a2.dismiss()
                   }, 2000);
+
                 }
               }
             ]
@@ -322,17 +266,6 @@
             }
           }
 
-          function msToTime(s) {
-            let ms = s % 1000;
-            s = (s - ms) / 1000;
-            let secs = s % 60;
-            s = (s - secs) / 60;
-            let mins = s % 60;
-            let hrs = (s - mins) / 60;
-
-            return {hrs,mins,secs}
-          }
-
           function formatTime(timeLeft) {
             let hrs = timeLeft.hrs
             let mins = timeLeft.mins
@@ -365,10 +298,8 @@
           DzDate.setSeconds(this.SecOffset)
 
 
-
-          let timeLeft = msToTime(DzDate.getTime() - curDate.getTime())
+          let timeLeft = this.msToTime(DzDate.getTime() - curDate.getTime())
           this.TtD = formatTime(timeLeft);
-
 
         },
         Initial () {

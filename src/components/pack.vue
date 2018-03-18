@@ -1,27 +1,17 @@
+
 <template>
   <div id="Main">
-    <div>
-      <transition
-      appear
-      name="test"
+
+      <transition-group
+      leave-active-class="animated fadeOutRight"
       mode="out-in"
       >
-        <div :key="trans" >
-
-          <transition-group
-          leave-active-class="animated fadeOutRight"
-          mode="out-in"
-          >
-            <q-card color="dark" v-for="lek in TodayPlanOnline" :key="GetDataToDisplay(lek,GrpDis).ln" v-touch-hold:300=" (e) => SwipeHandler(e,lek)">
-              <q-card-title class="noClicks">
-                {{GetDataToDisplay(lek,GrpDis).ln}}
-              </q-card-title>
-            </q-card>
-          </transition-group>
-
-        </div>
-      </transition>
-    </div>
+        <q-card color="dark" v-for="lek in TodayPlanOnline" :key="GetDataToDisplay(lek,GrpDis).ln" v-touch-hold:300=" (e) => SwipeHandler(e,lek)">
+          <q-card-title class="noClicks">
+            {{GetDataToDisplay(lek,GrpDis).ln}}
+          </q-card-title>
+        </q-card>
+      </transition-group>
 
   </div>
 </template>
@@ -49,14 +39,12 @@
       },
       data () {
         return {
-          TodayPlanOnline:null,
-          trans: false
+          TodayPlanOnline:null
         }
       },
       watch: {
         GrpDis: function () {
-          this.trans = !this.trans
-          this.Initial()
+          this.$emit('grpTrigger')
         }
       },
       methods: {

@@ -1,25 +1,10 @@
 <template>
   <div>
-    <!-- <q-transition
- appear
- enter="zoomInDown"
- leave="zoomOut"
-> -->
 
-    <div v-show="show">
-      <q-card  color="dark">
-        <q-card-media>
-          <img src="~assets/1.png" style="padding:50px">
-          <!-- Notice the slot="overlay" -->
-          <q-card-title slot="overlay" class="center">
-            Krótki Opis Aplikacji
-          </q-card-title>
-        </q-card-media>
-      </q-card>
+    <div>
 
       <q-card  color="dark">
-        <!-- Notice the slot="overlay" -->
-        <q-card-title slot="overlay" class="center">
+        <q-card-title  class="center">
           Aplikacja Oparta Jest Na:
         </q-card-title>
 
@@ -29,7 +14,7 @@
           </q-item>
 
           <q-item>
-            <q-item-main label="FireBase" sublabel="Baza Danych Przechowująca Plany Lekcji" />
+            <q-item-main label="Ekonomik Api" sublabel="Server node.js parsujący plany lekcji oraz zastępstwa ze strony szkoły" />
           </q-item>
 
           <q-item>
@@ -50,8 +35,7 @@
 
 
       <q-card  color="dark">
-        <!-- Notice the slot="overlay" -->
-        <q-card-title slot="overlay" class="center">
+        <q-card-title class="center">
           Narzędzia:
         </q-card-title>
 
@@ -74,8 +58,6 @@
 
     </div>
 
-<!-- </q-transition> -->
-
   </div>
 
 </template>
@@ -85,9 +67,6 @@
       QCard, // +
       QCardTitle, // +
       QCardMain, // +
-      QCardMedia, // +
-      // QCardActions, //-
-      // QCardSeparator, //-
       QTransition, // +
       QList, // +
       QListHeader, // +
@@ -97,30 +76,18 @@
 
     export default {
       name: 'index',
-      props: ['GrpDis'],
       components: {
         QCard,
         QCardTitle,
         QCardMain,
-        QCardMedia,
-        // QCardActions,
-        // QCardSeparator,
         QTransition,
         QList,
         QListHeader,
         QItem,
         QItemMain
       },
-      data () {
-        return {
-          show: true
-        }
-      },
-      methods: {
-
-      },
       beforeCreate () {
-        this.$emit('isGrpNe', 0)
+        // this.$emit('isGrpNe', 0)
       },
       created () {
 
@@ -128,17 +95,3 @@
 
     }
 </script>
-
-<style lang="stylus">
-.logo-container
-  width 255px
-  height 242px
-  perspective 800px
-  position absolute
-  top 50%
-  left 50%
-  transform translateX(-50%) translateY(-50%)
-.logo
-  position absolute
-  transform-style preserve-3d
-</style>
