@@ -6,7 +6,7 @@
 >
 
        <div :key="trans">
-         <q-card color="dark" class="animated" :class="{shake: StD==0}" v-if="TodayPlanOnline != null">
+         <q-card color="dark" class="animated" :class="{shake: Dtriger}" v-if="TodayPlanOnline != null">
 
            <q-card-title>
              {{GetDataToDisplay(NrLek,GrpDis).l.ln}}
@@ -14,9 +14,7 @@
                <q-btn flat small round color="faded" @click="OpenSettings">
                  <q-icon name="settings" />
                </q-btn>
-               {{MtD}}min
-               {{StD}}s
-
+               {{TtD}}
 
              </div>
 
@@ -24,7 +22,7 @@
 
            <q-card-main>
              <b>Sala: </b>{{GetDataToDisplay(NrLek,GrpDis).l.s}}
-             <p class="text-faded">Dzwonek: {{GetDataToDisplay(NrLek,GrpDis).d}}</p>
+             <p class="text-faded">Dzwonek: {{GetDataToDisplay(NrLek,GrpDis).d}} : {{SecOffset}}s</p>
 
              <q-collapsible class="bg-primary" icon="warning" label="Zastępstwo" v-if="getZastsFtd() != null">
                <div>
@@ -100,10 +98,8 @@
           DzwonekLek: '-',
           SalaLekNext: '-',
           NrLek: 0,
-          MPlan: '',
-          MtD: '-',
-          StD: '-',
-          Mse: null,
+          TtD:0,
+          Dtriger:false,
           trans: false,
           destroyed: true,
           SecOffset: 0
@@ -208,14 +204,40 @@
 
         },
         OpenSettings () {
+          function secondsToTime(secs)
+          {
+              secs = Math.round(secs);
+              var hours = Math.floor(secs / (60 * 60));
+
+              var divisor_for_minutes = secs % (60 * 60);
+              var minutes = Math.floor(divisor_for_minutes / 60);
+
+              var divisor_for_seconds = divisor_for_minutes % 60;
+              var seconds = Math.ceil(divisor_for_seconds);
+
+              var obj = {
+                  "h": hours,
+                  "m": minutes,
+                  "s": seconds
+              };
+              return obj;
+          }
+
+          let time = secondsToTime(this.SecOffset);
+
           Dialog.create({
             title: 'Kalibracja',
-            message: 'Wpisz ile sekund spóźnia się dzwonek',
+            message: 'Wpisz ile śpieszy się dzwonek',
             form: {
-              offset: {
+              oS: {
                 type: 'number',
                 label: 'Sekundy',
-                model: this.SecOffset,
+                model: time.s
+              },
+              oM: {
+                type: 'number',
+                label: 'Minuty',
+                model: time.m
               }
             },
             buttons: [
@@ -236,7 +258,20 @@
                 label: 'Ok',
                 handler: (data) => {
                   localStorage.setItem('autoMode', false)
-                  this.SecOffset = data.offset;
+
+                  if (data.oS) {
+                    if (data.oM) {
+                      this.SecOffset = data.oM * 60 + data.oS;
+                    }
+                    else {
+                      this.SecOffset = data.oS;
+                    }
+                  }
+                  else if(data.oM){
+                    this.SecOffset = data.oM * 60;
+                  }
+
+
                   let a2 = Alert.create({
                     color: 'positive',
                     position: 'bottom-left',
@@ -252,29 +287,6 @@
               }
             ]
           })
-        },
-        getDate() {
-          let d = new Date();
-          let h = d.getHours();
-          let m = d.getMinutes();
-          let s = d.getSeconds();
-          let day = d.getDay();
-
-          //Secound Countdown
-          if (this.MtD != '-') {
-            if (this.MtD == 0) {
-              this.StD = 60 - s - this.SecOffset
-            }
-            else {
-              this.StD = 60 - s
-            }
-          }
-          else {
-            this.StD = '-'
-          }
-          //////End/////////
-
-          return {h,m,s,day}
         },
         RequirePlan(day) {
           if (this.OnlinePlanJson != null) {
@@ -310,26 +322,60 @@
             }
           }
 
-          this.NrLek = TimeTest(m, me, x1, x2)-1;
+          function msToTime(s) {
+            let ms = s % 1000;
+            s = (s - ms) / 1000;
+            let secs = s % 60;
+            s = (s - secs) / 60;
+            let mins = s % 60;
+            let hrs = (s - mins) / 60;
 
-          var Mtd = me - m;
-          if (Mtd > 0) {
-            if (Mtd != 1) {
-              this.MtD = Mtd;
+            return {hrs,mins,secs}
+          }
+
+          function formatTime(timeLeft) {
+            let hrs = timeLeft.hrs
+            let mins = timeLeft.mins
+            let secs = timeLeft.secs
+
+            if (hrs < 1) {
+              if (mins < 1) {
+                return secs + 's';
+              }
+              else {
+                return mins + 'min ' + secs + 's';
+              }
             }
-            else if (Mtd == 1) {
-              this.MtD = 0;
+            else {
+              return hrs + 'h ' + mins + 'min ' + secs + 's';
             }
           }
-          else {
-            this.MtD = '-';
-          }
+
+
+          let NrLek = TimeTest(m, me, x1, x2)-1;
+
+          this.NrLek = NrLek;
+
+          let curDate = new Date();
+
+          let DzTime = this.MDzwonki[NrLek].split(':');
+          let DzDate = new Date();
+          DzDate.setHours(DzTime[0])
+          DzDate.setMinutes(DzTime[1])
+          DzDate.setSeconds(this.SecOffset)
+
+
+
+          let timeLeft = msToTime(DzDate.getTime() - curDate.getTime())
+          this.TtD = formatTime(timeLeft);
+
+
         },
         Initial () {
-          let getDate = this.getDate()
-          let h = getDate.h
-          let m = getDate.m
-          let day = getDate.day
+          let d = new Date();
+          let h = d.getHours();
+          let m = d.getMinutes();
+          let day = d.getDay();
           this.RequirePlan(day)
 
           if (h < 8) {
