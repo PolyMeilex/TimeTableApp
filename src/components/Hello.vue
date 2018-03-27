@@ -299,6 +299,11 @@
 
 
           let timeLeft = this.msToTime(DzDate.getTime() - curDate.getTime())
+
+          if (timeLeft > 2700000) {
+            timeLeft-=2700000;
+          }
+
           this.TtD = formatTime(timeLeft);
 
         },
