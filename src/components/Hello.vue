@@ -298,11 +298,16 @@
           DzDate.setSeconds(this.SecOffset)
 
 
-          let timeLeft = this.msToTime(DzDate.getTime() - curDate.getTime())
+          let test = DzDate.getTime() - curDate.getTime()
 
-          if (timeLeft > 2700000) {
-            timeLeft-=2700000;
+
+
+          if (test > 2700000) {
+            test-=2700000;
+            console.log(test);
           }
+
+            let timeLeft = this.msToTime(test)
 
           this.TtD = formatTime(timeLeft);
 
