@@ -228,6 +228,7 @@ export default {
       this.OnlinePlanJson = JSON.parse(LocalPlan);
     }
 
+    let app = require('./fInit.js').app;
 
     fetch('https://ekonomik-api.herokuapp.com')
     .then(response  => response.json())
