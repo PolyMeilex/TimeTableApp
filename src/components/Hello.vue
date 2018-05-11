@@ -5,7 +5,7 @@
          <q-card color="dark" class="animated" :class="{shake: Dtriger}" v-if="TodayPlanOnline != null">
 
            <q-card-title>
-             {{GetDataToDisplay(NrLek,GrpDis).l.ln}}
+             {{GetDataToDisplay(NrLek,GrpDis).l.subject}}
              <div slot="right" class="row items-center">
                <q-btn flat small round color="faded" @click="OpenSettings">
                  <q-icon name="settings" />
@@ -17,7 +17,7 @@
            </q-card-title>
 
            <q-card-main>
-             <b>Sala: </b>{{GetDataToDisplay(NrLek,GrpDis).l.s}}
+             <b>Sala: </b>{{GetDataToDisplay(NrLek,GrpDis).l.room.name}}
              <p class="text-faded">Dzwonek: {{GetDataToDisplay(NrLek,GrpDis).d}}</p>
 
              <q-collapsible class="bg-primary" icon="warning" label="Zastępstwo" v-if="getZastsFtd() != null">
@@ -38,11 +38,11 @@
         <q-card color="dark" v-if="TodayPlanOnline != null">
 
           <q-card-title>
-            {{GetDataToDisplay(NrLek+1,GrpDis).l.ln}}
+            {{GetDataToDisplay(NrLek+1,GrpDis).l.subject}}
           </q-card-title>
 
           <q-card-main>
-            <b>Sala: </b>{{GetDataToDisplay(NrLek+1,GrpDis).l.s}}
+            <b>Sala: </b>{{GetDataToDisplay(NrLek+1,GrpDis).l.room.name}}
             <p class="text-faded">Dzwonek: {{GetDataToDisplay(NrLek+1,GrpDis).d}}</p>
           </q-card-main>
 
@@ -115,27 +115,32 @@
       methods: {
         GetDataToDisplay(lekNr,grp){
           // this.DzwonekLek = this.MDzwonki[lekNr];
+          
           if (lekNr<8) {
             if (grp == 1) {
               return {
-                l:this.TodayPlanOnline[lekNr].g1,
+                l:this.TodayPlanOnline[lekNr].lessons.g1,
                 d:this.MDzwonki[lekNr]
               }
             }
             else if (grp ==2) {
               return {
-                l:this.TodayPlanOnline[lekNr].g2,
+                l:this.TodayPlanOnline[lekNr].lessons.g2,
                 d:this.MDzwonki[lekNr]
               }
             }
           }
           else {
               return{
-                l:{
-                  ln:"-",
-                  s:"-"
+                teacher: {
+                  "name": "-",
+                  "value": "0"
                 },
-                d:"-"
+                room: {
+                  "name": "0",
+                  "value": "0"
+                },
+                subject: "-"
               }
           }
 
@@ -236,22 +241,22 @@
           if (this.OnlinePlanJson != null) {
             switch (day) {
               case 1:
-                this.TodayPlanOnline = this.OnlinePlanJson.Po;
+                this.TodayPlanOnline = this.OnlinePlanJson[0];
               break;
               case 2:
-                this.TodayPlanOnline = this.OnlinePlanJson.Wt;
+                this.TodayPlanOnline = this.OnlinePlanJson[1];
               break;
               case 3:
-                this.TodayPlanOnline = this.OnlinePlanJson.Si;
+                this.TodayPlanOnline = this.OnlinePlanJson[2];
               break;
               case 4:
-                this.TodayPlanOnline = this.OnlinePlanJson.Cz;
+                this.TodayPlanOnline = this.OnlinePlanJson[3];
               break;
               case 5:
-                this.TodayPlanOnline = this.OnlinePlanJson.Pi;
+                this.TodayPlanOnline = this.OnlinePlanJson[4];
               break;
               default:
-                this.TodayPlanOnline = this.OnlinePlanJson.Po;
+                this.TodayPlanOnline = this.OnlinePlanJson[0];
               break;
             }
           }

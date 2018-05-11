@@ -12,10 +12,10 @@
 
       <q-card :color="PrimaryCheck(TodayPlanOnline.indexOf(lek))" v-for="lek in TodayPlanOnline" :key="lek.i">
         <q-card-title>
-          {{GetDataToDisplay(lek,GrpDis).ln}}
+          {{GetDataToDisplay(lek,GrpDis).subject}}
         </q-card-title>
         <q-card-main>
-          <b>Sala: </b>{{GetDataToDisplay(lek,GrpDis).s}}
+          <b>Sala: </b>{{GetDataToDisplay(lek,GrpDis).room.name}}
 
           <p :class="FadedTextCheck(TodayPlanOnline.indexOf(lek))">Dzwonek: {{DzCheck(TodayPlanOnline.indexOf(lek))}}</p>
         </q-card-main>
@@ -151,29 +151,29 @@
           if (this.OnlinePlanJson != null) {
             switch (day) {
               case 1:
-                this.TodayPlanOnline = this.OnlinePlanJson.Po;
+                this.TodayPlanOnline = this.OnlinePlanJson[0];
               break;
               case 2:
-                this.TodayPlanOnline = this.OnlinePlanJson.Wt;
+                this.TodayPlanOnline = this.OnlinePlanJson[1];
               break;
               case 3:
-                this.TodayPlanOnline = this.OnlinePlanJson.Si;
+                this.TodayPlanOnline = this.OnlinePlanJson[2];
               break;
               case 4:
-                this.TodayPlanOnline = this.OnlinePlanJson.Cz;
+                this.TodayPlanOnline = this.OnlinePlanJson[3];
               break;
               case 5:
-                this.TodayPlanOnline = this.OnlinePlanJson.Pi;
+                this.TodayPlanOnline = this.OnlinePlanJson[4];
               break;
               default:
-                this.TodayPlanOnline = this.OnlinePlanJson.Po;
+                this.TodayPlanOnline = this.OnlinePlanJson[0];
               break;
             }
 
-            this.TodayPlanOnline = this.TodayPlanOnline.map( (lek,i) => {
+            this.TodayPlanOnline = this.TodayPlanOnline.map( (e,i) => {
                 return {
-                  g1:lek.g1,
-                  g2:lek.g2,
+                  g1:e.lessons.g1,
+                  g2:e.lessons.g2,
                   i:i
                 }
             })

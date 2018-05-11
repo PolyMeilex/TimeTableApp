@@ -8,7 +8,7 @@
 
       <q-toolbar-title>
         Plan Lekcji
-        <div slot="subtitle">v3.5.2</div>
+        <div slot="subtitle">v3.6.0</div>
       </q-toolbar-title>
 
 
@@ -229,7 +229,7 @@ export default {
     }
 
 
-    fetch('https://ekonomik-api-ekonomik-api.7e14.starter-us-west-2.openshiftapps.com')
+    fetch('https://ekonomik-api.herokuapp.com')
     .then(response  => response.json())
     .then(response => {
       this.ZastArray = response
@@ -237,7 +237,7 @@ export default {
       this.localZast = false
     }).catch(e=>console.log(e))
 
-    fetch('https://ekonomik-api-ekonomik-api.7e14.starter-us-west-2.openshiftapps.com/plan/')
+    fetch('https://39wodm-user.freehosting.host/index.php?nr=2')
     .then(response  => response.json())
     .then(response => {
       this.OnlinePlanJson = response;

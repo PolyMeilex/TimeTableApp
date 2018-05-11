@@ -6,9 +6,9 @@
       leave-active-class="animated fadeOutRight"
       mode="out-in"
       >
-        <q-card color="dark" v-for="lek in TodayPlanOnline" :key="GetDataToDisplay(lek,GrpDis).ln" v-touch-hold:300=" (e) => SwipeHandler(e,lek)">
+        <q-card color="dark" v-for="lek in TodayPlanOnline" v-if="GetDataToDisplay(lek,GrpDis).lek.subject!='-'" :key="GetDataToDisplay(lek,GrpDis).i" v-touch-hold:300=" (e) => SwipeHandler(e,lek)">
           <q-card-title class="noClicks">
-            {{GetDataToDisplay(lek,GrpDis).ln}}
+            {{GetDataToDisplay(lek,GrpDis).lek.subject}}
           </q-card-title>
         </q-card>
       </transition-group>
@@ -54,39 +54,39 @@
         },
         GetDataToDisplay(lek,grp){
           if (grp == 1) {
-            return lek.g1;
+            return {lek:lek.g1,i:lek.i};
           }
           else if (grp ==2) {
-            return lek.g2;
+            return {lek:lek.g2,i:lek.i};
           }
         },
         RequirePlan(day) {
           if (this.OnlinePlanJson != null) {
             switch (day) {
               case 1:
-                this.TodayPlanOnline = this.OnlinePlanJson.Po;
+                this.TodayPlanOnline = this.OnlinePlanJson[0];
               break;
               case 2:
-                this.TodayPlanOnline = this.OnlinePlanJson.Wt;
+                this.TodayPlanOnline = this.OnlinePlanJson[1];
               break;
               case 3:
-                this.TodayPlanOnline = this.OnlinePlanJson.Si;
+                this.TodayPlanOnline = this.OnlinePlanJson[2];
               break;
               case 4:
-                this.TodayPlanOnline = this.OnlinePlanJson.Cz;
+                this.TodayPlanOnline = this.OnlinePlanJson[3];
               break;
               case 5:
-                this.TodayPlanOnline = this.OnlinePlanJson.Pi;
+                this.TodayPlanOnline = this.OnlinePlanJson[4];
               break;
               default:
-                this.TodayPlanOnline = this.OnlinePlanJson.Po;
+                this.TodayPlanOnline = this.OnlinePlanJson[0];
               break;
             }
 
-            this.TodayPlanOnline = this.TodayPlanOnline.map( (lek,i) => {
+            this.TodayPlanOnline = this.TodayPlanOnline.map( (e,i) => {
                 return {
-                  g1:lek.g1,
-                  g2:lek.g2,
+                   g1:e.lessons.g1,
+                  g2:e.lessons.g2,
                   i:i
                 }
             })
