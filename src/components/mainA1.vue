@@ -110,9 +110,7 @@
             return test;
             }
             else{
-              return {
-               Opis:"test"
-              }
+              return null
             }
 
         },

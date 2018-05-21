@@ -230,13 +230,13 @@ export default {
 
     let app = require('./fInit.js').app;
 
-    // fetch('https://ekonomik-api.herokuapp.com')
-    // .then(response  => response.json())
-    // .then(response => {
-    //   this.ZastArray = response
-    //   localStorage.setItem('LocalZasts', JSON.stringify(response))
-    //   this.localZast = false
-    // }).catch(e=>console.log(e))
+    fetch('https://ekonomik-api.herokuapp.com')
+    .then(response  => response.json())
+    .then(response => {
+      this.ZastArray = response
+      localStorage.setItem('LocalZasts', JSON.stringify(response))
+      this.localZast = false
+    }).catch(e=>console.log(e))
 
 
 
