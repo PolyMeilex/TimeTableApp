@@ -2,7 +2,7 @@
   <div style="overflow-x: hidden">
 
        <div>
-         <q-card color="dark" class="animated" :class="{shake: Dtriger}" v-if="TodayPlanOnline != null">
+         <q-card color="dark" class="animated" :class="{shake: Dtriger}" v-if="TodayPlanOnline != null & GetDataToDisplay(NrLek,GrpDis).l != null" >
 
            <q-card-title>
              {{GetDataToDisplay(NrLek,GrpDis).l.subject}}
@@ -35,7 +35,7 @@
 
          </q-card>
 
-        <q-card color="dark" v-if="TodayPlanOnline != null">
+        <q-card color="dark" v-if="TodayPlanOnline != null & GetDataToDisplay(NrLek+1,GrpDis).l != null" >
 
           <q-card-title>
             {{GetDataToDisplay(NrLek+1,GrpDis).l.subject}}
