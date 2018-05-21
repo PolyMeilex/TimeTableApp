@@ -10,15 +10,29 @@
 
     <div v-touch-swipe.horizontal="SwipeHandler">
 
-      <q-card :color="PrimaryCheck(TodayPlanOnline.indexOf(lek))" v-for="lek in TodayPlanOnline" :key="lek.i">
+      <q-card :color="PrimaryCheck(lek.i)" v-for="lek in TodayPlanOnline" :key="lek.i">
         <q-card-title>
+          {{lek.i+1}}.
           {{GetDataToDisplay(lek,GrpDis).subject}}
         </q-card-title>
         <q-card-main>
           <b>Sala: </b>{{GetDataToDisplay(lek,GrpDis).room.name}}
 
-          <p :class="FadedTextCheck(TodayPlanOnline.indexOf(lek))">Dzwonek: {{DzCheck(TodayPlanOnline.indexOf(lek))}}</p>
-        </q-card-main>
+          <p :class="FadedTextCheck(lek.i)">Dzwonek: {{DzCheck(lek.i)}}</p>
+       
+       
+       <q-collapsible class="bg-primary" icon="warning" label="Zastępstwo" v-if="getZastsFtd(lek.i) != null">
+               <div>
+                         <p><b>Opis:</b> {{getZastsFtd(lek.i).NrLekcji}}</p>
+                         <p><b>Sala:</b> {{getZastsFtd(lek.i).Sala}}</p>
+                         <p><b>Grp:</b> {{getZastsFtd(lek.i).Klasa}}</p>
+                         <p><b>Nauczyciel:</b> {{getZastsFtd(lek.i).Nauczyciel}}</p>
+               </div>
+        </q-collapsible>
+       
+       </q-card-main>
+
+         
       </q-card>
 
     </div>
@@ -35,7 +49,8 @@
       QCardMain,
       QTabs,
       QTab,
-      TouchSwipe
+      TouchSwipe,
+      QCollapsible
     } from 'quasar'
 
     export default {
@@ -43,13 +58,14 @@
         TouchSwipe
       },
       name: 'index',
-      props: ['GrpDis','MDzwonki','OnlinePlanJson'],
+      props: ['GrpDis','MDzwonki','OnlinePlanJson','SortedByDayArray'],
       components: {
         QCard,
         QCardTitle,
         QCardMain,
         QTabs,
-        QTab
+        QTab,
+        QCollapsible
         // QTabPane
       },
       data () {
@@ -77,6 +93,29 @@
         }
       },
       methods: {
+         getZastsFtd(i){    
+            let isItDay = (element) => {
+              let date = new Date();
+              let day = date.getDay();
+              return element.d == this.selectedTab;
+            }
+            let DayArray = this.SortedByDayArray.find(isItDay)
+            
+            if (DayArray != null) {
+            let ZastArray = DayArray.e.zast;
+            let test = ZastArray.find((element) => {
+              return element.NrLekcji-1 == i & element.Grp==this.GrpDis || element.NrLekcji-1 == i & element.Grp==0;
+            })
+            
+            return test;
+            }
+            else{
+              return {
+               Opis:"test"
+              }
+            }
+
+        },
         GetDataToDisplay(lek,grp){
           // this.DzwonekLek = this.MDzwonki[lekNr];
 
