@@ -240,7 +240,7 @@ export default {
 
 
 
-    fetch('https://39wodm-user.freehosting.host/index.php?nr=2')
+    fetch('https://39wodm-user.freehosting.host/index.php?nr=10')
     .then(response  => response.json())
     .then(response => {
       this.OnlinePlanJson = response;
