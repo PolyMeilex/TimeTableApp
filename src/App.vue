@@ -246,8 +246,13 @@ export default {
     }).catch(e=>console.log(e))
 
 
+    let klasa = localStorage.getItem('klasa');
 
-    fetch('https://39wodm-user.freehosting.host/index.php?nr=10')
+    if(klasa==null){
+      klasa = 10;
+    }
+
+    fetch('https://39wodm-user.freehosting.host/index.php?nr='+klasa)
     .then(response  => response.json())
     .then(response => {
       this.OnlinePlanJson = response;

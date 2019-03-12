@@ -9,7 +9,7 @@
         </q-card-title>
 
         <q-card-main>
-          Klasa:
+          Klasa: {{ selectOptions[selectOptions].label }}
          <q-select
             v-model="select"
             float-label="Jaka jest twoja kalasa?"
@@ -17,6 +17,8 @@
             dark
             :options="selectOptions"
           />
+
+          <q-btn dark color="primary" @click="save"> Zapisz </q-btn>
 
         </q-card-main>
 
@@ -37,7 +39,8 @@
       QCardTitle, // +
       QCardMain, // +
       QTransition, // +
-      QSelect
+      QSelect,
+      QBtn
     } from 'quasar'
 
     export default {
@@ -47,10 +50,13 @@
         QCardTitle,
         QCardMain,
         QTransition,
-        QSelect
+        QSelect,
+        QBtn
       },
       data(){
         return {
+           select:1,
+           myClass:1,
            selectOptions: [             
                 {"value":1, "label":"1at"},
                 {"value":2, "label":"1bt"},
@@ -84,10 +90,23 @@
             ],
         }
       },
+      methods:{
+        save(){
+          localStorage.setItem('klasa', this.select);
+          location.reload();
+        }
+      },
       beforeCreate () {
         // this.$emit('isGrpNe', 0)
       },
       created () {
+        let n = localStorage.getItem('klasa');
+        if(n==null){
+          n=10;
+        }
+
+        this.myClass = n;
+
 
       }
 
