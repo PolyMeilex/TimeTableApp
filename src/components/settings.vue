@@ -9,7 +9,7 @@
         </q-card-title>
 
         <q-card-main>
-          Klasa: {{ selectOptions[selectOptions].label }}
+          Klasa: {{ selectOptions[myClass].label }}
          <q-select
             v-model="select"
             float-label="Jaka jest twoja kalasa?"
