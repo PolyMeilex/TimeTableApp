@@ -15,8 +15,9 @@ export default new VueRouter({
     { path: '/', component: load('Hello') },
     { path: '/mainA1', component: load('mainA1') },
     { path: '/info', component: load('info') },
-    { path: '/zasts', component: load('zasts') },
     { path: '/pack', component: load('pack') },
+    { path: '/zasts', component: load('Hello') },
+    { path: '/settings', component: load('settings') },
     
     { path: '*', component: load('Hello') } // Not found
   ]

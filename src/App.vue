@@ -50,10 +50,17 @@
           <q-item-main label="Pack Books" sublabel="" />
         </q-side-link>
 
-        <q-side-link item to="/zasts">
+        <q-side-link item to="/zasts" disabled>
           <q-item-side icon="warning" />
           <q-item-main label="Experimental" sublabel="Zastępstwa" />
         </q-side-link>
+
+        <q-side-link item to="/settings">
+          <q-item-side icon="settings" />
+          <q-item-main label="Ustawienia" sublabel="Ustawienia użytkownika" />
+        </q-side-link>
+
+
 
       </q-list>
     </div>
