@@ -7,7 +7,7 @@
       </q-btn>
 
       <q-toolbar-title>
-        Plan Lekcji
+        Plan Lekcji {{klasaLabel}}
         <div slot="subtitle">v3.6.1</div>
       </q-toolbar-title>
 
@@ -143,6 +143,7 @@ export default {
   },
   data() {
     return {
+      klasa: 10,
       grp: 1,
       trans:false,
       isGrpNe: 1,
@@ -251,6 +252,14 @@ export default {
     if(klasa==null){
       klasa = 10;
     }
+
+    let klasaLabel = localStorage.getItem('klasa-label');
+
+    if(klasaLabel==null){
+      klasaLabel = "2bt";
+    }
+
+    this.klasaLabel = klasaLabel;
 
     fetch('https://39wodm-user.freehosting.host/index.php?nr='+klasa)
     .then(response  => response.json())

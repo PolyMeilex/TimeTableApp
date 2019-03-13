@@ -9,16 +9,27 @@
         </q-card-title>
 
         <q-card-main>
-          Klasa: {{ selectOptions[myClass].label }}
-         <q-select
+          Aktualne ustawienia to: <b>Uczeń: {{ myClassLabel }}</b>
+          <br/>
+          <p class="caption">Jetem:</p>
+          <q-radio v-model="typeSelect" val="nr" label="Uczeniem" />
+          <q-radio val="1" label="Nauczycielem" disabled/>
+          <q-radio val="2" label="Salą" disabled />
+
+          
+
+          <q-select
             v-model="select"
-            float-label="Jaka jest twoja kalasa?"
+            float-label="Moja klasa to:"
             radio
             dark
             :options="selectOptions"
           />
 
+          
           <q-btn dark color="primary" @click="save"> Zapisz </q-btn>
+
+      
 
         </q-card-main>
 
@@ -40,7 +51,8 @@
       QCardMain, // +
       QTransition, // +
       QSelect,
-      QBtn
+      QBtn,
+      QRadio
     } from 'quasar'
 
     export default {
@@ -51,12 +63,14 @@
         QCardMain,
         QTransition,
         QSelect,
-        QBtn
+        QBtn,
+        QRadio
       },
       data(){
         return {
            select:1,
-           myClass:1,
+           myClassLabel:"2bt",
+           typeSelect: "nr",
            selectOptions: [             
                 {"value":1, "label":"1at"},
                 {"value":2, "label":"1bt"},
@@ -93,6 +107,7 @@
       methods:{
         save(){
           localStorage.setItem('klasa', this.select);
+          localStorage.setItem('klasa-label', this.selectOptions[this.select-1].label);
           location.reload();
         }
       },
@@ -105,9 +120,8 @@
           n=10;
         }
 
-        this.myClass = n;
-
-
+        this.myClassLabel = this.selectOptions[n-1].label;
+        this.select = parseInt(n);
       }
 
     }
