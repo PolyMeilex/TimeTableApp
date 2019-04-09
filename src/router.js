@@ -15,7 +15,6 @@ export default new VueRouter({
     { path: '/', component: load('Hello') },
     { path: '/mainA1', component: load('mainA1') },
     { path: '/info', component: load('info') },
-    { path: '/zasts', component: load('zasts') },
     { path: '/pack', component: load('pack') },
     { path: '/settings', component: load('settings') },
     

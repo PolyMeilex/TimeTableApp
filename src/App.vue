@@ -40,26 +40,22 @@
           <q-item-main label="Pełen Plan" sublabel="Wyświetla Plan Całego Dnia" />
         </q-side-link>
 
-        <q-side-link item to="/zasts">
-          <q-item-side icon="warning" />
-          <q-item-main label="Zastępstwa" sublabel="Experimental" />
+        <q-side-link item to="/info">
+          <q-item-side icon="chat" />
+          <q-item-main label="Informacje" sublabel="Krótki Opis Projektu" />
         </q-side-link>
-
 
         <q-side-link item to="/Pack">
           <q-item-side icon="chrome reader mode" />
           <q-item-main label="Pack Books" sublabel="" />
         </q-side-link>
 
-        <q-side-link item to="/info">
-          <q-item-side icon="chat" />
-          <q-item-main label="Informacje" sublabel="Krótki Opis Projektu" />
+        <q-side-link item to="/settings">
+          <q-item-side icon="settings" />
+          <q-item-main label="Ustawienia" sublabel="Ustawienia użytkownika" />
         </q-side-link>
 
-         <q-side-link item to="/settings">
-          <q-item-side icon="settings" />
-          <q-item-main label="Settings" sublabel="" />
-        </q-side-link>
+
 
       </q-list>
     </div>
@@ -142,6 +138,7 @@ export default {
   },
   data() {
     return {
+      klasa: 10,
       grp: 1,
       trans:false,
       isGrpNe: 1,
@@ -245,8 +242,21 @@ export default {
     }).catch(e=>console.log(e))
 
 
+    let klasa = localStorage.getItem('klasa');
 
-    fetch('https://39wodm-user.freehosting.host/index.php?nr=10')
+    if(klasa==null){
+      klasa = 10;
+    }
+
+    let klasaLabel = localStorage.getItem('klasa-label');
+
+    if(klasaLabel==null){
+      klasaLabel = "2bt";
+    }
+
+    this.klasaLabel = klasaLabel;
+
+    fetch('https://39wodm-user.freehosting.host/index.php?nr='+klasa)
     .then(response  => response.json())
     .then(response => {
       this.OnlinePlanJson = response;
