@@ -8,7 +8,7 @@
 
       <q-toolbar-title>
         Plan Lekcji
-        <div slot="subtitle">v3.6.1</div>
+        <div slot="subtitle">v3.6.2</div>
       </q-toolbar-title>
 
 
@@ -40,19 +40,25 @@
           <q-item-main label="Pełen Plan" sublabel="Wyświetla Plan Całego Dnia" />
         </q-side-link>
 
-        <q-side-link item to="/info">
-          <q-item-side icon="chat" />
-          <q-item-main label="Informacje" sublabel="Krótki Opis Projektu" />
+        <q-side-link item to="/zasts">
+          <q-item-side icon="warning" />
+          <q-item-main label="Zastępstwa" sublabel="Experimental" />
         </q-side-link>
+
 
         <q-side-link item to="/Pack">
           <q-item-side icon="chrome reader mode" />
           <q-item-main label="Pack Books" sublabel="" />
         </q-side-link>
 
-        <q-side-link item to="/zasts">
-          <q-item-side icon="warning" />
-          <q-item-main label="Experimental" sublabel="Zastępstwa" />
+        <q-side-link item to="/info">
+          <q-item-side icon="chat" />
+          <q-item-main label="Informacje" sublabel="Krótki Opis Projektu" />
+        </q-side-link>
+
+         <q-side-link item to="/settings">
+          <q-item-side icon="settings" />
+          <q-item-main label="Settings" sublabel="" />
         </q-side-link>
 
       </q-list>
@@ -228,7 +234,7 @@ export default {
       this.OnlinePlanJson = JSON.parse(LocalPlan);
     }
 
-    let app = require('./fInit.js').app;
+    // let app = require('./fInit.js').app;
 
     fetch('https://ekonomik-api.herokuapp.com')
     .then(response  => response.json())

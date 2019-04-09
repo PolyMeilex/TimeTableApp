@@ -18,7 +18,7 @@ const db = Firebase.database();
 
 
 
-Firebase.auth().signInAnonymously().catch( e => console.log(e));
+// Firebase.auth().signInAnonymously().catch( e => console.log(e));
 
 Firebase.auth().onAuthStateChanged(user => {
   if (user) {

@@ -186,7 +186,7 @@
 
           Dialog.create({
             title: 'Kalibracja',
-            message: 'Wpisz ile śpieszy się dzwonek',
+            message: 'Wpisz ile śpieszy/spóźnia się dzwonek',
             form: {
               oS: {
                 type: 'number',
