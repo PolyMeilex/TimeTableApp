@@ -256,7 +256,7 @@ export default {
 
     this.klasaLabel = klasaLabel;
 
-    fetch('https://39wodm-user.freehosting.host/index.php?nr='+klasa)
+    fetch('https://codenomik.ekonomikzamosc.pl/api/ekolib/index.php?nr='+klasa)
     .then(response  => response.json())
     .then(response => {
       this.OnlinePlanJson = response;
