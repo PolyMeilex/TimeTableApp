@@ -7,7 +7,7 @@
       </q-btn>
 
       <q-toolbar-title>
-        Plan Lekcji
+        Plan Lekcji {{klasaLabel}}
         <div slot="subtitle">v3.6.2</div>
       </q-toolbar-title>
 
