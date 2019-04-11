@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-on:dblclick="$router.push('/')">
     <q-tabs color="grey-10" v-model="selectedTab">
       <q-tab :alert="DayData==1" :default="DayData==1" slot="title" name="1">Po</q-tab>
       <q-tab :alert="DayData==2" :default="DayData==2" slot="title" name="2">Wt</q-tab>

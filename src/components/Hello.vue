@@ -1,5 +1,5 @@
 <template>
-  <div style="overflow-x: hidden">
+  <div style="overflow-x: hidden" v-on:dblclick="$router.push('/mainA1')">
 
        <div>
          <q-card color="dark" class="animated" :class="{shake: Dtriger}" v-if="TodayPlanOnline != null & GetDataToDisplay(NrLek,GrpDis).l != null" >
