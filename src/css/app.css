@@ -1,0 +1,46 @@
+*{
+    -webkit-user-select: none; /* Safari */        
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.bg-dark {
+    background: #333;
+}
+
+.text-faded {
+    color: #777;
+}
+
+.trans-left-enter-active,
+.trans-left-leave-active {
+  transition: transform 0.5s;
+}
+
+.trans-left-enter {
+  /* opacity: 0; */
+  transform: translateX(-100%);
+}
+.trans-left-leave-to {
+  /* opacity: 0; */
+  transform: translateX(100%);
+}
+
+.trans-up-enter-active,
+.trans-up-leave-active {
+  transition: transform 0.5s;
+}
+
+.trans-up-enter {
+  /* opacity: 0; */
+  transform: translateY(-100%);
+}
+.trans-up-leave-to {
+  /* opacity: 0; */
+  transform: translateY(100%);
+}
