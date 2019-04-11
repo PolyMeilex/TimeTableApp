@@ -14,6 +14,7 @@ module.exports = function (ctx) {
     ],
 
     framework: {
+      lang: 'pl',
       components: [
         'QLayout',
         'QHeader',
