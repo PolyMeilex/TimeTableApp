@@ -9,7 +9,7 @@
         <div class="toolbar-title">
           Plan Lekcji {{userClassLabel}}
           <div class="toolbar-subtitle">
-            <div>v4.0.0</div>
+            <div>v4.0.1</div>
           </div>
         </div>
 

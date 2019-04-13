@@ -23,7 +23,7 @@ export default {
     },
     downloadPlan() {
       let userClass = localStorage.getItem("klasa");
-      if (userClass != null && parseInt(userClass) != NaN)
+      if (userClass != null && !isNaN(parseInt(userClass)))
       this.userClass = parseInt(userClass);
 
       let userClassLabel = localStorage.getItem("klasa-label");
@@ -44,11 +44,11 @@ export default {
   },
   created() {
     let userGrp = localStorage.getItem("GrpStorage");
-    if (userGrp != null && parseInt(userGrp) != NaN)
+    if (userGrp != null && !isNaN(parseInt(userGrp)) )
       this.userGrp = parseInt(userGrp);
 
     let userClass = localStorage.getItem("klasa");
-    if (userClass != null && parseInt(userClass) != NaN)
+    if (userClass != null && !isNaN(parseInt(userClass)))
       this.userClass = parseInt(userClass);
 
     let userClassLabel = localStorage.getItem("klasa-label");

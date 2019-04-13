@@ -73,7 +73,7 @@ export default {
       let s = parseInt(iS);
       let m = parseInt(iM);
 
-      if (s == NaN || m == NaN) return;
+      if (isNaN(s) || isNaN(m)) return;
 
       value += s;
       value += m * 60;
@@ -140,13 +140,13 @@ export default {
       endDate.setSeconds(this.syncValue);
 
       let timeLeftMs = endDate.getTime() - curDate.getTime();
-
+      
       // If time between dates is higher than 45 min, it means there is gap between lessons
       // Here we calculate how long the gap is
       if (timeLeftMs > 2700000) {
         timeLeftMs -= 2700000;
       }
-
+      
       return timeLeftMs;
     },
     TimerLoop() {
@@ -160,12 +160,15 @@ export default {
       let endH = parseInt(end[0]);
       let endM = parseInt(end[1]);
 
-      if (endH == NaN || endM == NaN) {
+      if (isNaN(endH) || isNaN(endM)) {
         endH = 0;
         endM = 0;
       }
 
+      
+
       let timeLeft = this.GetTimeLeft(endH, endM);
+
 
       // if(timeLeft>18000000) timeLeft = 0; // 5h limit
       if (timeLeft < -1800000) timeLeft = 0; // -0.5h limit
@@ -196,7 +199,7 @@ export default {
 
     // Get Local Time Offset
     let off = parseInt(localStorage.getItem("LocalOffset"));
-    if (off == NaN) off = 0;
+    if (isNaN(off)) off = 0;
 
     if (off < 0) this.syncMult = -1;
 
