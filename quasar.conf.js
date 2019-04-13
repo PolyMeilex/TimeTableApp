@@ -30,12 +30,15 @@ module.exports = function (ctx) {
         'QItemLabel',
         'QCard',
         'QCardSection',
+        'QCardActions',
         'QTabs',
         'QTab',
         'QTabPanels',
         'QTabPanel',
         'QSelect',
-        'QRadio'
+        'QRadio',
+        'QDialog',
+        'QInput'
       ],
 
       directives: [
@@ -79,7 +82,7 @@ module.exports = function (ctx) {
       // workboxOptions: {},
       manifest: {
         name: 'Plan Lekcji',
-        short_name: 'Plan',
+        short_name: 'Plan Lekcji',
         
         display: 'standalone',
         orientation: 'portrait',

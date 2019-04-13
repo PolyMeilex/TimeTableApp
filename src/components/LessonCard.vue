@@ -21,9 +21,10 @@
       </q-card-section>
     </div>
 
-    <q-card-section style="width:40%" v-if="time">
-      <div style="text-align:right; color: hsla(0,0%,100%,.6);">{{time}}</div>
+    <q-card-section style="width:40%;">
+      <slot></slot>
     </q-card-section>
+    
   </q-card>
 </template>
 
@@ -31,7 +32,7 @@
 <script>
 export default {
   name: "LessonCard",
-  props: ["lessonInfo", "time","primary"]
+  props: ["lessonInfo","primary"]
 };
 </script>
 

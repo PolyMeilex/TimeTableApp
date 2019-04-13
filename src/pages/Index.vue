@@ -1,7 +1,37 @@
 <template>
-  <q-page style="overflow-x: hidden"  v-on:dblclick="$router.push('/FullTable')" >
-    <lesson-card :lessonInfo="GetLessonInfo(todayPlan,userGrp,lessonId)" :time="timeLeftString"></lesson-card>
+  <q-page style="overflow-x: hidden" v-on:dblclick="$router.push('/FullTable')">
+    <lesson-card :lessonInfo="GetLessonInfo(todayPlan,userGrp,lessonId)">
+      <div class="flex justify-end">
+        <q-btn round color="grey-7" icon="settings" flat @click="isSyncConfigOpen=true"/>
+        <span style="color: hsla(0,0%,100%,.6); line-height:42px;">{{timeLeftString}}</span>
+      </div>
+    </lesson-card>
     <lesson-card :lessonInfo="GetLessonInfo(todayPlan,userGrp,lessonId+1)"></lesson-card>
+
+    <q-dialog v-model="isSyncConfigOpen">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Kalibracja</div>
+        </q-card-section>
+
+        <q-card-section>Dzwonek:</q-card-section>
+
+        <q-card-section>
+          <q-radio v-model="syncMult" :val="1" label="Spózinia się" style="margin-left:-10px;"/>
+          <q-radio v-model="syncMult" :val="-1" label="Śpieszy się"/>
+        </q-card-section>
+
+        <q-card-section>
+          <q-input v-model="syncConfigS" type="number" label="Sekundy"/>
+          <q-input v-model="syncConfigM" type="number" label="Minuty"/>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Reset" color="primary" @click="SaveSyncConfig(0,0,true)"/>
+          <q-btn flat label="OK" color="primary" @click="SaveSyncConfig(syncConfigS,syncConfigM)"/>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -21,15 +51,42 @@ export default {
     return {
       todayPlan: [],
       lessonId: 1,
-      timeLeftString: "0"
+      timeLeftString: "0",
+      isSyncConfigOpen: false,
+      syncMult: 1,
+      syncConfigS: 0,
+      syncConfigM: 0,
+      syncValue: 0
     };
   },
   watch: {
     userGrp() {
-      this.$emit("TriggerTrans")
+      this.$emit("TriggerTrans");
     }
   },
   methods: {
+    SaveSyncConfig(iS, iM, reset) {
+      console.log("call");
+      this.isSyncConfigOpen = false;
+      let value = 0;
+
+      let s = parseInt(iS);
+      let m = parseInt(iM);
+
+      if (s == NaN || m == NaN) return;
+
+      value += s;
+      value += m * 60;
+      value *= this.syncMult;
+
+      localStorage.setItem("LocalOffset", value);
+      this.syncValue = value;
+
+      if (reset) {
+        this.syncConfigS = iS;
+        this.syncConfigM = iM;
+      }
+    },
     GetTodayPlan(plan, date) {
       const day = date.getDay() - 1;
       if (day >= 0 && day <= 4) return plan[day];
@@ -47,17 +104,17 @@ export default {
 
       return { title: lesson.subject, room: lesson.room.name, end: p.end };
     },
-    formatTimeMs(inMs) {
-          let ms = inMs % 1000;
-          inMs = (inMs - ms) / 1000;
-          let secs = inMs % 60;
-          inMs = (inMs - secs) / 60;
-          let mins = inMs % 60;
-          let hrs = (inMs - mins) / 60;
+    GetTimeFromMs(inMs) {
+      let ms = inMs % 1000;
+      inMs = (inMs - ms) / 1000;
+      let secs = inMs % 60;
+      inMs = (inMs - secs) / 60;
+      let mins = inMs % 60;
+      let hrs = (inMs - mins) / 60;
 
-          return this.formatTime({hrs,mins,secs});
+      return { hrs, mins, secs };
     },
-    formatTime(timeObj) {
+    FormatTime(timeObj) {
       let hrs = timeObj.hrs;
       let mins = timeObj.mins;
       let secs = timeObj.secs;
@@ -69,74 +126,89 @@ export default {
           return mins + "min " + Math.abs(secs) + "s";
         }
       } else {
-        return hrs + "h " +  Math.abs(mins) + "min " +  Math.abs(secs) + "s";
+        return hrs + "h " + Math.abs(mins) + "min " + Math.abs(secs) + "s";
       }
     },
-    getTimeLeft(endH,endM){
-      let curDate = new Date();
+    GetTimeLeft(endH, endM) {
+      let curDate = new Date(); // curDate.setHours(8);
+      // curDate.setMinutes(0);
+      // curDate.setSeconds(10);
 
       let endDate = new Date();
       endDate.setHours(endH);
       endDate.setMinutes(endM);
-      endDate.setSeconds(0);
+      endDate.setSeconds(this.syncValue);
 
-      let timeLeftMs = endDate.getTime() - curDate.getTime()
-      
+      let timeLeftMs = endDate.getTime() - curDate.getTime();
+
       // If time between dates is higher than 45 min, it means there is gap between lessons
       // Here we calculate how long the gap is
       if (timeLeftMs > 2700000) {
-        timeLeftMs-=2700000;
+        timeLeftMs -= 2700000;
       }
 
       return timeLeftMs;
     },
-    timerLoop(){
+    TimerLoop() {
       const date = new Date();
-      
+
       this.lessonId = QuickGetLessonId(date);
 
-      let info = this.GetLessonInfo(this.todayPlan,1,this.lessonId);
+      let info = this.GetLessonInfo(this.todayPlan, 1, this.lessonId);
 
       let end = info.end.split(":");
       let endH = parseInt(end[0]);
       let endM = parseInt(end[1]);
 
-      if (endH == NaN || endM == NaN){
+      if (endH == NaN || endM == NaN) {
         endH = 0;
         endM = 0;
-      } 
+      }
 
-      let timeLeft = this.getTimeLeft(endH,endM)
+      let timeLeft = this.GetTimeLeft(endH, endM);
 
       // if(timeLeft>18000000) timeLeft = 0; // 5h limit
       if (timeLeft < -1800000) timeLeft = 0; // -0.5h limit
 
-      this.timeLeftString = this.formatTimeMs(timeLeft);
+      this.timeLeftString = this.FormatTime(this.GetTimeFromMs(timeLeft));
 
       if (this._isDestroyed != true) {
         setTimeout(() => {
-          this.timerLoop();
+          this.TimerLoop();
         }, 1000);
       }
     }
   },
   created() {
+    // ReMap Plan Data To Simpler Form
     const date = new Date();
-
-    // date.setHours(16);
-    // date.setMinutes(5);
 
     let todayPlanRaw = this.GetTodayPlan(this.plan, date);
     if (todayPlanRaw == null) todayPlanRaw = [];
+
     this.todayPlan = todayPlanRaw.map(plan => {
       return {
         end: plan.end,
         lessons: [plan.lessons.g1, plan.lessons.g2]
       };
     });
+    //
 
-    this.timerLoop();
+    // Get Local Time Offset
+    let off = parseInt(localStorage.getItem("LocalOffset"));
+    if (off == NaN) off = 0;
 
+    if (off < 0) this.syncMult = -1;
+
+    let obj = this.GetTimeFromMs(Math.abs(off) * 1000);
+
+    this.syncValue = off;
+    this.syncConfigS = obj.secs;
+    this.syncConfigM = obj.mins;
+    //
+
+    // Run Main Loop
+    this.TimerLoop();
   }
 };
 </script>

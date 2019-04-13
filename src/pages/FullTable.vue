@@ -121,6 +121,9 @@ export default {
     const d = new Date();
 
     this.day = d.getDay();
+
+    if(this.day > 5) this.day = 1;
+
     this.currentTab = this.day;
 
     this.currentLesson = QuickGetLessonId(d) - 1;
