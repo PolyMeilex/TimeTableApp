@@ -1,1 +1,1 @@
-/wp-api https://www.ekonomikzamosc.pl/wp-json
+/wp-api/* https://www.ekonomikzamosc.pl/wp-json/:splat 200
