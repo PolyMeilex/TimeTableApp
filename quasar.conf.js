@@ -1,3 +1,5 @@
+const path = require("path");
+
 module.exports = function(ctx) {
   return {
     boot: ["addressbar-color.js"],
@@ -53,6 +55,7 @@ module.exports = function(ctx) {
       // extractCSS: false,
       extendWebpack(cfg) {
         // copy _redirects file
+        if (!cfg.output) return; // If running quasar dev
         const CopyWebpackPlugin = require("copy-webpack-plugin");
         cfg.plugins.push(
           new CopyWebpackPlugin([
