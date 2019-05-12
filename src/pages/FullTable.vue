@@ -122,7 +122,7 @@ export default {
 
     this.day = d.getDay();
 
-    if(this.day > 5) this.day = 1;
+    if(this.day > 5 || this.day === 0) this.day = 1;
 
     this.currentTab = this.day;
 
