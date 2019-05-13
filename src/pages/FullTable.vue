@@ -1,5 +1,5 @@
 <template>
-  <q-page v-on:dblclick="$router.push('/')">
+  <q-page v-on:dblclick="DbClickHandle()">
     <div class="bg-grey-10">
       <q-tabs align="left" v-model="currentTab">
         <q-tab class="text-white text-bold" :name="1" :alert="day==1? 'red':false">Po</q-tab>
@@ -63,6 +63,10 @@ export default {
     }
   },
   methods: {
+    DbClickHandle() {
+      window.navigator.vibrate(100);
+      this.$router.push("/");
+    },
     GetLessonInfo(inputLesson, userGrp) {
       const emptyLesson = { title: "-", room: "-", end: 0 };
 
@@ -92,7 +96,6 @@ export default {
   created() {
     let PlanRaw = this.plan;
     let Plan = PlanRaw.map(day => {
-
       return day.map(plan => {
         let areSame = true;
 
@@ -122,7 +125,7 @@ export default {
 
     this.day = d.getDay();
 
-    if(this.day > 5 || this.day === 0) this.day = 1;
+    if (this.day > 5 || this.day === 0) this.day = 1;
 
     this.currentTab = this.day;
 

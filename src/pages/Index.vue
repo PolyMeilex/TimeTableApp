@@ -1,5 +1,5 @@
 <template>
-  <q-page style="overflow-x: hidden" v-on:dblclick="$router.push('/FullTable')">
+  <q-page style="overflow-x: hidden" v-on:dblclick="DbClickHandle()">
     <lesson-card :lessonInfo="GetLessonInfo(todayPlan,userGrp,lessonId)">
       <div class="flex justify-end">
         <q-btn round color="grey-7" icon="settings" flat @click="isSyncConfigOpen=true"/>
@@ -65,6 +65,10 @@ export default {
     }
   },
   methods: {
+    DbClickHandle() {
+      window.navigator.vibrate(100);
+      this.$router.push("/FullTable");
+    },
     SaveSyncConfig(iS, iM, reset) {
       console.log("call");
       this.isSyncConfigOpen = false;
@@ -140,13 +144,13 @@ export default {
       endDate.setSeconds(this.syncValue);
 
       let timeLeftMs = endDate.getTime() - curDate.getTime();
-      
+
       // If time between dates is higher than 45 min, it means there is gap between lessons
       // Here we calculate how long the gap is
       if (timeLeftMs > 2700000) {
         timeLeftMs -= 2700000;
       }
-      
+
       return timeLeftMs;
     },
     TimerLoop() {
@@ -165,10 +169,7 @@ export default {
         endM = 0;
       }
 
-      
-
       let timeLeft = this.GetTimeLeft(endH, endM);
-
 
       // if(timeLeft>18000000) timeLeft = 0; // 5h limit
       if (timeLeft < -1800000) timeLeft = 0; // -0.5h limit

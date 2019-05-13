@@ -56,11 +56,22 @@
           </q-item-section>
         </q-item>
 
+        <q-item clickable @click="$router.push('/News')">
+          <q-item-section avatar>
+            <q-icon name="chrome_reader_mode"/>
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Ogłoszenia</q-item-label>
+            <q-item-label caption>Zastępstwa I Inne Ogłoszenia Ze Strony Szkoły</q-item-label>
+          </q-item-section>
+        </q-item>
+
         <q-item clickable @click="$router.push('/Settings')">
           <q-item-section avatar>
             <q-icon name="settings"/>
           </q-item-section>
-          
+
           <q-item-section>
             <q-item-label>Ustawienia</q-item-label>
             <q-item-label caption>Ustawienia użytkownika</q-item-label>
@@ -71,7 +82,13 @@
 
     <q-page-container>
       <transition name="trans-left" mode="out-in">
-        <router-view :key="trans" :plan="plan" :userGrp="userGrp" @TriggerTrans="TriggerTrans" @downloadPlan="$emit('downloadPlan')"/>
+        <router-view
+          :key="trans"
+          :plan="plan"
+          :userGrp="userGrp"
+          @TriggerTrans="TriggerTrans"
+          @downloadPlan="$emit('downloadPlan')"
+        />
       </transition>
     </q-page-container>
   </q-layout>
@@ -80,20 +97,20 @@
 <script>
 export default {
   name: "MyLayout",
-  props: ["userGrp","userClassLabel","plan","forceReRender"],
+  props: ["userGrp", "userClassLabel", "plan", "forceReRender"],
   data() {
     return {
       leftDrawerOpen: this.$q.platform.is.desktop,
       trans: false
     };
   },
-  watch:{
-    forceReRender(){
+  watch: {
+    forceReRender() {
       this.TriggerTrans();
     }
   },
   methods: {
-    TriggerTrans(){
+    TriggerTrans() {
       this.trans = !this.trans;
     }
   }
@@ -101,7 +118,7 @@ export default {
 </script>
 
 <style>
-.toolbar-title{
+.toolbar-title {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -114,15 +131,13 @@ export default {
   font-size: 18px;
   font-weight: 500;
   padding: 0 12px;
-
-      
 }
-.toolbar-subtitle{
+.toolbar-subtitle {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
 
   font-size: 12px;
-  opacity: .7;
+  opacity: 0.7;
 }
 </style>
