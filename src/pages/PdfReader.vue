@@ -1,6 +1,7 @@
 <template>
   <div>
     <pdf
+      style="overflow: auto;"
       :src="'https://cors-anywhere.herokuapp.com/'+$route.params.link"
       ref="pdfElement"
       @loading="loadingHandle"
