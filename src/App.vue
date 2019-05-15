@@ -1,6 +1,13 @@
 <template>
   <div id="q-app" style="overflow-x: hidden;">
-    <router-view :userGrp="userGrp" :userClassLabel="userClassLabel" :plan="onlinePlanJson" @setGrp="setGrp" @downloadPlan="downloadPlan" :forceReRender="forceReRender"/>
+    <router-view
+      :userGrp="userGrp"
+      :userClassLabel="userClassLabel"
+      :plan="onlinePlanJson"
+      @setGrp="setGrp"
+      @downloadPlan="downloadPlan"
+      :forceReRender="forceReRender"
+    />
   </div>
 </template>
 
@@ -24,11 +31,13 @@ export default {
     downloadPlan() {
       let userClass = localStorage.getItem("klasa");
       if (userClass != null && !isNaN(parseInt(userClass)))
-      this.userClass = parseInt(userClass);
+        this.userClass = parseInt(userClass);
 
       let userClassLabel = localStorage.getItem("klasa-label");
       if (userClassLabel != null) this.userClassLabel = userClassLabel;
+      else localStorage.setItem("klasa-label", "2bt");
 
+      this.$q.loadingBar.start();
       fetch(
         "https://codenomik.ekonomikzamosc.pl/api/ekolib/index.php?nr=" +
           this.userClass
@@ -38,13 +47,14 @@ export default {
           this.onlinePlanJson = response;
           localStorage.setItem("OnlinePlanJson", JSON.stringify(response));
           this.forceReRender = !this.forceReRender;
+          this.$q.loadingBar.stop();
         })
         .catch(e => console.log(e));
     }
   },
   created() {
     let userGrp = localStorage.getItem("GrpStorage");
-    if (userGrp != null && !isNaN(parseInt(userGrp)) )
+    if (userGrp != null && !isNaN(parseInt(userGrp)))
       this.userGrp = parseInt(userGrp);
 
     let userClass = localStorage.getItem("klasa");

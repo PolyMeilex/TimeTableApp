@@ -9,7 +9,7 @@
         <div class="toolbar-title">
           Plan Lekcji {{userClassLabel}}
           <div class="toolbar-subtitle">
-            <div>v4.0.1</div>
+            <div>v4.1.0</div>
           </div>
         </div>
 
@@ -86,6 +86,7 @@
           :key="trans"
           :plan="plan"
           :userGrp="userGrp"
+          :userClassLabel="userClassLabel"
           @TriggerTrans="TriggerTrans"
           @downloadPlan="$emit('downloadPlan')"
         />

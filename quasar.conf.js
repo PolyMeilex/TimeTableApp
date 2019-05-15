@@ -33,15 +33,20 @@ module.exports = function(ctx) {
         "QSelect",
         "QRadio",
         "QDialog",
-        "QInput"
+        "QInput",
+        "QExpansionItem"
       ],
 
       directives: ["Ripple", "TouchRepeat"],
 
       plugins: [
         // 'Notify',
+        "LoadingBar",
         "AddressbarColor"
-      ]
+      ],
+      config: {
+        loadingBar: { color: "primary" }
+      }
     },
 
     supportIE: false,
@@ -53,6 +58,9 @@ module.exports = function(ctx) {
       // gzip: true,
       // analyze: true,
       // extractCSS: false,
+      chainWebpack(chain) {
+        chain.output.set("globalObject", "this");
+      },
       extendWebpack(cfg) {
         // copy _redirects file
         if (!cfg.output) return; // If running quasar dev

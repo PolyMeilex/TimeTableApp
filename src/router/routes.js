@@ -6,6 +6,10 @@ const routes = [
       { path: "", component: () => import("pages/Index.vue") },
       { path: "/FullTable", component: () => import("pages/FullTable.vue") },
       { path: "/News", component: () => import("pages/News.vue") },
+      {
+        path: "/PdfReader/:link",
+        component: () => import("pages/PdfReader.vue")
+      },
       { path: "/Settings", component: () => import("pages/Settings.vue") }
     ]
   }
