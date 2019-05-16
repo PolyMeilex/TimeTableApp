@@ -105,7 +105,8 @@ export default {
           if (p["featured_media"]) this.getBaner(p, p["featured_media"]);
         });
       })
-      .then(() => this.$q.loadingBar.stop());
+      .then(() => this.$q.loadingBar.stop())
+      .catch(e => this.$q.loadingBar.stop());
   }
 };
 </script>

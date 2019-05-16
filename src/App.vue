@@ -49,7 +49,7 @@ export default {
           this.forceReRender = !this.forceReRender;
           this.$q.loadingBar.stop();
         })
-        .catch(e => console.log(e));
+        .catch(e => this.$q.loadingBar.stop());
     }
   },
   created() {
