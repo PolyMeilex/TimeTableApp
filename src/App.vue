@@ -38,9 +38,19 @@ export default {
       else localStorage.setItem("klasa-label", "2bt");
 
       this.$q.loadingBar.start();
+
+      let optional = "";
+
+      let userMode = localStorage.getItem("user-mode");
+
+      if (userMode == "n") {
+        optional = "&type=n";
+      }
+
       fetch(
         "https://codenomik.ekonomikzamosc.pl/api/ekolib/index.php?nr=" +
-          this.userClass
+          this.userClass +
+          optional
       )
         .then(response => response.json())
         .then(response => {

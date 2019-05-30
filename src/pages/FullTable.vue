@@ -76,8 +76,15 @@ export default {
 
       if (lesson == null) return emptyLesson;
 
+      let title = lesson.subject;
+      if (localStorage.getItem("user-mode") == "n") {
+        if (lesson.className) {
+          title += " " + lesson.className.name;
+        }
+      }
+
       return {
-        title: lesson.subject,
+        title: title,
         room: lesson.room.name,
         end: inputLesson.end
       };

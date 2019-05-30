@@ -1,5 +1,7 @@
 <template>
-  <q-card :class="{'bg-dark':!primary,'bg-primary':primary,'text-white':true,'lesson-card':true, 'flex':true}">
+  <q-card
+    :class="{'bg-dark':!primary,'bg-primary':primary,'text-white':true,'lesson-card':true, 'flex':true}"
+  >
     <div style="width:60%" v-if="lessonInfo">
       <q-card-section>
         <div class="text-h6">{{lessonInfo.title}}</div>
@@ -16,7 +18,7 @@
     </div>
     <div style="width:70%" v-else>
       <q-card-section>
-        <q-icon name="warning" class="text-red" style="font-size: 4rem;" />
+        <q-icon name="warning" class="text-red" style="font-size: 4rem;"/>
         <div class="text-h6">Nie znaleziono informacji o tej lekcji</div>
       </q-card-section>
     </div>
@@ -24,7 +26,6 @@
     <q-card-section style="width:40%;">
       <slot></slot>
     </q-card-section>
-    
   </q-card>
 </template>
 
@@ -32,7 +33,10 @@
 <script>
 export default {
   name: "LessonCard",
-  props: ["lessonInfo","primary"]
+  props: ["lessonInfo", "primary"],
+  created() {
+    console.log(this.lessonInfo);
+  }
 };
 </script>
 
