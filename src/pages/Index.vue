@@ -106,7 +106,14 @@ export default {
 
       if (lesson == null) return emptyLesson;
 
-      return { title: lesson.subject, room: lesson.room.name, end: p.end };
+      let title = lesson.subject;
+      if (localStorage.getItem("user-mode") == "n") {
+        if (lesson.className) {
+          title += " " + lesson.className.name;
+        }
+      }
+
+      return { title: title, room: lesson.room.name, end: p.end };
     },
     GetTimeFromMs(inMs) {
       let ms = inMs % 1000;
