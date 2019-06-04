@@ -131,7 +131,7 @@ export default {
       let secs = timeObj.secs;
 
       if (hrs == 0) {
-        if (mins == 1) {
+        if (mins == 0) {
           return secs + "s";
         } else {
           return mins + "min " + Math.abs(secs) + "s";
