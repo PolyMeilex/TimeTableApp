@@ -17,7 +17,7 @@
         <q-card-section>Dzwonek:</q-card-section>
 
         <q-card-section>
-          <q-radio v-model="syncMult" :val="1" label="Spózinia się" style="margin-left:-10px;"/>
+          <q-radio v-model="syncMult" :val="1" label="Spóźnia się" style="margin-left:-10px;"/>
           <q-radio v-model="syncMult" :val="-1" label="Śpieszy się"/>
         </q-card-section>
 
