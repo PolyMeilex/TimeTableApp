@@ -18,8 +18,8 @@ export default {
     return {
       onlinePlanJson: [],
       userGrp: 1,
-      userClass: 10,
-      userClassLabel: "2bt",
+      userClass: 24,
+      userClassLabel: "3bt",
       forceReRender: false
     };
   },
@@ -35,7 +35,7 @@ export default {
 
       let userClassLabel = localStorage.getItem("klasa-label");
       if (userClassLabel != null) this.userClassLabel = userClassLabel;
-      else localStorage.setItem("klasa-label", "2bt");
+      else localStorage.setItem("klasa-label", "3bt");
 
       this.$q.loadingBar.start();
 

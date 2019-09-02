@@ -4,14 +4,14 @@
       <q-card-section>
         Aktualne ustawienia to:
         <b>Uczeń: {{ currentLabel }}</b>
-        <br>
+        <br />
 
-        <br>
+        <br />
         <span class="text-subtitle1">Jetem:</span>
-        <br>
-        <q-radio dark v-model="typeSelect" val="o" label="Uczeniem" style="margin-left:-10px;"/>
-        <q-radio dark v-model="typeSelect" val="n" label="Nauczycielem"/>
-        <q-radio dark value val="2" label="Salą" disabled/>
+        <br />
+        <q-radio dark v-model="typeSelect" val="o" label="Uczeniem" style="margin-left:-10px;" />
+        <q-radio dark v-model="typeSelect" val="n" label="Nauczycielem" />
+        <q-radio dark value val="2" label="Salą" disabled />
 
         <q-select
           v-model="model"
@@ -32,7 +32,7 @@
           </template>
         </q-select>
 
-        <br>
+        <br />
         <q-btn color="primary" @click="save">Zapisz</q-btn>
       </q-card-section>
     </q-card>
@@ -42,35 +42,41 @@
 
 <script>
 const classOptions = [
-  { id: 1, name: "1at" },
-  { id: 2, name: "1bt" },
-  { id: 3, name: "1ct" },
-  { id: 4, name: "1dt" },
-  { id: 5, name: "1et" },
-  { id: 6, name: "1ft" },
-  { id: 7, name: "1gt" },
-  { id: 8, name: "1ht" },
-  { id: 9, name: "2at" },
-  { id: 10, name: "2bt" },
-  { id: 11, name: "2ct" },
-  { id: 12, name: "2dt" },
-  { id: 13, name: "2et" },
-  { id: 14, name: "2ft" },
-  { id: 15, name: "2gt" },
-  { id: 16, name: "2ht" },
-  { id: 17, name: "3at" },
-  { id: 18, name: "3bt" },
-  { id: 19, name: "3ct" },
-  { id: 20, name: "3dt" },
-  { id: 21, name: "3et" },
-  { id: 22, name: "3ft" },
-  { id: 23, name: "4at" },
-  { id: 24, name: "4bt" },
-  { id: 25, name: "4ct" },
-  { id: 26, name: "4dt" },
-  { id: 27, name: "4et" },
-  { id: 28, name: "4ft" },
-  { id: 29, name: "4gt" }
+  { id: 1, name: "1a" },
+  { id: 2, name: "1b" },
+  { id: 3, name: "1c" },
+  { id: 4, name: "1d" },
+  { id: 5, name: "1e" },
+  { id: 6, name: "1f" },
+  { id: 7, name: "1g" },
+  { id: 8, name: "1at" },
+  { id: 9, name: "1bt" },
+  { id: 10, name: "1ct" },
+  { id: 11, name: "1dt" },
+  { id: 12, name: "1et" },
+  { id: 13, name: "1ft" },
+  { id: 14, name: "1gt" },
+  { id: 15, name: "2at" },
+  { id: 16, name: "2bt" },
+  { id: 17, name: "2ct" },
+  { id: 18, name: "2dt" },
+  { id: 19, name: "2et" },
+  { id: 20, name: "2ft" },
+  { id: 21, name: "2gt" },
+  { id: 22, name: "2ht" },
+  { id: 23, name: "3at" },
+  { id: 24, name: "3bt" },
+  { id: 25, name: "3ct" },
+  { id: 26, name: "3dt" },
+  { id: 27, name: "3et" },
+  { id: 28, name: "3ft" },
+  { id: 29, name: "3ht" },
+  { id: 30, name: "4at" },
+  { id: 31, name: "4bt" },
+  { id: 32, name: "4ct" },
+  { id: 33, name: "4dt" },
+  { id: 34, name: "4et" },
+  { id: 35, name: "4ft" }
 ];
 
 const teacherOptions = [
