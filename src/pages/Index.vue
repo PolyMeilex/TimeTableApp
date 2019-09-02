@@ -17,7 +17,7 @@
         <q-card-section>Dzwonek:</q-card-section>
 
         <q-card-section>
-          <q-radio v-model="syncMult" :val="1" label="Spózinia się" style="margin-left:-10px;"/>
+          <q-radio v-model="syncMult" :val="1" label="Spóźnia się" style="margin-left:-10px;"/>
           <q-radio v-model="syncMult" :val="-1" label="Śpieszy się"/>
         </q-card-section>
 
@@ -106,7 +106,14 @@ export default {
 
       if (lesson == null) return emptyLesson;
 
-      return { title: lesson.subject, room: lesson.room.name, end: p.end };
+      let title = lesson.subject;
+      if (localStorage.getItem("user-mode") == "n") {
+        if (lesson.className) {
+          title += " " + lesson.className.name;
+        }
+      }
+
+      return { title: title, room: lesson.room.name, end: p.end };
     },
     GetTimeFromMs(inMs) {
       let ms = inMs % 1000;
@@ -124,7 +131,7 @@ export default {
       let secs = timeObj.secs;
 
       if (hrs == 0) {
-        if (mins == 1) {
+        if (mins == 0) {
           return secs + "s";
         } else {
           return mins + "min " + Math.abs(secs) + "s";
