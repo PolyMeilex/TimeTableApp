@@ -3,13 +3,13 @@
     <q-header elevated>
       <q-toolbar class="bg-dark">
         <q-btn flat dense round @click="leftDrawerOpen = !leftDrawerOpen" aria-label="Menu">
-          <q-icon name="menu"/>
+          <q-icon name="menu" />
         </q-btn>
 
         <div class="toolbar-title">
           Plan Lekcji {{userClassLabel}}
           <div class="toolbar-subtitle">
-            <div>v4.1.2</div>
+            <div>v4.1.3</div>
           </div>
         </div>
 
@@ -36,7 +36,7 @@
 
         <q-item clickable @click="$router.push('/')">
           <q-item-section avatar>
-            <q-icon name="schedule"/>
+            <q-icon name="schedule" />
           </q-item-section>
 
           <q-item-section>
@@ -47,7 +47,7 @@
 
         <q-item clickable @click="$router.push('/FullTable')">
           <q-item-section avatar>
-            <q-icon name="list"/>
+            <q-icon name="list" />
           </q-item-section>
 
           <q-item-section>
@@ -56,9 +56,20 @@
           </q-item-section>
         </q-item>
 
+        <q-item clickable @click="$router.push('/WeekTable')">
+          <q-item-section avatar>
+            <q-icon name="table_chart" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Tabela</q-item-label>
+            <q-item-label caption>Wyświetla Tabele Całego Tygodnia</q-item-label>
+          </q-item-section>
+        </q-item>
+
         <q-item clickable @click="$router.push('/News')">
           <q-item-section avatar>
-            <q-icon name="chrome_reader_mode"/>
+            <q-icon name="chrome_reader_mode" />
           </q-item-section>
 
           <q-item-section>
@@ -69,7 +80,7 @@
 
         <q-item clickable @click="$router.push('/Settings')">
           <q-item-section avatar>
-            <q-icon name="settings"/>
+            <q-icon name="settings" />
           </q-item-section>
 
           <q-item-section>

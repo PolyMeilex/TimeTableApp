@@ -18,7 +18,7 @@
     </div>
     <div style="width:70%" v-else>
       <q-card-section>
-        <q-icon name="warning" class="text-red" style="font-size: 4rem;"/>
+        <q-icon name="warning" class="text-red" style="font-size: 4rem;" />
         <div class="text-h6">Nie znaleziono informacji o tej lekcji</div>
       </q-card-section>
     </div>
@@ -33,15 +33,13 @@
 <script>
 export default {
   name: "LessonCard",
-  props: ["lessonInfo", "primary"],
-  created() {
-    console.log(this.lessonInfo);
-  }
+  props: ["lessonInfo", "primary"]
 };
 </script>
 
 <style>
 .lesson-card {
   margin: 8px;
+  margin-bottom: 0px;
 }
 </style>

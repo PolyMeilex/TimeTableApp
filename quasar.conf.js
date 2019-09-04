@@ -34,7 +34,8 @@ module.exports = function(ctx) {
         "QRadio",
         "QDialog",
         "QInput",
-        "QExpansionItem"
+        "QExpansionItem",
+        "QTable"
       ],
 
       directives: ["Ripple", "TouchRepeat"],

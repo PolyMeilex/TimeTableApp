@@ -5,6 +5,7 @@ const routes = [
     children: [
       { path: "", component: () => import("pages/Index.vue") },
       { path: "/FullTable", component: () => import("pages/FullTable.vue") },
+      { path: "/WeekTable", component: () => import("pages/WeekTable.vue") },
       { path: "/News", component: () => import("pages/News.vue") },
       {
         path: "/PdfReader/:link",
