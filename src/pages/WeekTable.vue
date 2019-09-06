@@ -1,16 +1,20 @@
 <template>
-  <q-page>
-    <q-table
-      id="my-table"
-      title
-      :data="data"
-      :columns="columns"
-      row-key="name"
-      :pagination="{rowsPerPage:10}"
-      separator="cell"
-      hide-bottom
-    />
-  </q-page>
+  <!-- <v-zoomer style="width: 100%; height: 100%;"> -->
+  <!-- <q-page> -->
+  <q-table
+    id="my-table"
+    title
+    :data="data"
+    :columns="columns"
+    row-key="name"
+    :pagination="{rowsPerPage:10}"
+    separator="cell"
+    hide-bottom
+    dense
+  />
+
+  <!-- </q-page> -->
+  <!-- </v-zoomer> -->
 </template>
 
 <script>
@@ -40,11 +44,11 @@ export default {
     return {
       columns: [
         {
-          name: "Nr",
+          name: "",
           required: true,
-          label: "Nr",
+          label: "",
           align: "left",
-          field: row => row.time
+          field: row => row.nr + 1 + ". " + row.time
         },
         {
           name: "Po",
@@ -95,14 +99,38 @@ export default {
         { nr: 9, time: "16:10-16:55" }
       ]
     };
+  },
+  created() {
+    fetch("https://codenomik.ekonomikzamosc.pl/api/ekolib/color.php")
+      .then(res => res.text())
+      .then(c => {
+        document.documentElement.style.setProperty("--bg-color", c);
+      })
+      .catch(e => {});
   }
 };
 </script>
 
 <style>
-#my-table > thead tr:first-child th:first-child,
+:root {
+  --bg-color: #fff;
+  /* 027be3 */
+}
+
+#my-table {
+  max-width: 100%;
+}
+
+thead > tr:first-child {
+  background-color: var(--bg-color);
+  color: #000099;
+  font-weight: bold;
+}
+
 td:first-child {
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 0px 5px !important;
+
   position: sticky;
   left: 0;
   z-index: 1;

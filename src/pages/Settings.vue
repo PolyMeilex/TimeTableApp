@@ -3,7 +3,7 @@
     <q-card class="bg-dark text-white lesson-card flex" style="margin: 8px;">
       <q-card-section>
         Aktualne ustawienia to:
-        <b>Uczeń: {{ currentLabel }}</b>
+        <b>{{ currentLabel }}</b>
         <br />
 
         <br />
@@ -22,7 +22,6 @@
           :options="options"
           @filter="filterFn"
           style="width: 250px"
-          hide-selected
           dark
         >
           <template v-slot:no-option>
@@ -221,9 +220,12 @@ export default {
   },
   created() {
     let l = localStorage.getItem("klasa-label");
-    if (l == null) l = "none";
-
+    if (l == null) l = "Brak";
     this.currentLabel = l;
+
+    if (localStorage.getItem("user-mode") == "n") {
+      this.typeSelect = "n";
+    }
   }
 };
 </script>
