@@ -81,6 +81,12 @@ export default {
         if (lesson.className) {
           title += " " + lesson.className.name;
         }
+      } else {
+        if (lesson.teacher) {
+          if (lesson.teacher.name && lesson.teacher.name != "-") {
+            title += " - " + lesson.teacher.name;
+          }
+        }
       }
 
       return {

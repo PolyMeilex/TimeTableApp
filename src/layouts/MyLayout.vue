@@ -9,7 +9,7 @@
         <div class="toolbar-title">
           Plan Lekcji {{userClassLabel}}
           <div class="toolbar-subtitle">
-            <div>v4.1.3</div>
+            <div>v{{version}}</div>
           </div>
         </div>
 
@@ -107,11 +107,14 @@
 </template>
 
 <script>
+import { version } from "../../package.json";
+
 export default {
   name: "MyLayout",
   props: ["userGrp", "userClassLabel", "plan", "forceReRender"],
   data() {
     return {
+      version: version,
       leftDrawerOpen: this.$q.platform.is.desktop,
       trans: false
     };

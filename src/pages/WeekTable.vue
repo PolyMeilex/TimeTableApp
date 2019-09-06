@@ -44,7 +44,7 @@ export default {
           required: true,
           label: "Nr",
           align: "left",
-          field: row => row.nr + 1
+          field: row => row.time
         },
         {
           name: "Po",
@@ -83,16 +83,16 @@ export default {
         }
       ],
       data: [
-        { nr: 0 },
-        { nr: 1 },
-        { nr: 2 },
-        { nr: 3 },
-        { nr: 4 },
-        { nr: 5 },
-        { nr: 6 },
-        { nr: 7 },
-        { nr: 8 },
-        { nr: 9 }
+        { nr: 0, time: "8:00-8:45" },
+        { nr: 1, time: "8:55-9:40" },
+        { nr: 2, time: "9:50-10:35" },
+        { nr: 3, time: "10:45-11:30" },
+        { nr: 4, time: "11:40-12:25" },
+        { nr: 5, time: "12:35-13:20" },
+        { nr: 6, time: "13:35-14:20" },
+        { nr: 7, time: "14:30-15:15" },
+        { nr: 8, time: "15:20-16:05" },
+        { nr: 9, time: "16:10-16:55" }
       ]
     };
   }
