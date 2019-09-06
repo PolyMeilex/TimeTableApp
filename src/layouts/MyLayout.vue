@@ -115,7 +115,7 @@ export default {
   data() {
     return {
       version: version,
-      leftDrawerOpen: this.$q.platform.is.desktop,
+      leftDrawerOpen: false,
       trans: false
     };
   },
@@ -127,6 +127,11 @@ export default {
   methods: {
     TriggerTrans() {
       this.trans = !this.trans;
+    }
+  },
+  created() {
+    if (this.$q.platform.is.desktop) {
+      this.leftDrawerOpen = true;
     }
   }
 };
