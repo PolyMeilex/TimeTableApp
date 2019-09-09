@@ -92,6 +92,7 @@ export default {
       return {
         title: title,
         room: lesson.room.name,
+        start: inputLesson.start,
         end: inputLesson.end
       };
     },
@@ -127,6 +128,7 @@ export default {
 
         return {
           end: plan.end,
+          start: plan.start,
           lessons: [plan.lessons.g1, plan.lessons.g2]
         };
       });

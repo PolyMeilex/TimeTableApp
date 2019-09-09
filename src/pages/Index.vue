@@ -2,7 +2,7 @@
   <q-page style="overflow-x: hidden" v-on:dblclick="DbClickHandle()">
     <lesson-card :lessonInfo="GetLessonInfo(todayPlan,userGrp,lessonId)">
       <div class="flex justify-end">
-        <q-btn round color="grey-7" icon="settings" flat @click="isSyncConfigOpen=true"/>
+        <q-btn round color="grey-7" icon="settings" flat @click="isSyncConfigOpen=true" />
         <span style="color: hsla(0,0%,100%,.6); line-height:42px;">{{timeLeftString}}</span>
       </div>
     </lesson-card>
@@ -17,18 +17,18 @@
         <q-card-section>Dzwonek:</q-card-section>
 
         <q-card-section>
-          <q-radio v-model="syncMult" :val="1" label="Spóźnia się" style="margin-left:-10px;"/>
-          <q-radio v-model="syncMult" :val="-1" label="Śpieszy się"/>
+          <q-radio v-model="syncMult" :val="1" label="Spóźnia się" style="margin-left:-10px;" />
+          <q-radio v-model="syncMult" :val="-1" label="Śpieszy się" />
         </q-card-section>
 
         <q-card-section>
-          <q-input v-model="syncConfigS" type="number" label="Sekundy"/>
-          <q-input v-model="syncConfigM" type="number" label="Minuty"/>
+          <q-input v-model="syncConfigS" type="number" label="Sekundy" />
+          <q-input v-model="syncConfigM" type="number" label="Minuty" />
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn flat label="Reset" color="primary" @click="SaveSyncConfig(0,0,true)"/>
-          <q-btn flat label="OK" color="primary" @click="SaveSyncConfig(syncConfigS,syncConfigM)"/>
+          <q-btn flat label="Reset" color="primary" @click="SaveSyncConfig(0,0,true)" />
+          <q-btn flat label="OK" color="primary" @click="SaveSyncConfig(syncConfigS,syncConfigM)" />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -98,7 +98,12 @@ export default {
     },
     GetLessonInfo(plan, grp, id) {
       const p = plan[id - 1];
-      const emptyLesson = { title: "-", room: "-", end: "00:00" };
+      const emptyLesson = {
+        title: "-",
+        room: "-",
+        start: "00:00",
+        end: "00:00"
+      };
 
       if (p == null) return emptyLesson;
 
@@ -113,7 +118,12 @@ export default {
         }
       }
 
-      return { title: title, room: lesson.room.name, end: p.end };
+      return {
+        title: title,
+        room: lesson.room.name,
+        start: p.start,
+        end: p.end
+      };
     },
     GetTimeFromMs(inMs) {
       let ms = inMs % 1000;
@@ -199,6 +209,7 @@ export default {
 
     this.todayPlan = todayPlanRaw.map(plan => {
       return {
+        start: plan.start,
         end: plan.end,
         lessons: [plan.lessons.g1, plan.lessons.g2]
       };

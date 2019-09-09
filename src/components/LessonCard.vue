@@ -13,7 +13,7 @@
           {{lessonInfo.room}}
         </div>
 
-        <div :class="{'text-faded':!primary}">Dzwonek: {{lessonInfo.end}}</div>
+        <div :class="{'text-faded':!primary}">Dzwonek: {{lessonInfo.start}} - {{lessonInfo.end}}</div>
       </q-card-section>
     </div>
     <div style="width:70%" v-else>
