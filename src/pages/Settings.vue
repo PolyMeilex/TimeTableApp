@@ -9,7 +9,7 @@
         <br />
         <span class="text-subtitle1">Jetem:</span>
         <br />
-        <q-radio dark v-model="typeSelect" val="o" label="Uczeniem" style="margin-left:-10px;" />
+        <q-radio dark v-model="typeSelect" val="o" label="Uczniem" style="margin-left:-10px;" />
         <q-radio dark v-model="typeSelect" val="n" label="Nauczycielem" />
         <q-radio dark value val="2" label="Salą" disabled />
 
