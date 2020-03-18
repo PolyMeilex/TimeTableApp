@@ -100,8 +100,8 @@ module.exports = function(ctx) {
 
         display: "standalone",
         orientation: "portrait",
-        background_color: "#191919",
-        theme_color: "#242323",
+        background_color: "#1d1d1d",
+        theme_color: "#1d1d1d",
         icons: [
           {
             src: "statics/icons/android-icon-36x36.png",
