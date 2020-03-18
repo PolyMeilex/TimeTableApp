@@ -1,7 +1,5 @@
-import { AddressbarColor } from 'quasar'
+import { AddressbarColor } from "quasar";
 
 export default async ({ app, router, Vue }) => {
-  AddressbarColor.set('#333333');
-}
-
-
+  AddressbarColor.set("#1d1d1d");
+};
