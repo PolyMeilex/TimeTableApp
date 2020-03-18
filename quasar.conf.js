@@ -8,6 +8,8 @@ module.exports = function(ctx) {
 
     extras: ["roboto-font", "material-icons"],
 
+    supportTS: true,
+
     framework: {
       lang: "pl",
       components: [
