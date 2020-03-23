@@ -7,7 +7,7 @@
         <br />
 
         <br />
-        <span class="text-subtitle1">Jetem:</span>
+        <span class="text-subtitle1">Jestem:</span>
         <br />
         <q-radio
           dark
