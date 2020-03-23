@@ -1,106 +1,94 @@
 <template>
-  <!-- <v-zoomer style="width: 100%; height: 100%;"> -->
-  <!-- <q-page> -->
-  <q-table
-    id="my-table"
-    title
-    :data="data"
-    :columns="columns"
-    row-key="name"
-    :pagination="{rowsPerPage:10}"
-    separator="cell"
-    hide-bottom
-    dense
-  />
-
-  <!-- </q-page> -->
-  <!-- </v-zoomer> -->
+  <q-page>
+    <q-table
+      id="my-table"
+      title
+      :data="data"
+      :columns="columns"
+      row-key="name"
+      :pagination="{rowsPerPage:10}"
+      separator="cell"
+      hide-bottom
+      dense
+    />
+  </q-page>
 </template>
 
-<script>
-export default {
-  name: "PageWeekTable",
-  props: ["plan", "userGrp"],
-  methods: {
-    genLessonLabel(dayId, lId) {
-      let l = this.plan[dayId];
-      if (l != null) l = l[lId];
-      if (l != null) l = l.lessons[`g${this.userGrp}`];
-      if (l == null) return "-";
+<script lang="ts">
+import Vue from "vue";
+import { Component, Prop, Watch } from "vue-property-decorator";
 
-      let subject = l.subject;
-      let roomName = l.room.name;
-      let teacherName = l.teacher.name;
+import LessonCard from "../components/LessonCard.vue";
 
-      if (subject == "-" && roomName == "-" && teacherName == "-") return "-";
+import { QuickGetPeriodId } from "../functions/PeriodTimeCalc";
 
-      if ((teacherName == "") | (teacherName == null)) teacherName = "";
-      else teacherName = ", " + teacherName;
+import { PlanJSON, Lesson, Period } from "../store/plan/types";
 
-      return `${l.subject} | ${roomName} ${teacherName}`;
+import { settingsMod, planMod } from "@/store";
+
+@Component
+export default class WeekTable extends Vue {
+  columns = [
+    {
+      name: "",
+      required: true,
+      label: "",
+      align: "left",
+      field: (row: any) => row.nr + 1 + ". " + row.time
     }
-  },
-  data() {
-    return {
-      columns: [
-        {
-          name: "",
-          required: true,
-          label: "",
-          align: "left",
-          field: row => row.nr + 1 + ". " + row.time
-        },
-        {
-          name: "Po",
-          required: true,
-          label: "Po",
-          align: "left",
-          field: row => this.genLessonLabel(0, row.nr)
-        },
-        {
-          name: "Wt",
-          required: true,
-          label: "Wt",
-          align: "left",
-          field: row => this.genLessonLabel(1, row.nr)
-        },
-        {
-          name: "Śr",
-          required: true,
-          label: "Śr",
-          align: "left",
-          field: row => this.genLessonLabel(2, row.nr)
-        },
-        {
-          name: "Cz",
-          required: true,
-          label: "Cz",
-          align: "left",
-          field: row => this.genLessonLabel(3, row.nr)
-        },
-        {
-          name: "Pi",
-          required: true,
-          label: "Pi",
-          align: "left",
-          field: row => this.genLessonLabel(4, row.nr)
-        }
-      ],
-      data: [
-        { nr: 0, time: "8:00-8:45" },
-        { nr: 1, time: "8:55-9:40" },
-        { nr: 2, time: "9:50-10:35" },
-        { nr: 3, time: "10:45-11:30" },
-        { nr: 4, time: "11:40-12:25" },
-        { nr: 5, time: "12:35-13:20" },
-        { nr: 6, time: "13:35-14:20" },
-        { nr: 7, time: "14:30-15:15" },
-        { nr: 8, time: "15:20-16:05" },
-        { nr: 9, time: "16:10-16:55" }
-      ]
-    };
-  },
+  ];
+  data = [
+    { nr: 0, time: "8:00-8:45" },
+    { nr: 1, time: "8:55-9:40" },
+    { nr: 2, time: "9:50-10:35" },
+    { nr: 3, time: "10:45-11:30" },
+    { nr: 4, time: "11:40-12:25" },
+    { nr: 5, time: "12:35-13:20" },
+    { nr: 6, time: "13:35-14:20" },
+    { nr: 7, time: "14:30-15:15" },
+    { nr: 8, time: "15:20-16:05" },
+    { nr: 9, time: "16:10-16:55" }
+  ];
+
+  get settingsGrp(): number {
+    return this.$store.state.settings.grp;
+  }
+
+  getLesson(period: Period): Lesson | undefined {
+    if (period.splited) {
+      return period.lessons.find(l => l.grp == settingsMod.grp);
+    } else {
+      return period.lessons[0];
+    }
+  }
+
+  genLessonLabel(dayId: number, pId: number): string {
+    let day = planMod.planJSON?.days[dayId];
+    let period = day?.hours[pId];
+    if (!period) return "-";
+
+    let lesson = this.getLesson(period);
+
+    if (lesson) {
+      return `${lesson.subject} | ${lesson.room.name} - ${lesson.teacher.name} ${lesson.className.name}`;
+    }
+
+    return "-";
+  }
+
   created() {
+    let list = ["Po", "Wt", "Śr", "Cz", "Pi"];
+
+    list.forEach((d, id) => {
+      this.columns.push({
+        name: d,
+        required: true,
+        label: d,
+        align: "left",
+        field: (row: any) => this.genLessonLabel(id, row.nr)
+      });
+    });
+
     fetch("https://codenomik.ekonomikzamosc.pl/api/ekolib/color.php")
       .then(res => res.text())
       .then(c => {
@@ -108,7 +96,7 @@ export default {
       })
       .catch(e => {});
   }
-};
+}
 </script>
 
 <style>

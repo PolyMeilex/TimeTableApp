@@ -37,16 +37,15 @@ module.exports = function(ctx) {
         "QDialog",
         "QInput",
         "QExpansionItem",
-        "QTable"
+        "QTable",
+        "QSpinnerPuff",
+        "QChip",
+        "QAvatar"
       ],
 
       directives: ["Ripple", "TouchRepeat"],
 
-      plugins: [
-        // 'Notify',
-        "LoadingBar",
-        "AddressbarColor"
-      ],
+      plugins: ["Notify", "LoadingBar", "AddressbarColor", "LocalStorage"],
       config: {
         loadingBar: { color: "primary" }
       }
@@ -63,6 +62,8 @@ module.exports = function(ctx) {
       // extractCSS: false,
       chainWebpack(chain) {
         chain.output.set("globalObject", "this");
+
+        chain.resolve.alias.set("@", path.resolve(__dirname, "src"));
       },
       extendWebpack(cfg) {
         // copy _redirects file

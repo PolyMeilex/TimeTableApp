@@ -1,4 +1,11 @@
-exports.GetLessonsInHour = date => {
+interface HourObj {
+  date: Date;
+  me: number;
+  x1: number;
+  x2: number;
+}
+
+export function GetPeriodInHour(date: Date): HourObj {
   const h = date.getHours();
 
   // 8:44 -> x1 -> Id of lesson before 8:45
@@ -27,21 +34,21 @@ exports.GetLessonsInHour = date => {
     return { date, me: 5, x1: 9, x2: 10 };
   }
   return { date, me: 0, x1: 1, x2: 1 };
-};
+}
 
-exports.GetLessonId = hourObj => {
+export function GetPeriodId(hourObj: HourObj): number {
   const m = hourObj.date.getMinutes(); // Current Minute
   const me = hourObj.me; // End Minute
 
   if (m < me) {
     return hourObj.x1;
-  } else if (m >= me) {
+  } /*if (m >= me)*/ else {
     return hourObj.x2;
   }
-};
+}
 
-exports.QuickGetLessonId = date => {
-  const hourObj = exports.GetLessonsInHour(date);
-  const lessonId = exports.GetLessonId(hourObj);
-  return lessonId;
-};
+export function QuickGetPeriodId(date: Date): number {
+  const hourObj = GetPeriodInHour(date);
+  const lessonId = GetPeriodId(hourObj);
+  return lessonId - 1;
+}

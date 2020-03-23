@@ -1,12 +1,12 @@
 <template>
-  <q-page v-on:dblclick="DbClickHandle()">
+  <q-page @dblclick="dbClickHandle()">
     <div class="bg-grey-10">
       <q-tabs align="left" v-model="currentTab">
-        <q-tab class="text-white text-bold" :name="1" :alert="day==1? 'red':false">Po</q-tab>
-        <q-tab class="text-white text-bold" :name="2" :alert="day==2? 'red':false">Wt</q-tab>
-        <q-tab class="text-white text-bold" :name="3" :alert="day==3? 'red':false">Śr</q-tab>
-        <q-tab class="text-white text-bold" :name="4" :alert="day==4? 'red':false">Cz</q-tab>
-        <q-tab class="text-white text-bold" :name="5" :alert="day==5? 'red':false">Pi</q-tab>
+        <q-tab class="text-white text-bold" :name="1" :alert="day == 1 ? 'red' : false">Po</q-tab>
+        <q-tab class="text-white text-bold" :name="2" :alert="day == 2 ? 'red' : false">Wt</q-tab>
+        <q-tab class="text-white text-bold" :name="3" :alert="day == 3 ? 'red' : false">Śr</q-tab>
+        <q-tab class="text-white text-bold" :name="4" :alert="day == 4 ? 'red' : false">Cz</q-tab>
+        <q-tab class="text-white text-bold" :name="5" :alert="day == 5 ? 'red' : false">Pi</q-tab>
       </q-tabs>
     </div>
 
@@ -18,17 +18,20 @@
       style="background-color:transparent;"
     >
       <q-tab-panel
-        :name="index+1"
         style="background-color:transparent; padding:0px;"
-        v-for="(planForDay,index) in planForWeek"
-        :key="index"
+        v-for="(day, index_day) in planMod.planJSON.days"
+        :name="index_day + 1"
+        :key="index_day"
       >
-        <div :key="index" v-for="(lesson,index) in planForDay">
+        <div v-for="(period, index) in day.hours" :key="index">
           <transition name="trans-left" mode="out-in">
             <lesson-card
-              :key="GetLessonKey(lesson,userGrp)"
-              :lessonInfo="GetLessonInfo(lesson,userGrp)"
-              :primary="index==currentLesson && day==currentTab"
+              :lesson="getLesson(period)"
+              :key="getKey(period)"
+              :start="period.start.str"
+              :end="period.end.str"
+              :pre=" index+1+'. ' "
+              :primary="index == currentLesson && (index_day+1) == currentTab"
             ></lesson-card>
           </transition>
         </div>
@@ -37,114 +40,65 @@
   </q-page>
 </template>
 
-<script>
-import LessonCard from "../components/LessonCard";
+<script lang="ts">
+import Vue from "vue";
+import { Component, Prop, Watch } from "vue-property-decorator";
 
-import { QuickGetLessonId } from "../functions/LessonTimeCalc.js";
+import LessonCard from "../components/LessonCard.vue";
 
-export default {
-  name: "PageFullTable",
-  props: ["plan", "userGrp"],
+import { QuickGetPeriodId } from "../functions/PeriodTimeCalc";
+
+import { PlanJSON, Lesson, Period } from "../store/plan/types";
+
+import { settingsMod, planMod } from "@/store";
+
+@Component({
   components: {
     "lesson-card": LessonCard
-  },
-  data() {
-    return {
-      currentTab: 1,
-      planForWeek: [],
-      trans: false,
-      day: 1,
-      currentLesson: 0
-    };
-  },
-  watch: {
-    userGrp() {
-      this.trans = !this.trans;
-    }
-  },
-  methods: {
-    DbClickHandle() {
-      window.navigator.vibrate(100);
-      this.$router.push("/");
-    },
-    GetLessonInfo(inputLesson, userGrp) {
-      const emptyLesson = { title: "-", room: "-", end: 0 };
-
-      if (inputLesson == null) return emptyLesson;
-
-      const lesson = inputLesson.lessons[userGrp - 1];
-
-      if (lesson == null) return emptyLesson;
-
-      let title = lesson.subject;
-      if (localStorage.getItem("user-mode") == "n") {
-        if (lesson.className) {
-          title += " " + lesson.className.name;
-        }
-      } else {
-        if (lesson.teacher) {
-          if (lesson.teacher.name && lesson.teacher.name != "-") {
-            title += " - " + lesson.teacher.name;
-          }
-        }
-      }
-
-      return {
-        title: title,
-        room: lesson.room.name,
-        start: inputLesson.start,
-        end: inputLesson.end
-      };
-    },
-    GetLessonKey(inputLesson, userGrp) {
-      return inputLesson.lessons[userGrp - 1].key;
-    },
-    uuidv4() {
-      return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, c => {
-        let r = (Math.random() * 16) | 0,
-          v = c == "x" ? r : (r & 0x3) | 0x8;
-        return v.toString(16);
-      });
-    }
-  },
-  created() {
-    let PlanRaw = this.plan;
-    let Plan = PlanRaw.map(day => {
-      return day.map(plan => {
-        let areSame = true;
-
-        if (plan.lessons.g1.subject != plan.lessons.g2.subject) areSame = false;
-        if (plan.lessons.g1.room.name != plan.lessons.g2.room.name)
-          areSame = false;
-
-        if (areSame) {
-          let key = this.uuidv4();
-          plan.lessons.g1.key = key;
-          plan.lessons.g2.key = key;
-        } else {
-          plan.lessons.g1.key = this.uuidv4();
-          plan.lessons.g2.key = this.uuidv4();
-        }
-
-        return {
-          end: plan.end,
-          start: plan.start,
-          lessons: [plan.lessons.g1, plan.lessons.g2]
-        };
-      });
-    });
-
-    this.planForWeek = Plan;
-
-    const d = new Date();
-
-    this.day = d.getDay();
-
-    if (this.day > 5 || this.day === 0) this.day = 1;
-
-    this.currentTab = this.day;
-
-    this.currentLesson = QuickGetLessonId(d) - 1;
   }
-};
+})
+export default class FullTable extends Vue {
+  currentTab = this.day;
+  planMod = planMod;
+
+  get date(): Date {
+    let d = new Date();
+    d.setHours(8);
+    d.setMinutes(45);
+    return d;
+  }
+
+  get day(): number {
+    let day = this.date.getDay();
+    if (day > 5 || day === 0) day = 1;
+    return day;
+  }
+
+  get currentLesson(): number {
+    return QuickGetPeriodId(this.date);
+  }
+
+  getLesson(period: Period): Lesson | undefined {
+    if (period.splited) {
+      return period.lessons.find(l => l.grp == settingsMod.grp);
+    } else {
+      return period.lessons[0];
+    }
+  }
+
+  getKey(period: Period): string {
+    let lesson = this.getLesson(period);
+
+    if (lesson) {
+      return lesson.key;
+    } else {
+      return "";
+    }
+  }
+
+  dbClickHandle() {
+    window.navigator.vibrate(100);
+    this.$router.push("/");
+  }
+}
 </script>

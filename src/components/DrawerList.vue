@@ -1,8 +1,8 @@
 <template>
-  <q-list>
+  <q-list id="list">
     <q-item-label header>Menu</q-item-label>
 
-    <q-item clickable @click="$router.push('/')">
+    <q-item clickable @click="navigateTo('/')">
       <q-item-section avatar>
         <q-icon name="schedule" />
       </q-item-section>
@@ -13,7 +13,7 @@
       </q-item-section>
     </q-item>
 
-    <q-item clickable @click="$router.push('/FullTable')">
+    <q-item clickable @click="navigateTo('/FullTable')">
       <q-item-section avatar>
         <q-icon name="list" />
       </q-item-section>
@@ -24,7 +24,7 @@
       </q-item-section>
     </q-item>
 
-    <q-item clickable @click="$router.push('/WeekTable')">
+    <q-item clickable @click="navigateTo('/WeekTable')">
       <q-item-section avatar>
         <q-icon name="table_chart" />
       </q-item-section>
@@ -35,20 +35,18 @@
       </q-item-section>
     </q-item>
 
-    <q-item clickable @click="$router.push('/News')">
+    <q-item clickable @click="navigateTo('/News')">
       <q-item-section avatar>
         <q-icon name="chrome_reader_mode" />
       </q-item-section>
 
       <q-item-section>
         <q-item-label>Ogłoszenia</q-item-label>
-        <q-item-label caption
-          >Zastępstwa I Inne Ogłoszenia Ze Strony Szkoły</q-item-label
-        >
+        <q-item-label caption>Zastępstwa I Inne Ogłoszenia Ze Strony Szkoły</q-item-label>
       </q-item-section>
     </q-item>
 
-    <q-item clickable @click="$router.push('/Settings')">
+    <q-item clickable @click="navigateTo('/Settings')">
       <q-item-section avatar>
         <q-icon name="settings" />
       </q-item-section>
@@ -60,3 +58,21 @@
     </q-item>
   </q-list>
 </template>
+
+<script lang="ts">
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+
+@Component
+export default class DrawerList extends Vue {
+  navigateTo(path: string) {
+    this.$router.push(path).catch(err => this.$emit("closeDrawer"));
+  }
+}
+</script>
+
+<style>
+.q-drawer--right #list {
+  margin-top: 50%;
+}
+</style>

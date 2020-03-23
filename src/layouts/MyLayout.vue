@@ -2,60 +2,48 @@
   <q-layout view="lHh Lpr lFf" style="background-color: rgb(23, 23, 23);">
     <q-header elevated>
       <q-toolbar class="bg-dark">
-        <q-btn
-          flat
-          dense
-          round
-          @click="leftDrawerOpen = !leftDrawerOpen"
-          aria-label="Menu"
-        >
+        <q-btn flat dense round @click="leftDrawerOpen = !leftDrawerOpen" aria-label="Menu">
           <q-icon name="menu" />
         </q-btn>
 
         <div class="toolbar-title">
-          Plan Lekcji {{ userClassLabel }}
+          Plan Lekcji {{ settingsMod.planLabel }}
           <div class="toolbar-subtitle">
             <div>v{{ version }}</div>
           </div>
         </div>
 
         <q-btn
+          v-if="settingsMod.planType == 'o'"
           flat
           round
-          @click="$emit('setGrp', 1)"
-          :color="userGrp == 1 ? 'primary' : 'white'"
+          @click="settingsMod.setGrp(0)"
+          :color="settingsMod.grp == 0 ? 'primary' : 'white'"
           icon="bookmark"
-          >1</q-btn
-        >
+        >1</q-btn>
         <q-btn
+          v-if="settingsMod.planType == 'o'"
           flat
           round
-          @click="$emit('setGrp', 2)"
-          :color="userGrp == 2 ? 'primary' : 'white'"
+          @click="settingsMod.setGrp(1)"
+          :color="settingsMod.grp == 1 ? 'primary' : 'white'"
           icon="bookmark"
-          >2</q-btn
-        >
+        >2</q-btn>
       </q-toolbar>
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" bordered content-class="bg-grey-2">
-      <drawer-list></drawer-list>
+      <drawer-list @closeDrawer="leftDrawerOpen = !leftDrawerOpen"></drawer-list>
     </q-drawer>
 
-    <q-drawer side="right" bordered content-class="bg-grey-2">
-      <drawer-list></drawer-list>
+    <q-drawer v-model="rightDrawerOpen" side="right" bordered content-class="bg-grey-2">
+      <drawer-list @closeDrawer="rightDrawerOpen = !rightDrawerOpen"></drawer-list>
     </q-drawer>
 
     <q-page-container>
       <transition name="trans-left" mode="out-in">
-        <router-view
-          :key="trans"
-          :plan="plan"
-          :userGrp="userGrp"
-          :userClassLabel="userClassLabel"
-          @TriggerTrans="TriggerTrans"
-          @downloadPlan="$emit('downloadPlan')"
-        />
+        <router-view v-if="planMod.planJSON" :key="transKey" @triggerTrans="triggerTrans" />
+        <q-spinner-puff v-else color="primary" size="100%" />
       </transition>
     </q-page-container>
   </q-layout>
@@ -63,37 +51,29 @@
 
 <script lang="ts" lang="ts">
 import Vue from "vue";
+import { Component, Prop, Watch } from "vue-property-decorator";
 
-import { version } from "../../package.json";
-import DrawerList from "../components/DrawerList.vue";
+import { version } from "@/../package.json";
+import DrawerList from "@/components/DrawerList.vue";
 
-export default Vue.extend({
-  name: "MyLayout",
-  props: ["userGrp", "userClassLabel", "plan", "forceReRender"],
-  components: { DrawerList },
-  data() {
-    return {
-      version: version,
-      leftDrawerOpen: false,
-      trans: false
-    };
-  },
-  watch: {
-    forceReRender() {
-      this.TriggerTrans();
-    }
-  },
-  methods: {
-    TriggerTrans() {
-      this.trans = !this.trans;
-    }
-  },
-  created() {
-    // if (this.$q.platform.is.desktop) {
-    // this.leftDrawerOpen = true;
-    // }
+import { settingsMod, planMod } from "@/store";
+
+@Component({
+  components: { DrawerList }
+})
+export default class MyLayout extends Vue {
+  version = version;
+  leftDrawerOpen = false;
+  rightDrawerOpen = false;
+  transKey = false;
+
+  settingsMod = settingsMod;
+  planMod = planMod;
+
+  triggerTrans() {
+    this.transKey = !this.transKey;
   }
-});
+}
 </script>
 
 <style>
