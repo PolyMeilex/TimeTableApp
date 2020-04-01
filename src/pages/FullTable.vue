@@ -31,7 +31,7 @@
               :start="period.start.str"
               :end="period.end.str"
               :pre=" index+1+'. ' "
-              :primary="index == currentLesson && (index_day+1) == currentTab"
+              :primary="index == currentLesson && (index_day+1) == day"
             ></lesson-card>
           </transition>
         </div>
@@ -63,8 +63,8 @@ export default class FullTable extends Vue {
 
   get date(): Date {
     let d = new Date();
-    d.setHours(8);
-    d.setMinutes(45);
+   // d.setHours(8);
+   // d.setMinutes(45);
     return d;
   }
 
