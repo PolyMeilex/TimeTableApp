@@ -19,18 +19,18 @@
     >
       <q-tab-panel
         style="background-color:transparent; padding:0px;"
-        v-for="(day, index_day) in planMod.planJSON.days"
+        v-for="(day_obj, index_day) in planMod.planJSON.days"
         :name="index_day + 1"
         :key="index_day"
       >
-        <div v-for="(period, index) in day.hours" :key="index">
+        <div v-for="(period, index) in day_obj.hours" :key="index">
           <transition name="trans-left" mode="out-in">
             <lesson-card
               :lesson="getLesson(period)"
               :key="getKey(period)"
               :start="period.start.str"
               :end="period.end.str"
-              :pre=" index+1+'. ' "
+              :pre="(index+1) +'. ' "
               :primary="index == currentLesson && (index_day+1) == day"
             ></lesson-card>
           </transition>
@@ -63,8 +63,8 @@ export default class FullTable extends Vue {
 
   get date(): Date {
     let d = new Date();
-   // d.setHours(8);
-   // d.setMinutes(45);
+    d.setHours(8);
+    d.setMinutes(45);
     return d;
   }
 

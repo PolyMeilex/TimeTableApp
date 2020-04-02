@@ -25,7 +25,7 @@
     <div style="width:60%" v-else>
       <q-card-section>
         <div class="text-h6"></div>
-        <div :class="{ 'text-faded': !primary }">Dzwonek: {{ start }} - {{ end }}</div>
+        <div :class="{ 'text-faded': !primary }">{{pre}} Dzwonek: {{ start }} - {{ end }}</div>
       </q-card-section>
     </div>
 
