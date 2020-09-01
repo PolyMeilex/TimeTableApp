@@ -36,7 +36,7 @@ class Settings extends VuexModule {
   @Mutation
   public initLocalStorage(): void {
     const grp: number | null = LocalStorage.getItem("settings/grp");
-    if (grp) {
+    if (grp != null) {
       if (grp == 0 || grp == 1) {
         this.grp = grp;
       }

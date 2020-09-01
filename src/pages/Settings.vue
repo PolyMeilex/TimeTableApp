@@ -45,7 +45,12 @@
 
     <q-card v-if="apiRes && history.length > 0" dark style="margin: 8px;">
       <q-card-section>
-        <q-chip v-for="b in history" style="cursor: pointer" @click.native="() => openBookmark(b)">
+        <q-chip
+          v-for="b in history"
+          :key="b.id"
+          style="cursor: pointer"
+          @click.native="() => openBookmark(b)"
+        >
           <q-avatar icon="bookmark" color="primary" text-color="white" />
           {{ b.label }}
         </q-chip>
@@ -103,7 +108,7 @@ export default class Settings extends Vue {
       const needle = val.toLowerCase();
 
       this.options = this.stringOptions.filter(
-        v => v.toLowerCase().indexOf(needle) > -1
+        (v) => v.toLowerCase().indexOf(needle) > -1
       );
     });
   }
@@ -140,7 +145,7 @@ export default class Settings extends Vue {
     this.model = null;
     planMod.downloadPlan({
       planId: settingsMod.planId,
-      planType: settingsMod.planType
+      planType: settingsMod.planType,
     });
 
     this.$router.push("/");
@@ -153,7 +158,7 @@ export default class Settings extends Vue {
 
     planMod.downloadPlan({
       planId: settingsMod.planId,
-      planType: settingsMod.planType
+      planType: settingsMod.planType,
     });
     this.$router.push("/");
   }
@@ -164,14 +169,14 @@ export default class Settings extends Vue {
 
     this.$q.loadingBar.start();
     fetch("https://codenomik.ekonomikzamosc.pl/api/ekolib/list.php")
-      .then(s => s.json())
-      .then(json => {
+      .then((s) => s.json())
+      .then((json) => {
         this.apiRes = json;
         this.planTypeSelected = settingsMod.planType;
         this.onTypeSelect();
         this.$q.loadingBar.stop();
       })
-      .catch(err => {
+      .catch((err) => {
         this.apiErr = true;
         this.$q.loadingBar.stop();
       });
