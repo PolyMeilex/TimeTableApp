@@ -1,6 +1,7 @@
 <template>
   <q-page style="overflow-x: hidden" v-on:dblclick="dbClickHandle()">
     <lesson-card
+      v-if="getPeriod(periodId)"
       :lesson="getLesson(getPeriod(periodId))"
       :start="getPeriod(periodId).start.str"
       :end="getPeriod(periodId).end.str"
@@ -9,11 +10,28 @@
         <span style="color: hsla(0,0%,100%,.6);align-self: center;">{{timeLeftString}}</span>
       </div>
     </lesson-card>
+
     <lesson-card
+      v-if="getPeriod(periodId+1)"
       :lesson="getLesson(getPeriod(periodId+1))"
       :start="getPeriod(periodId+1).start.str"
       :end="getPeriod(periodId+1).end.str"
     ></lesson-card>
+
+    <q-card
+      :class="{
+        'bg-dark': !primary,
+        'bg-primary': primary,
+        'text-white': true,
+        'lesson-card': true,
+        flex: true
+      }"
+      dark
+    >
+      <q-card-section v-if="getPeriod(periodId) == null && getPeriod(periodId + 1) == null">
+        <div class="text-h6">Brak lekcji na dziś</div>
+      </q-card-section>
+    </q-card>
   </q-page>
 </template>
 
@@ -31,8 +49,8 @@ import { settingsMod, planMod } from "@/store";
 
 @Component({
   components: {
-    "lesson-card": LessonCard
-  }
+    "lesson-card": LessonCard,
+  },
 })
 export default class Index extends Vue {
   date = new Date();
@@ -52,7 +70,8 @@ export default class Index extends Vue {
 
   get timeLeftString(): string {
     let period = this.getPeriod(this.periodId);
-    if (!period) return "-";
+    console.log(period);
+    if (period == null) return "-";
     let start = period.start;
     let end = period.end;
 
@@ -114,23 +133,25 @@ export default class Index extends Vue {
     return planMod.planJSON?.days[this.day - 1]?.hours[periodId];
   }
 
-  getLesson(period: Period): Lesson | undefined {
-    if (period.splited) {
-      return period.lessons.find(l => l.grp == this.grp);
+  getLesson(period: Period | null): Lesson | undefined {
+    if (period != null) {
+      if (period.splited) {
+        return period.lessons.find((l) => l.grp == this.grp);
+      } else {
+        return period.lessons[0];
+      }
     } else {
-      return period.lessons[0];
+      return undefined;
     }
   }
 
   timerLoop() {
     this.date = new Date();
 
-    this.date.setHours(8);
-
     // @ts-ignore
     if (this._isDestroyed != true) {
       setTimeout(() => {
-        this.timerLoop();
+        // this.timerLoop();
       }, 1000);
     }
   }

@@ -4,9 +4,9 @@ import { LocalStorage } from "quasar";
 
 @Module({ namespaced: true, name: "settings" })
 class Settings extends VuexModule {
-  grp: 0 | 1 = 1;
-  planId: number = 24;
-  planLabel: string = "3bt";
+  grp: 0 | 1 = 0;
+  planId: number = 31;
+  planLabel: string = "4bt";
   planType: "o" | "n" | "s" = "o";
 
   @Mutation
