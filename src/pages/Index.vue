@@ -151,7 +151,7 @@ export default class Index extends Vue {
     // @ts-ignore
     if (this._isDestroyed != true) {
       setTimeout(() => {
-        // this.timerLoop();
+        this.timerLoop();
       }, 1000);
     }
   }
