@@ -57,7 +57,7 @@ export default {
     },
     getBaner(post, banerId) {
       this.$q.loadingBar.start();
-      fetch("https://ekolib.tk/wp-api/wp/v2/media/" + banerId)
+      fetch("https://ekoplan.tk/wp-api/wp/v2/media/" + banerId)
         .then(r => r.json())
         .then(j => {
           let url = j["source_url"];
@@ -86,7 +86,7 @@ export default {
   },
   created() {
     this.$q.loadingBar.start();
-    fetch("https://ekolib.tk/wp-api/wp/v2/posts?categories=54")
+    fetch("https://ekoplan.tk/wp-api/wp/v2/posts?categories=54")
       .then(r => r.json())
       .then(j =>
         j.map(p => {
