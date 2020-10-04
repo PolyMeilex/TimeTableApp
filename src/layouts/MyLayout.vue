@@ -2,12 +2,22 @@
   <q-layout view="lHh Lpr lFf" style="background-color: rgb(23, 23, 23);">
     <q-header elevated>
       <q-toolbar class="bg-dark">
-        <q-btn flat dense round @click="leftDrawerOpen = !leftDrawerOpen" aria-label="Menu">
+        <q-btn
+          flat
+          dense
+          round
+          @click="leftDrawerOpen = !leftDrawerOpen"
+          aria-label="Menu"
+        >
           <q-icon name="menu" />
         </q-btn>
 
         <div class="toolbar-title">
-          Plan Lekcji {{ settingsMod.planLabel }}
+          <template v-if="planMod.planJSON != null">
+            Plan Lekcji {{ planMod.planJSON.name }}
+          </template>
+          <template v-else> Plan Lekcji {{ settingsMod.planLabel }} </template>
+
           <div class="toolbar-subtitle">
             <div>v{{ version }}</div>
           </div>
@@ -20,7 +30,8 @@
           @click="settingsMod.setGrp(0)"
           :color="settingsMod.grp == 0 ? 'primary' : 'white'"
           icon="bookmark"
-        >1</q-btn>
+          >1</q-btn
+        >
         <q-btn
           v-if="settingsMod.planType == 'o'"
           flat
@@ -28,21 +39,35 @@
           @click="settingsMod.setGrp(1)"
           :color="settingsMod.grp == 1 ? 'primary' : 'white'"
           icon="bookmark"
-        >2</q-btn>
+          >2</q-btn
+        >
       </q-toolbar>
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" bordered content-class="bg-grey-2">
-      <drawer-list @closeDrawer="leftDrawerOpen = !leftDrawerOpen"></drawer-list>
+      <drawer-list
+        @closeDrawer="leftDrawerOpen = !leftDrawerOpen"
+      ></drawer-list>
     </q-drawer>
 
-    <q-drawer v-model="rightDrawerOpen" side="right" bordered content-class="bg-grey-2">
-      <drawer-list @closeDrawer="rightDrawerOpen = !rightDrawerOpen"></drawer-list>
+    <q-drawer
+      v-model="rightDrawerOpen"
+      side="right"
+      bordered
+      content-class="bg-grey-2"
+    >
+      <drawer-list
+        @closeDrawer="rightDrawerOpen = !rightDrawerOpen"
+      ></drawer-list>
     </q-drawer>
 
     <q-page-container>
       <transition name="trans-left" mode="out-in">
-        <router-view v-if="planMod.planJSON" :key="transKey" @triggerTrans="triggerTrans" />
+        <router-view
+          v-if="planMod.planJSON"
+          :key="transKey"
+          @triggerTrans="triggerTrans"
+        />
         <q-spinner-puff v-else color="primary" size="100%" />
       </transition>
     </q-page-container>
