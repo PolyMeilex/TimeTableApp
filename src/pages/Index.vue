@@ -6,16 +6,18 @@
       :start="getPeriod(periodId).start.str"
       :end="getPeriod(periodId).end.str"
     >
-      <div class="flex justify-end" style="height: 40%;">
-        <span style="color: hsla(0,0%,100%,.6);align-self: center;">{{timeLeftString}}</span>
+      <div class="flex justify-end" style="height: 40%">
+        <span style="color: hsla(0, 0%, 100%, 0.6); align-self: center">{{
+          timeLeftString
+        }}</span>
       </div>
     </lesson-card>
 
     <lesson-card
-      v-if="getPeriod(periodId+1)"
-      :lesson="getLesson(getPeriod(periodId+1))"
-      :start="getPeriod(periodId+1).start.str"
-      :end="getPeriod(periodId+1).end.str"
+      v-if="getPeriod(periodId + 1)"
+      :lesson="getLesson(getPeriod(periodId + 1))"
+      :start="getPeriod(periodId + 1).start.str"
+      :end="getPeriod(periodId + 1).end.str"
     ></lesson-card>
 
     <q-card
@@ -24,11 +26,13 @@
         'bg-primary': primary,
         'text-white': true,
         'lesson-card': true,
-        flex: true
+        flex: true,
       }"
       dark
     >
-      <q-card-section v-if="getPeriod(periodId) == null && getPeriod(periodId + 1) == null">
+      <q-card-section
+        v-if="getPeriod(periodId) == null && getPeriod(periodId + 1) == null"
+      >
         <div class="text-h6">Brak lekcji na dziś</div>
       </q-card-section>
     </q-card>
@@ -84,8 +88,8 @@ export default class Index extends Vue {
 
     // If time between dates is higher than 45 min, it means there is gap between lessons
     // Here we calculate how long the gap is
-    if (timeLeftMs > 2700000) {
-      timeLeftMs -= 2700000;
+    if (timeLeftMs > 2100000) {
+      timeLeftMs -= 2100000;
     }
 
     // 5h limit

@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh Lpr lFf" style="background-color: rgb(23, 23, 23);">
+  <q-layout view="lHh Lpr lFf" style="background-color: rgb(23, 23, 23)">
     <q-header elevated>
       <q-toolbar class="bg-dark">
         <q-btn
@@ -19,7 +19,7 @@
           <template v-else> Plan Lekcji {{ settingsMod.planLabel }} </template>
 
           <div class="toolbar-subtitle">
-            <div>v{{ version }}</div>
+            <div>v{{ version }} 35min-fix</div>
           </div>
         </div>
 
@@ -84,7 +84,7 @@ import DrawerList from "@/components/DrawerList.vue";
 import { settingsMod, planMod } from "@/store";
 
 @Component({
-  components: { DrawerList }
+  components: { DrawerList },
 })
 export default class MyLayout extends Vue {
   version = version;
