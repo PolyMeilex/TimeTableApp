@@ -22,17 +22,14 @@
 
     <q-card
       :class="{
-        'bg-dark': !primary,
-        'bg-primary': primary,
         'text-white': true,
         'lesson-card': true,
         flex: true,
       }"
       dark
+      v-if="getPeriod(periodId) == null && getPeriod(periodId + 1) == null"
     >
-      <q-card-section
-        v-if="getPeriod(periodId) == null && getPeriod(periodId + 1) == null"
-      >
+      <q-card-section>
         <div class="text-h6">Brak lekcji na dziś</div>
       </q-card-section>
     </q-card>
@@ -74,7 +71,6 @@ export default class Index extends Vue {
 
   get timeLeftString(): string {
     let period = this.getPeriod(this.periodId);
-    console.log(period);
     if (period == null) return "-";
     let start = period.start;
     let end = period.end;
